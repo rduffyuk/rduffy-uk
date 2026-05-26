@@ -1,0 +1,124 @@
+{
+  "milestones": [
+    {
+      "date": "2025-09-11",
+      "title": "The Founding Conversation",
+      "description": "First vault indexed into ChromaDB. Semantic search born.",
+      "nodes": [
+        { "id": "vault", "label": "Obsidian Vault", "group": "core", "color": "#a855f7" },
+        { "id": "chromadb", "label": "ChromaDB", "group": "database", "color": "#f97316" }
+      ],
+      "edges": [
+        { "from": "vault", "to": "chromadb" }
+      ],
+      "blogEpisode": "https://blog.rduffy.uk/posts/s1e1-founding"
+    },
+    {
+      "date": "2025-10-07",
+      "title": "Multi-Agent Search",
+      "description": "Fast, Deep, and Oracle agents with intelligent routing.",
+      "nodes": [
+        { "id": "fast-agent", "label": "FastSearch", "group": "core", "color": "#a855f7" },
+        { "id": "deep-agent", "label": "DeepResearch", "group": "core", "color": "#a855f7" },
+        { "id": "router", "label": "AgentRouter", "group": "core", "color": "#a855f7" }
+      ],
+      "edges": [
+        { "from": "router", "to": "fast-agent" },
+        { "from": "router", "to": "deep-agent" },
+        { "from": "fast-agent", "to": "chromadb" },
+        { "from": "deep-agent", "to": "chromadb" }
+      ],
+      "blogEpisode": null
+    },
+    {
+      "date": "2025-12-01",
+      "title": "MCP Bridge",
+      "description": "Model Context Protocol bridge connecting Claude Code to the platform.",
+      "nodes": [
+        { "id": "mcp-bridge", "label": "MCP Bridge", "group": "infra", "color": "#3b82f6" }
+      ],
+      "edges": [
+        { "from": "mcp-bridge", "to": "router" }
+      ],
+      "blogEpisode": null
+    },
+    {
+      "date": "2026-01-04",
+      "title": "K3s Migration",
+      "description": "Full platform migrated to Kubernetes with GitOps.",
+      "nodes": [
+        { "id": "k3s", "label": "K3s Cluster", "group": "infra", "color": "#3b82f6" },
+        { "id": "flux", "label": "FluxCD", "group": "infra", "color": "#38bdf8" },
+        { "id": "rag-gateway", "label": "RAG Gateway", "group": "core", "color": "#a855f7" }
+      ],
+      "edges": [
+        { "from": "k3s", "to": "flux" },
+        { "from": "k3s", "to": "rag-gateway" },
+        { "from": "rag-gateway", "to": "router" },
+        { "from": "mcp-bridge", "to": "rag-gateway" }
+      ],
+      "blogEpisode": null
+    },
+    {
+      "date": "2026-02-01",
+      "title": "Qdrant & Knowledge Graph",
+      "description": "Migrated to Qdrant vector DB. FalkorDB knowledge graph activated.",
+      "nodes": [
+        { "id": "qdrant", "label": "Qdrant", "group": "database", "color": "#f97316" },
+        { "id": "falkordb", "label": "FalkorDB", "group": "database", "color": "#f97316" }
+      ],
+      "edges": [
+        { "from": "fast-agent", "to": "qdrant" },
+        { "from": "deep-agent", "to": "qdrant" },
+        { "from": "deep-agent", "to": "falkordb" }
+      ],
+      "blogEpisode": null
+    },
+    {
+      "date": "2026-03-01",
+      "title": "Observability Stack",
+      "description": "Prometheus, Grafana, Jaeger, and OpenTelemetry deployed.",
+      "nodes": [
+        { "id": "prometheus", "label": "Prometheus", "group": "monitoring", "color": "#f97316" },
+        { "id": "grafana", "label": "Grafana", "group": "monitoring", "color": "#f97316" },
+        { "id": "jaeger", "label": "Jaeger", "group": "monitoring", "color": "#f97316" }
+      ],
+      "edges": [
+        { "from": "prometheus", "to": "grafana" },
+        { "from": "rag-gateway", "to": "jaeger" }
+      ],
+      "blogEpisode": null
+    },
+    {
+      "date": "2026-04-01",
+      "title": "Kafka Streaming",
+      "description": "Event-driven architecture with Kafka for vault changes and NER tagging.",
+      "nodes": [
+        { "id": "kafka", "label": "Kafka", "group": "workflow", "color": "#ec4899" },
+        { "id": "ner-consumer", "label": "NER Consumer", "group": "workflow", "color": "#ec4899" },
+        { "id": "file-watcher", "label": "File Watcher", "group": "workflow", "color": "#ec4899" }
+      ],
+      "edges": [
+        { "from": "file-watcher", "to": "kafka" },
+        { "from": "kafka", "to": "ner-consumer" },
+        { "from": "ner-consumer", "to": "qdrant" }
+      ],
+      "blogEpisode": null
+    },
+    {
+      "date": "2026-05-01",
+      "title": "ADR-030: Repo Restructure",
+      "description": "14-package uv workspace. Canonical module boundaries.",
+      "nodes": [
+        { "id": "workspace", "label": "uv Workspace", "group": "core", "color": "#a855f7" },
+        { "id": "pdg", "label": "PDG Generator", "group": "core", "color": "#a855f7" }
+      ],
+      "edges": [
+        { "from": "workspace", "to": "rag-gateway" },
+        { "from": "workspace", "to": "mcp-bridge" },
+        { "from": "pdg", "to": "falkordb" }
+      ],
+      "blogEpisode": null
+    }
+  ]
+}
