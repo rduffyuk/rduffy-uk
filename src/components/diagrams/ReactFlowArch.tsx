@@ -91,7 +91,9 @@ const indexNodes: Node[] = [
 // Supporting services
 const infraNodes: Node[] = [
   { id: "prometheus", type: "arch", position: { x: 0, y: 0 }, data: { label: "Prometheus", sublabel: "metrics → Grafana + Tempo", color: "#22c55e", icon: "🔥" } },
-  { id: "flux", type: "arch", position: { x: 0, y: 0 }, data: { label: "FluxCD → Harbor", sublabel: "GitOps deploys from GitLab", color: "#38bdf8", icon: "🔄" } },
+  { id: "gitlab", type: "arch", position: { x: 0, y: 0 }, data: { label: "GitLab", sublabel: "SCM · CI/CD · source of truth", color: "#f97316", icon: "🦊" } },
+  { id: "flux", type: "arch", position: { x: 0, y: 0 }, data: { label: "FluxCD", sublabel: "GitOps auto-reconcile", color: "#38bdf8", icon: "🔄" } },
+  { id: "harbor", type: "arch", position: { x: 0, y: 0 }, data: { label: "Harbor", sublabel: "container registry :30500", color: "#3b82f6", icon: "🏗️" } },
   { id: "ollama", type: "arch", position: { x: 0, y: 0 }, data: { label: "Ollama", sublabel: "CPU fallback · host systemd", color: "#64748b", icon: "🦙" } },
 ];
 
@@ -121,8 +123,11 @@ const edges: Edge[] = [
   { id: "p7", source: "tei", target: "qdrant", animated: true, style: { stroke: "#f97316" }, label: "store vectors", labelStyle: { fill: "#64748b", fontSize: 8 } },
   { id: "p8", source: "indexer", target: "postgres", style: { stroke: "#f97316" }, label: "store metadata", labelStyle: { fill: "#64748b", fontSize: 8 } },
 
-  // === INFRA ===
+  // === INFRA / GITOPS ===
   { id: "i1", source: "kafka", target: "prometheus", style: { stroke: "#22c55e", strokeDasharray: "4 4" }, label: "sre.alerts", labelStyle: { fill: "#22c55e", fontSize: 8 } },
+  { id: "g1", source: "gitlab", target: "flux", style: { stroke: "#38bdf8" }, label: "git push → reconcile", labelStyle: { fill: "#64748b", fontSize: 8 } },
+  { id: "g2", source: "gitlab", target: "harbor", style: { stroke: "#3b82f6" }, label: "CI → build image", labelStyle: { fill: "#64748b", fontSize: 8 } },
+  { id: "g3", source: "flux", target: "gateway", style: { stroke: "#38bdf8", strokeDasharray: "4 4" }, label: "deploy manifests", labelStyle: { fill: "#64748b", fontSize: 8 } },
 ];
 
 function layoutWithDagre(nodes: Node[], edgeList: Edge[]): Node[] {
