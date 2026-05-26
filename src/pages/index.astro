@@ -1,14 +1,26 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
+import HeroStats from "@components/HeroStats.astro";
 ---
 
 <BaseLayout title="Home" description="Ryan Duffy — SRE, AI Orchestrator, Builder. Building Rootweaver with Claude Code.">
   <section class="mx-auto max-w-4xl px-6 py-24 text-center">
+    <p class="mb-4 font-mono text-sm text-[--color-accent-cyan]">SRE · AI Orchestrator · Builder</p>
     <h1 class="mb-4 text-4xl font-bold md:text-6xl">
       Ryan <span class="text-[--color-accent]">Duffy</span>
     </h1>
-    <p class="text-lg text-[--color-text-muted]">
-      SRE by day. AI platform builder by night.
+    <p class="mx-auto max-w-2xl text-lg text-[--color-text-muted]">
+      Building AI infrastructure one conversation at a time.
+      Documenting the journey from context window overflow to self-documenting systems.
     </p>
+    <HeroStats />
+    <div class="mt-12 flex flex-wrap justify-center gap-4">
+      <a href="/journey" class="rounded-lg bg-[--color-accent] px-6 py-3 font-semibold text-white transition-opacity hover:opacity-90">
+        Explore the Journey
+      </a>
+      <a href="/cv" class="rounded-lg border border-[--color-border] px-6 py-3 text-[--color-text-muted] transition-colors hover:border-[--color-accent] hover:text-[--color-accent]">
+        View CV
+      </a>
+    </div>
   </section>
 </BaseLayout>

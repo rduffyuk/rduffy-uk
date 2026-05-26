@@ -1,0 +1,48 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { getCollection, render } from "astro:content";
+
+const cvEntries = await getCollection("cv");
+const sorted = cvEntries.sort((a, b) => a.data.order - b.data.order);
+
+const rendered = await Promise.all(
+  sorted.map(async (entry) => {
+    const { Content } = await render(entry);
+    return { title: entry.data.title, Content };
+  })
+);
+---
+
+<BaseLayout title="CV" description="Ryan Duffy — CV. SRE Specialist, AI Platform Builder.">
+  <article class="mx-auto max-w-3xl px-6 py-16">
+    <div class="mb-8 flex items-center justify-between">
+      <h1 class="text-3xl font-bold">CV</h1>
+      <button
+        onclick="window.print()"
+        class="rounded border border-[--color-border] px-4 py-2 text-sm text-[--color-text-muted] transition-colors hover:border-[--color-accent] hover:text-[--color-accent] print:hidden"
+      >
+        Print / PDF
+      </button>
+    </div>
+    {rendered.map(({ title, Content }) => (
+      <section class="mb-8">
+        <h2 class="mb-4 border-b border-[--color-border] pb-2 text-xl font-semibold text-[--color-accent]">
+          {title}
+        </h2>
+        <div class="prose prose-invert max-w-none prose-h2:text-lg prose-h2:text-[--color-text] prose-strong:text-[--color-text] prose-p:text-[--color-text-muted]">
+          <Content />
+        </div>
+      </section>
+    ))}
+  </article>
+</BaseLayout>
+
+<style is:global>
+  @media print {
+    nav, footer, .print\:hidden { display: none !important; }
+    body { background: white !important; color: black !important; }
+    h1, h2, h3 { color: black !important; }
+    p, li { color: #333 !important; }
+    .border-b { border-color: #ccc !important; }
+  }
+</style>

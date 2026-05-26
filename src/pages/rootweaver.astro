@@ -1,0 +1,26 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import HeroStats from "@components/HeroStats.astro";
+import { getEntry, render } from "astro:content";
+
+const entry = await getEntry("pages", "rootweaver-story");
+const { Content } = await render(entry);
+---
+
+<BaseLayout title="Rootweaver" description="The Rootweaver Platform — AI-powered knowledge management built with Claude Code.">
+  <article class="mx-auto max-w-3xl px-6 py-16">
+    <h1 class="mb-4 text-3xl font-bold">
+      The <span class="text-[--color-accent]">Rootweaver</span> Platform
+    </h1>
+    <p class="mb-8 text-[--color-text-muted]">AI-powered knowledge management, built one conversation at a time.</p>
+    <HeroStats />
+    <div class="prose prose-invert mt-12 max-w-none prose-p:text-[--color-text-muted] prose-p:leading-relaxed">
+      <Content />
+    </div>
+    <div class="mt-12 text-center">
+      <a href="/journey" class="rounded-lg bg-[--color-accent] px-6 py-3 font-semibold text-white transition-opacity hover:opacity-90">
+        See the Journey Map →
+      </a>
+    </div>
+  </article>
+</BaseLayout>

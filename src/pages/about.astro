@@ -1,0 +1,16 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { getEntry, render } from "astro:content";
+
+const entry = await getEntry("pages", "about");
+const { Content } = await render(entry);
+---
+
+<BaseLayout title="About">
+  <article class="mx-auto max-w-3xl px-6 py-16">
+    <h1 class="mb-8 text-3xl font-bold">About</h1>
+    <div class="prose prose-invert max-w-none prose-p:text-[--color-text-muted] prose-p:leading-relaxed">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>
