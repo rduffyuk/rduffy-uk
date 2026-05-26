@@ -224,13 +224,13 @@ const edges: Edge[] = [
 
 export default function ReactFlowArch() {
   return (
-    <div style={{ width: "100%", height: 800, borderRadius: 12, overflow: "hidden", border: "1px solid #1e293b" }}>
+    <div style={{ width: "100%", height: "calc(100vh - 200px)", minHeight: 500, borderRadius: 12, overflow: "hidden", border: "1px solid #1e293b" }}>
       <ReactFlow
         nodes={nodes}
         edges={edges}
         nodeTypes={nodeTypes}
         fitView
-        fitViewOptions={{ padding: 0.08 }}
+        fitViewOptions={{ padding: 0.1 }}
         colorMode="dark"
         proOptions={{ hideAttribution: true }}
         defaultEdgeOptions={{ type: "smoothstep" }}
@@ -241,14 +241,6 @@ export default function ReactFlowArch() {
         <Controls
           showInteractive={false}
           style={{ background: "#0f0f13", border: "1px solid #1e293b", borderRadius: 8 }}
-        />
-        <MiniMap
-          nodeColor={(n) => {
-            const d = n.data as { color?: string } | undefined;
-            return d?.color ?? "#94a3b8";
-          }}
-          style={{ background: "#0f0f13", border: "1px solid #1e293b", borderRadius: 8 }}
-          maskColor="rgba(9, 9, 11, 0.8)"
         />
       </ReactFlow>
     </div>
