@@ -96,88 +96,89 @@ function GroupLabel({ data }: { data: { label: string; color: string } }) {
 
 const nodeTypes: NodeTypes = { arch: ArchNode, zone: ZoneBox, label: GroupLabel };
 
-// === ZONE BOXES (behind everything) ===
+// === ZONE BOXES (behind everything, NO overlap) ===
 const zoneNodes: Node[] = [
-  {
-    id: "zone-k3s",
-    type: "zone",
-    position: { x: -130, y: 55 },
-    data: { label: "⚙️ K3s Cluster", sublabel: "Desktop · 100.113.76.79 · RTX 4080 · 64GB RAM · 29 namespaces", color: "#3b82f6", width: 1010, height: 600 },
-    style: { zIndex: -1 },
-  },
   {
     id: "zone-host",
     type: "zone",
-    position: { x: -180, y: -65 },
-    data: { label: "🖥️ Host VM (Desktop)", sublabel: "systemd services + filesystem", color: "#94a3b8", width: 220, height: 250 },
+    position: { x: -230, y: -120 },
+    data: { label: "🖥️ Host VM (Desktop)", sublabel: "100.113.76.79 · systemd + filesystem", color: "#94a3b8", width: 250, height: 200 },
     style: { zIndex: -1 },
   },
   {
     id: "zone-remote",
     type: "zone",
-    position: { x: 310, y: -95 },
-    data: { label: "💻 MacBook (Remote)", sublabel: "Tailscale mesh · Claude Code", color: "#f1f5f9", width: 190, height: 115 },
+    position: { x: 280, y: -120 },
+    data: { label: "💻 MacBook (Remote)", sublabel: "Tailscale mesh · Claude Code", color: "#f1f5f9", width: 200, height: 120 },
+    style: { zIndex: -1 },
+  },
+  {
+    id: "zone-k3s",
+    type: "zone",
+    position: { x: -230, y: 120 },
+    data: { label: "⚙️ K3s Cluster", sublabel: "RTX 4080 · 64GB RAM · 29 namespaces · 150+ pods", color: "#3b82f6", width: 1160, height: 590 },
     style: { zIndex: -1 },
   },
 ];
 
-// === USER (remote) ===
+// === USER (remote — above K3s) ===
 const userNodes: Node[] = [
-  { id: "user", type: "arch", position: { x: 330, y: -70 }, data: { label: "Claude Code", sublabel: "MCP SSE client", color: "#f1f5f9", icon: "💻" } },
+  { id: "user", type: "arch", position: { x: 300, y: -95 }, data: { label: "Claude Code", sublabel: "MCP SSE client", color: "#f1f5f9", icon: "💻" } },
 ];
 
-// === HOST VM services ===
+// === HOST VM services (above K3s, left side) ===
 const hostNodes: Node[] = [
-  { id: "vault-files", type: "arch", position: { x: -160, y: -30 }, data: { label: "Obsidian Vault", sublabel: "1,917 files · hostPath", color: "#a855f7", icon: "📂" } },
-  { id: "ollama", type: "arch", position: { x: -160, y: 80 }, data: { label: "Ollama", sublabel: "CPU · systemd user svc", color: "#64748b", icon: "🦙" } },
+  { id: "vault-files", type: "arch", position: { x: -210, y: -85 }, data: { label: "Obsidian Vault", sublabel: "1,917 files · hostPath", color: "#a855f7", icon: "📂" } },
+  { id: "ollama", type: "arch", position: { x: -210, y: 10 }, data: { label: "Ollama", sublabel: "CPU · systemd user svc", color: "#64748b", icon: "🦙" } },
 ];
 
+// All K3s nodes offset by +80 on Y to sit inside the K3s zone (starts y:120)
 // === K3S: Search flow (center) ===
 const searchNodes: Node[] = [
-  { id: "mcp", type: "arch", position: { x: 310, y: 80 }, data: { label: "MCP Bridge", sublabel: ":30002 · 29 tools", color: "#3b82f6", icon: "🔌", wide: true } },
-  { id: "gateway", type: "arch", position: { x: 310, y: 180 }, data: { label: "RAG Gateway", sublabel: ":30808 · 2 replicas", color: "#a855f7", icon: "🚪", wide: true } },
-  { id: "fast", type: "arch", position: { x: 170, y: 285 }, data: { label: "FastSearch", sublabel: "<1s · keywords", color: "#22c55e" } },
-  { id: "deep", type: "arch", position: { x: 320, y: 285 }, data: { label: "DeepResearch", sublabel: "~10s · semantic", color: "#ec4899" } },
-  { id: "oracle", type: "arch", position: { x: 470, y: 285 }, data: { label: "Oracle", sublabel: "15-30s · multi-hop", color: "#ef4444" } },
-  { id: "retriever", type: "arch", position: { x: 310, y: 390 }, data: { label: "RAG Retriever", sublabel: ":8001 · 2 replicas", color: "#f97316", icon: "🔍", wide: true } },
+  { id: "mcp", type: "arch", position: { x: 310, y: 150 }, data: { label: "MCP Bridge", sublabel: ":30002 · 29 tools", color: "#3b82f6", icon: "🔌", wide: true } },
+  { id: "gateway", type: "arch", position: { x: 310, y: 250 }, data: { label: "RAG Gateway", sublabel: ":30808 · 2 replicas", color: "#a855f7", icon: "🚪", wide: true } },
+  { id: "fast", type: "arch", position: { x: 170, y: 355 }, data: { label: "FastSearch", sublabel: "<1s · keywords", color: "#22c55e" } },
+  { id: "deep", type: "arch", position: { x: 320, y: 355 }, data: { label: "DeepResearch", sublabel: "~10s · semantic", color: "#ec4899" } },
+  { id: "oracle", type: "arch", position: { x: 470, y: 355 }, data: { label: "Oracle", sublabel: "15-30s · multi-hop", color: "#ef4444" } },
+  { id: "retriever", type: "arch", position: { x: 310, y: 460 }, data: { label: "RAG Retriever", sublabel: ":8001 · 2 replicas", color: "#f97316", icon: "🔍", wide: true } },
 ];
 
 // === K3S: Data stores ===
 const dataNodes: Node[] = [
-  { id: "qdrant", type: "arch", position: { x: 170, y: 500 }, data: { label: "Qdrant", sublabel: "148K chunks · 2560d", color: "#f97316", icon: "🔮" } },
-  { id: "falkordb", type: "arch", position: { x: 340, y: 500 }, data: { label: "FalkorDB", sublabel: "7.7K nodes", color: "#f97316", icon: "🕸️" } },
-  { id: "postgres", type: "arch", position: { x: 510, y: 500 }, data: { label: "vault-postgres", sublabel: "source-of-record", color: "#f97316", icon: "🐘" } },
+  { id: "qdrant", type: "arch", position: { x: 170, y: 570 }, data: { label: "Qdrant", sublabel: "148K chunks · 2560d", color: "#f97316", icon: "🔮" } },
+  { id: "falkordb", type: "arch", position: { x: 340, y: 570 }, data: { label: "FalkorDB", sublabel: "7.7K nodes", color: "#f97316", icon: "🕸️" } },
+  { id: "postgres", type: "arch", position: { x: 510, y: 570 }, data: { label: "vault-postgres", sublabel: "source-of-record", color: "#f97316", icon: "🐘" } },
 ];
 
 // === K3S: LLM (vllm namespace) ===
 const llmNodes: Node[] = [
-  { id: "label-llm", type: "label", position: { x: 640, y: 145 }, data: { label: "vllm namespace · GPU", color: "#ef4444" } },
-  { id: "vllm", type: "arch", position: { x: 630, y: 170 }, data: { label: "vLLM", sublabel: "Qwen3-8B-AWQ · GPU", color: "#ef4444", icon: "🎮" } },
-  { id: "tei", type: "arch", position: { x: 630, y: 280 }, data: { label: "TEI Embedding", sublabel: "Qwen3-4B · 2560d", color: "#ef4444" } },
+  { id: "label-llm", type: "label", position: { x: 640, y: 215 }, data: { label: "vllm namespace · GPU", color: "#ef4444" } },
+  { id: "vllm", type: "arch", position: { x: 630, y: 240 }, data: { label: "vLLM", sublabel: "Qwen3-8B-AWQ · GPU", color: "#ef4444", icon: "🎮" } },
+  { id: "tei", type: "arch", position: { x: 630, y: 350 }, data: { label: "TEI Embedding", sublabel: "Qwen3-4B · 2560d", color: "#ef4444" } },
 ];
 
 // === K3S: Indexing pipeline ===
 const indexNodes: Node[] = [
-  { id: "label-index", type: "label", position: { x: -90, y: 200 }, data: { label: "Indexing Pipeline", color: "#ec4899" } },
-  { id: "file-watcher", type: "arch", position: { x: -100, y: 225 }, data: { label: "File Watcher", sublabel: "inotify → Kafka", color: "#ec4899", icon: "👁️" } },
-  { id: "kafka", type: "arch", position: { x: -100, y: 325 }, data: { label: "Kafka", sublabel: "10+ topics", color: "#00d4ff", icon: "📬", wide: true } },
-  { id: "ner", type: "arch", position: { x: -100, y: 420 }, data: { label: "NER Consumer", sublabel: "spaCy · KEDA 0→1", color: "#ec4899" } },
-  { id: "indexer", type: "arch", position: { x: -100, y: 520 }, data: { label: "Vault Indexer", sublabel: "delta consumer", color: "#ec4899" } },
+  { id: "label-index", type: "label", position: { x: -190, y: 175 }, data: { label: "Indexing Pipeline", color: "#ec4899" } },
+  { id: "file-watcher", type: "arch", position: { x: -200, y: 200 }, data: { label: "File Watcher", sublabel: "inotify → Kafka", color: "#ec4899", icon: "👁️" } },
+  { id: "kafka", type: "arch", position: { x: -200, y: 310 }, data: { label: "Kafka", sublabel: "10+ topics", color: "#00d4ff", icon: "📬", wide: true } },
+  { id: "ner", type: "arch", position: { x: -200, y: 420 }, data: { label: "NER Consumer", sublabel: "spaCy · KEDA 0→1", color: "#ec4899" } },
+  { id: "indexer", type: "arch", position: { x: -200, y: 530 }, data: { label: "Vault Indexer", sublabel: "delta consumer", color: "#ec4899" } },
 ];
 
 // === K3S: Observability ===
 const obsNodes: Node[] = [
-  { id: "label-obs", type: "label", position: { x: 790, y: 70 }, data: { label: "Monitoring NS", color: "#22c55e" } },
-  { id: "prometheus", type: "arch", position: { x: 780, y: 95 }, data: { label: "Prometheus", sublabel: ":30090", color: "#22c55e", icon: "🔥" } },
-  { id: "grafana", type: "arch", position: { x: 780, y: 200 }, data: { label: "Grafana", sublabel: ":30300", color: "#22c55e", icon: "📊" } },
-  { id: "tempo", type: "arch", position: { x: 780, y: 305 }, data: { label: "Tempo", sublabel: "traces", color: "#22c55e", icon: "⏱️" } },
-  { id: "alertmanager", type: "arch", position: { x: 780, y: 410 }, data: { label: "Alertmanager", sublabel: ":30903", color: "#22c55e" } },
+  { id: "label-obs", type: "label", position: { x: 820, y: 140 }, data: { label: "Monitoring NS", color: "#22c55e" } },
+  { id: "prometheus", type: "arch", position: { x: 810, y: 165 }, data: { label: "Prometheus", sublabel: ":30090", color: "#22c55e", icon: "🔥" } },
+  { id: "grafana", type: "arch", position: { x: 810, y: 270 }, data: { label: "Grafana", sublabel: ":30300", color: "#22c55e", icon: "📊" } },
+  { id: "tempo", type: "arch", position: { x: 810, y: 375 }, data: { label: "Tempo", sublabel: "traces", color: "#22c55e", icon: "⏱️" } },
+  { id: "alertmanager", type: "arch", position: { x: 810, y: 480 }, data: { label: "Alertmanager", sublabel: ":30903", color: "#22c55e" } },
 ];
 
 // === K3S: Infra ===
 const infraNodes: Node[] = [
-  { id: "flux", type: "arch", position: { x: 670, y: 420 }, data: { label: "FluxCD", sublabel: "GitOps → GitLab", color: "#38bdf8", icon: "🔄" } },
-  { id: "harbor", type: "arch", position: { x: 670, y: 520 }, data: { label: "Harbor", sublabel: "registry :30500", color: "#3b82f6", icon: "🏗️" } },
+  { id: "flux", type: "arch", position: { x: 670, y: 490 }, data: { label: "FluxCD", sublabel: "GitOps → GitLab", color: "#38bdf8", icon: "🔄" } },
+  { id: "harbor", type: "arch", position: { x: 670, y: 590 }, data: { label: "Harbor", sublabel: "registry :30500", color: "#3b82f6", icon: "🏗️" } },
 ];
 
 const nodes: Node[] = [
