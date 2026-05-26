@@ -1,0 +1,22 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import JourneyStepButtons from "@components/journey/JourneyStepButtons";
+import journeyData from "@data/journey-data.json";
+---
+
+<BaseLayout title="Demo: Step Buttons Journey">
+  <div class="flex h-[calc(100vh-57px)] flex-col">
+    <div class="border-b border-[--color-border] px-6 py-4">
+      <p class="font-mono text-xs tracking-[0.2em] uppercase text-[--color-accent-cyan]">Demo: Journey Option B</p>
+      <h1 class="text-xl font-bold">Step Buttons</h1>
+      <p class="text-sm text-[--color-text-subtle]">
+        Full-width graph. Previous/Next buttons + auto-play. Clean and simple.
+        <a href="/demo/journey-scrollytelling" class="text-[--color-accent] ml-2">→ Try Scrollytelling</a> ·
+        <a href="/demo/journey-2d" class="text-[--color-accent] ml-1">→ Try 2D</a>
+      </p>
+    </div>
+    <div class="flex-1">
+      <JourneyStepButtons client:load data={journeyData} />
+    </div>
+  </div>
+</BaseLayout>

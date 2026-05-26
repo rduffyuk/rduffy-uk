@@ -1,0 +1,18 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import JourneyScrollytelling from "@components/journey/JourneyScrollytelling";
+import journeyData from "@data/journey-data.json";
+---
+
+<BaseLayout title="Demo: Scrollytelling Journey">
+  <div class="border-b border-[--color-border] px-6 py-4">
+    <p class="font-mono text-xs tracking-[0.2em] uppercase text-[--color-accent-cyan]">Demo: Journey Option A</p>
+    <h1 class="text-xl font-bold">Scrollytelling</h1>
+    <p class="text-sm text-[--color-text-subtle]">
+      Sticky 3D graph at top. Scroll naturally through milestone cards below. Graph updates as cards enter view. No scroll hijacking.
+      <a href="/demo/journey-buttons" class="text-[--color-accent] ml-2">→ Try Buttons</a> ·
+      <a href="/demo/journey-2d" class="text-[--color-accent] ml-1">→ Try 2D</a>
+    </p>
+  </div>
+  <JourneyScrollytelling client:load data={journeyData} />
+</BaseLayout>

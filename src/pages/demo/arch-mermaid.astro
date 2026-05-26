@@ -1,0 +1,64 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Demo: Mermaid Architecture">
+  <section class="mx-auto max-w-4xl px-6 py-16">
+    <p class="mb-2 font-mono text-xs tracking-[0.2em] uppercase text-[--color-accent-cyan]">Demo: Option B</p>
+    <h1 class="mb-8 text-3xl font-extrabold"><span class="gradient-text">Mermaid Diagram</span></h1>
+    <div class="card overflow-hidden p-6">
+      <div class="mermaid-container rounded-lg bg-[#0f0f13] p-6">
+        <pre class="mermaid">
+graph TB
+    User["💻 Claude Code / User"]
+    MCP["🔌 MCP Bridge<br/>:30002 · 29 tools"]
+    GW["🚪 RAG Gateway<br/>:30808 · FastAPI"]
+    Fast["🟢 FastSearch<br/>&lt;1s"]
+    Deep["🩷 DeepResearch<br/>~10s"]
+    Oracle["🔴 Oracle<br/>15-30s"]
+    Ret["🔍 RAG Retriever<br/>:8001 · Hybrid"]
+    Q["🔮 Qdrant<br/>148K docs"]
+    F["🕸️ FalkorDB<br/>7.7K nodes"]
+
+    User --> MCP
+    MCP --> GW
+    GW --> Fast
+    GW --> Deep
+    GW --> Oracle
+    Fast --> Ret
+    Deep --> Ret
+    Oracle --> Ret
+    Ret --> Q
+    Ret --> F
+
+    style User fill:#09090b,stroke:#f1f5f9,color:#f1f5f9
+    style MCP fill:#09090b,stroke:#3b82f6,color:#3b82f6
+    style GW fill:#09090b,stroke:#a855f7,color:#a855f7
+    style Fast fill:#09090b,stroke:#22c55e,color:#22c55e
+    style Deep fill:#09090b,stroke:#ec4899,color:#ec4899
+    style Oracle fill:#09090b,stroke:#ef4444,color:#ef4444
+    style Ret fill:#09090b,stroke:#f97316,color:#f97316
+    style Q fill:#09090b,stroke:#f97316,color:#f97316
+    style F fill:#09090b,stroke:#f97316,color:#f97316
+        </pre>
+      </div>
+    </div>
+    <p class="mt-4 text-sm text-[--color-text-subtle]">
+      Static SVG rendered at build time. No interactivity (can't zoom/pan). Looks "docs-like".
+      <a href="/demo/arch-reactflow" class="text-[--color-accent] ml-2">→ Compare with React Flow</a>
+    </p>
+  </section>
+</BaseLayout>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: "dark",
+    themeVariables: {
+      primaryColor: "#0f0f13",
+      lineColor: "#94a3b8",
+      textColor: "#f1f5f9",
+    },
+  });
+</script>

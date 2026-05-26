@@ -1,0 +1,17 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import ReactFlowArch from "@components/diagrams/ReactFlowArch";
+---
+
+<BaseLayout title="Demo: React Flow Architecture">
+  <section class="mx-auto max-w-4xl px-6 py-16">
+    <p class="mb-2 font-mono text-xs tracking-[0.2em] uppercase text-[--color-accent-cyan]">Demo: Option A</p>
+    <h1 class="mb-8 text-3xl font-extrabold"><span class="gradient-text">React Flow Diagram</span></h1>
+    <ReactFlowArch client:load />
+    <p class="mt-4 text-sm text-[--color-text-subtle]">
+      Interactive — zoom, pan, explore. Custom dark-themed nodes with brand colours. Animated edges for data flow.
+      <a href="/demo/arch-mermaid" class="text-[--color-accent] ml-2">→ Compare with Mermaid</a> ·
+      <a href="/demo/arch-svg" class="text-[--color-accent] ml-2">→ Compare with SVG</a>
+    </p>
+  </section>
+</BaseLayout>

@@ -1,0 +1,20 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import Journey2D from "@components/journey/Journey2D";
+import journeyData from "@data/journey-data.json";
+---
+
+<BaseLayout title="Demo: 2D Timeline Journey">
+  <section class="py-16">
+    <div class="mx-auto max-w-3xl px-6 mb-10">
+      <p class="font-mono text-xs tracking-[0.2em] uppercase text-[--color-accent-cyan]">Demo: Journey Option C</p>
+      <h1 class="text-xl font-bold">2D Timeline</h1>
+      <p class="text-sm text-[--color-text-subtle]">
+        No Three.js. Vertical timeline with component cloud. Click milestones or press Play. Lighter, simpler, works everywhere.
+        <a href="/demo/journey-scrollytelling" class="text-[--color-accent] ml-2">→ Try Scrollytelling</a> ·
+        <a href="/demo/journey-buttons" class="text-[--color-accent] ml-1">→ Try Buttons</a>
+      </p>
+    </div>
+    <Journey2D client:load data={journeyData} />
+  </section>
+</BaseLayout>

@@ -1,0 +1,30 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+
+const demos = [
+  { title: "Architecture: React Flow", href: "/demo/arch-reactflow", desc: "Interactive, zoomable, animated edges. Brand-themed nodes." },
+  { title: "Architecture: Mermaid", href: "/demo/arch-mermaid", desc: "Static SVG from text. Quick but looks docs-like." },
+  { title: "Architecture: Custom SVG", href: "/demo/arch-svg", desc: "Hand-crafted SVG with animated data flow dots. No JS deps." },
+  { title: "Journey: Scrollytelling", href: "/demo/journey-scrollytelling", desc: "Sticky 3D graph + scrollable milestone cards. Natural scroll." },
+  { title: "Journey: Step Buttons", href: "/demo/journey-buttons", desc: "Full-width 3D graph with Prev/Next/Play. Simple and clean." },
+  { title: "Journey: 2D Timeline", href: "/demo/journey-2d", desc: "No Three.js. Vertical timeline with component cloud. Lightweight." },
+];
+---
+
+<BaseLayout title="Design Demos">
+  <section class="mx-auto max-w-3xl px-6 py-20">
+    <p class="mb-2 font-mono text-xs tracking-[0.2em] uppercase text-[--color-accent-cyan]">Comparison</p>
+    <h1 class="mb-8 text-3xl font-extrabold"><span class="gradient-text">Design Demos</span></h1>
+    <div class="grid gap-4">
+      {demos.map((d) => (
+        <a href={d.href} class="card group flex items-center gap-4 p-5">
+          <div class="flex-1">
+            <h3 class="text-sm font-semibold text-[--color-text] group-hover:text-[--color-accent] transition-colors">{d.title}</h3>
+            <p class="text-sm text-[--color-text-muted] mt-1">{d.desc}</p>
+          </div>
+          <svg class="h-4 w-4 text-[--color-text-subtle] transition-transform group-hover:translate-x-1 group-hover:text-[--color-accent]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
