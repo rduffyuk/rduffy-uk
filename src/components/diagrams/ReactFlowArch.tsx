@@ -132,7 +132,7 @@ const edges: Edge[] = [
 
 function layoutWithDagre(nodes: Node[], edgeList: Edge[]): Node[] {
   const g = new dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
-  g.setGraph({ rankdir: "TB", nodesep: 80, ranksep: 100, marginx: 50, marginy: 50 });
+  g.setGraph({ rankdir: "TB", nodesep: 100, ranksep: 110, edgesep: 40, marginx: 60, marginy: 60 });
 
   for (const n of nodes) {
     const w = n.type === "kafka" ? 300 : NODE_W + 30;
@@ -186,7 +186,7 @@ export default function ReactFlowArch() {
         fitViewOptions={{ padding: 0.12 }}
         colorMode="dark"
         proOptions={{ hideAttribution: true }}
-        defaultEdgeOptions={{ type: "smoothstep" }}
+        defaultEdgeOptions={{ type: "bezier" }}
         nodesDraggable={false}
         nodesConnectable={false}
       >
