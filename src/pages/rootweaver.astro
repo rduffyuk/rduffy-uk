@@ -18,9 +18,9 @@ import ReactFlowArch from "@components/diagrams/ReactFlowArch";
         <span class="gradient-text">Rootweaver</span>
       </h1>
       <p class="mt-4 max-w-2xl text-lg leading-relaxed text-[--color-text-muted]">
-        AI-powered knowledge management built one conversation at a time.
-        From a single vault search to a production Kubernetes platform with
-        multi-agent RAG, knowledge graphs, and full observability.
+        A personal AI-powered productivity ecosystem — multi-agent RAG search,
+        long-term memory, knowledge graphs, event-driven indexing, and full observability.
+        All running on a GPU-accelerated K3s cluster, built entirely with Claude Code.
       </p>
       <HeroStats />
     </div>
@@ -45,14 +45,16 @@ import ReactFlowArch from "@components/diagrams/ReactFlowArch";
       <h2 class="mb-10 text-center font-mono text-xs tracking-[0.2em] uppercase text-[--color-text-subtle]">
         The Stack
       </h2>
-      <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {[
-          { icon: "🔮", title: "Semantic Search", desc: "Qdrant vector DB with 2560d Qwen3-Embedding-4B. Hybrid BM25 + vector with jina-reranker-v2 cross-encoder. 148K indexed chunks.", color: "--color-accent" },
-          { icon: "🧠", title: "Multi-Agent RAG", desc: "Three-tier agent system: FastSearch (<1s), DeepResearch (~10s), Oracle (15-30s) with LLM-powered routing and 73% semantic cache hit rate.", color: "--color-workflow" },
+          { icon: "🧠", title: "Multi-Agent RAG", desc: "Three-tier search: FastSearch (<1s), DeepResearch (~10s), Oracle (15-30s). LLM-powered routing with 73% semantic cache hit rate.", color: "--color-workflow" },
+          { icon: "🔮", title: "Hybrid Search", desc: "Qdrant with 148K chunks at 2560d (Qwen3-Embedding-4B). BM25 + vector fusion with jina-reranker-v2 cross-encoder.", color: "--color-accent" },
           { icon: "🕸️", title: "Knowledge Graph", desc: "FalkorDB with 7,768 nodes. Code dependency analysis via PDG, architecture community detection, impact radius queries.", color: "--color-database" },
-          { icon: "📬", title: "Event Streaming", desc: "Kafka-driven pipelines: inotify file watcher → NER consumer (spaCy + YAKE) → auto-tagging → Qdrant indexing. KEDA scales consumers 0→N.", color: "--color-accent-cyan" },
-          { icon: "⚙️", title: "GitOps on K3s", desc: "29 namespaces, 150+ pods. FluxCD watches GitLab, auto-reconciles. 55+ NetworkPolicies, Cloudflare Tunnels, Harbor registry, KEDA autoscaling.", color: "--color-infra" },
-          { icon: "🎮", title: "GPU Inference", desc: "vLLM serving Qwen3-8B-AWQ on RTX 4080 (15.6GB VRAM). KEDA swap controller for TEI embedding. Ollama CPU fallback.", color: "--color-error" },
+          { icon: "💾", title: "Long-Term Memory", desc: "Structured JSONL→Postgres memory pipeline. 6 recall MCP tools: session, origin, decisions, state-at, trace chain, save context.", color: "--color-accent" },
+          { icon: "📬", title: "Event Streaming", desc: "Kafka event bus with 10+ topics. inotify file watcher → NER consumer (spaCy + YAKE) → auto-tagging → indexing. KEDA scales 0→N.", color: "--color-accent-cyan" },
+          { icon: "🎮", title: "GPU Inference", desc: "vLLM serving Qwen3-8B-AWQ on RTX 4080. KEDA swap controller for TEI embedding (2560d). Ollama CPU-only fallback.", color: "--color-error" },
+          { icon: "🤖", title: "SRE Agent", desc: "Autonomous triage: Alertmanager webhook → event collector → LLM-powered brain → Jira issue creation + Discord alerts.", color: "--color-success" },
+          { icon: "⚙️", title: "GitOps Infrastructure", desc: "K3s with 29 namespaces, 150+ pods. FluxCD from GitLab, 55+ NetworkPolicies, Harbor registry, Cloudflare Tunnels, KEDA, Velero backups.", color: "--color-infra" },
         ].map((item) => (
           <div class="card p-5">
             <div class="mb-3 text-xl">{item.icon}</div>
