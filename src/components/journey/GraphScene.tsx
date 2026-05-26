@@ -12,12 +12,13 @@ interface GraphSceneProps {
 
 function layoutNodes(data: JourneyData): Map<string, PositionedNode> {
   const nodeMap = new Map<string, PositionedNode>();
-  const groupOffsets: Record<string, [number, number]> = {
-    core: [0, 0],
-    infra: [4, 2],
-    database: [-4, 2],
-    monitoring: [-4, -3],
-    workflow: [4, -3],
+
+  const groupConfig: Record<string, { center: [number, number]; spread: number }> = {
+    core:       { center: [0, 1],     spread: 2.0 },
+    infra:      { center: [5, 3],     spread: 1.8 },
+    database:   { center: [-5, 3],    spread: 1.8 },
+    monitoring: { center: [-5, -3.5], spread: 1.8 },
+    workflow:   { center: [5, -3.5],  spread: 1.8 },
   };
 
   const groupCounters: Record<string, number> = {};
@@ -26,20 +27,20 @@ function layoutNodes(data: JourneyData): Map<string, PositionedNode> {
     for (const node of milestone.nodes) {
       if (nodeMap.has(node.id)) continue;
 
-      const group = node.group;
-      const offset = groupOffsets[group] ?? [0, 0];
-      const count = groupCounters[group] ?? 0;
-      groupCounters[group] = count + 1;
+      const cfg = groupConfig[node.group] ?? { center: [0, -2], spread: 2.0 };
+      const count = groupCounters[node.group] ?? 0;
+      groupCounters[node.group] = count + 1;
 
-      const angle = (count * Math.PI * 2) / 7 + count * 0.5;
-      const radius = 1.2 + count * 0.4;
+      const goldenAngle = 2.39996323;
+      const angle = count * goldenAngle;
+      const radius = 0.6 + Math.sqrt(count) * cfg.spread * 0.55;
 
       nodeMap.set(node.id, {
         ...node,
         position: [
-          offset[0] + Math.cos(angle) * radius,
-          offset[1] + Math.sin(angle) * radius,
-          (count % 3 - 1) * 0.5,
+          cfg.center[0] + Math.cos(angle) * radius,
+          cfg.center[1] + Math.sin(angle) * radius,
+          (Math.sin(count * 1.7) * 0.4),
         ],
       });
     }
@@ -75,8 +76,9 @@ export function GraphScene({ data, currentIndex, onNodeClick }: GraphSceneProps)
 
   return (
     <>
-      <ambientLight intensity={0.3} />
-      <pointLight position={[10, 10, 10]} intensity={0.8} />
+      <ambientLight intensity={0.4} />
+      <pointLight position={[10, 10, 10]} intensity={0.7} />
+      <pointLight position={[-8, -5, 5]} intensity={0.3} color="#a855f7" />
 
       {Array.from(nodeMap.values()).map((node) => (
         <NodeMesh
@@ -99,7 +101,7 @@ export function GraphScene({ data, currentIndex, onNodeClick }: GraphSceneProps)
         enableZoom
         enableRotate
         maxDistance={20}
-        minDistance={3}
+        minDistance={5}
       />
     </>
   );
