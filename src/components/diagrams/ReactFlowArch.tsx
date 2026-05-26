@@ -101,35 +101,35 @@ const zoneNodes: Node[] = [
   {
     id: "zone-host",
     type: "zone",
-    position: { x: -230, y: -120 },
-    data: { label: "🖥️ Host VM (Desktop)", sublabel: "100.113.76.79 · systemd + filesystem", color: "#94a3b8", width: 250, height: 200 },
+    position: { x: -250, y: -140 },
+    data: { label: "🖥️ Host VM (Desktop)", sublabel: "100.113.76.79 · systemd + filesystem", color: "#94a3b8", width: 290, height: 250 },
     style: { zIndex: -1 },
   },
   {
     id: "zone-remote",
     type: "zone",
-    position: { x: 280, y: -120 },
+    position: { x: 280, y: -140 },
     data: { label: "💻 MacBook (Remote)", sublabel: "Tailscale mesh · Claude Code", color: "#f1f5f9", width: 200, height: 120 },
     style: { zIndex: -1 },
   },
   {
     id: "zone-k3s",
     type: "zone",
-    position: { x: -230, y: 120 },
-    data: { label: "⚙️ K3s Cluster", sublabel: "RTX 4080 · 64GB RAM · 29 namespaces · 150+ pods", color: "#3b82f6", width: 1160, height: 590 },
+    position: { x: -250, y: 150 },
+    data: { label: "⚙️ K3s Cluster", sublabel: "RTX 4080 · 64GB RAM · 29 namespaces · 150+ pods", color: "#3b82f6", width: 1060, height: 590 },
     style: { zIndex: -1 },
   },
 ];
 
 // === USER (remote — above K3s) ===
 const userNodes: Node[] = [
-  { id: "user", type: "arch", position: { x: 300, y: -95 }, data: { label: "Claude Code", sublabel: "MCP SSE client", color: "#f1f5f9", icon: "💻" } },
+  { id: "user", type: "arch", position: { x: 300, y: -110 }, data: { label: "Claude Code", sublabel: "MCP SSE client", color: "#f1f5f9", icon: "💻" } },
 ];
 
-// === HOST VM services (above K3s, left side) ===
+// === HOST VM services (above K3s, more vertical spacing) ===
 const hostNodes: Node[] = [
-  { id: "vault-files", type: "arch", position: { x: -210, y: -85 }, data: { label: "Obsidian Vault", sublabel: "1,917 files · hostPath", color: "#a855f7", icon: "📂" } },
-  { id: "ollama", type: "arch", position: { x: -210, y: 10 }, data: { label: "Ollama", sublabel: "CPU · systemd user svc", color: "#64748b", icon: "🦙" } },
+  { id: "vault-files", type: "arch", position: { x: -220, y: -100 }, data: { label: "Obsidian Vault", sublabel: "1,917 files · hostPath", color: "#a855f7", icon: "📂" } },
+  { id: "ollama", type: "arch", position: { x: -220, y: 20 }, data: { label: "Ollama", sublabel: "CPU · systemd user svc", color: "#64748b", icon: "🦙" } },
 ];
 
 // All K3s nodes offset by +80 on Y to sit inside the K3s zone (starts y:120)
@@ -166,19 +166,19 @@ const indexNodes: Node[] = [
   { id: "indexer", type: "arch", position: { x: -200, y: 530 }, data: { label: "Vault Indexer", sublabel: "delta consumer", color: "#ec4899" } },
 ];
 
-// === K3S: Observability ===
+// === K3S: Observability (pulled inside K3s box) ===
 const obsNodes: Node[] = [
-  { id: "label-obs", type: "label", position: { x: 820, y: 140 }, data: { label: "Monitoring NS", color: "#22c55e" } },
-  { id: "prometheus", type: "arch", position: { x: 810, y: 165 }, data: { label: "Prometheus", sublabel: ":30090", color: "#22c55e", icon: "🔥" } },
-  { id: "grafana", type: "arch", position: { x: 810, y: 270 }, data: { label: "Grafana", sublabel: ":30300", color: "#22c55e", icon: "📊" } },
-  { id: "tempo", type: "arch", position: { x: 810, y: 375 }, data: { label: "Tempo", sublabel: "traces", color: "#22c55e", icon: "⏱️" } },
-  { id: "alertmanager", type: "arch", position: { x: 810, y: 480 }, data: { label: "Alertmanager", sublabel: ":30903", color: "#22c55e" } },
+  { id: "label-obs", type: "label", position: { x: 700, y: 170 }, data: { label: "Monitoring NS", color: "#22c55e" } },
+  { id: "prometheus", type: "arch", position: { x: 690, y: 195 }, data: { label: "Prometheus", sublabel: ":30090", color: "#22c55e", icon: "🔥" } },
+  { id: "grafana", type: "arch", position: { x: 690, y: 300 }, data: { label: "Grafana", sublabel: ":30300", color: "#22c55e", icon: "📊" } },
+  { id: "tempo", type: "arch", position: { x: 690, y: 405 }, data: { label: "Tempo", sublabel: "traces", color: "#22c55e", icon: "⏱️" } },
+  { id: "alertmanager", type: "arch", position: { x: 690, y: 510 }, data: { label: "Alertmanager", sublabel: ":30903", color: "#22c55e" } },
 ];
 
 // === K3S: Infra ===
 const infraNodes: Node[] = [
-  { id: "flux", type: "arch", position: { x: 670, y: 490 }, data: { label: "FluxCD", sublabel: "GitOps → GitLab", color: "#38bdf8", icon: "🔄" } },
-  { id: "harbor", type: "arch", position: { x: 670, y: 590 }, data: { label: "Harbor", sublabel: "registry :30500", color: "#3b82f6", icon: "🏗️" } },
+  { id: "flux", type: "arch", position: { x: 550, y: 610 }, data: { label: "FluxCD", sublabel: "GitOps → GitLab", color: "#38bdf8", icon: "🔄" } },
+  { id: "harbor", type: "arch", position: { x: 690, y: 610 }, data: { label: "Harbor", sublabel: "registry :30500", color: "#3b82f6", icon: "🏗️" } },
 ];
 
 const nodes: Node[] = [
@@ -206,8 +206,6 @@ const edges: Edge[] = [
   { id: "l2", source: "retriever", sourceHandle: "right-out", target: "tei", targetHandle: "left-in", type: "bezier", style: { stroke: "#ef4444", strokeDasharray: "4 4" } },
   // Host vault → file watcher (cross-zone)
   { id: "h1", source: "vault-files", sourceHandle: "right-out", target: "file-watcher", targetHandle: "left-in", type: "bezier", style: { stroke: "#a855f7" } },
-  // Host ollama ← retriever (cross-zone)
-  { id: "h2", source: "retriever", target: "ollama", type: "bezier", style: { stroke: "#64748b", strokeDasharray: "4 4" } },
   // Indexing pipeline (vertical)
   { id: "i2", source: "file-watcher", target: "kafka", animated: true, style: { stroke: "#00d4ff" } },
   { id: "i3", source: "kafka", target: "ner", style: { stroke: "#ec4899" } },
@@ -220,7 +218,7 @@ const edges: Edge[] = [
   { id: "o2", source: "grafana", target: "tempo", style: { stroke: "#22c55e" } },
   { id: "o3", source: "tempo", target: "alertmanager", style: { stroke: "#22c55e" } },
   // Infra
-  { id: "f1", source: "flux", target: "harbor", style: { stroke: "#3b82f6" } },
+  { id: "f1", source: "flux", sourceHandle: "right-out", target: "harbor", targetHandle: "left-in", style: { stroke: "#3b82f6" } },
 ];
 
 export default function ReactFlowArch() {
