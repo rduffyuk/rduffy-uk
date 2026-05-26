@@ -1,8 +1,9 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #000000;
-  --color-card: #0a0a0a;
+  --color-bg: #09090b;
+  --color-card: #0f0f13;
+  --color-card-hover: #16161d;
   --color-border: #1e293b;
   --color-border-hover: #334155;
   --color-accent: #a855f7;
@@ -13,8 +14,8 @@
   --color-infra: #3b82f6;
   --color-database: #f97316;
   --color-text: #e2e8f0;
-  --color-text-muted: #64748b;
-  --color-text-subtle: #94a3b8;
+  --color-text-muted: #94a3b8;
+  --color-text-subtle: #64748b;
 
   --font-sans: "Inter", -apple-system, sans-serif;
   --font-mono: "JetBrains Mono", monospace;
@@ -25,5 +26,51 @@
     background-color: var(--color-bg);
     color: var(--color-text);
     font-family: var(--font-sans);
+  }
+
+  ::selection {
+    background-color: rgba(168, 85, 247, 0.3);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  a {
+    transition: color 0.15s ease;
+  }
+}
+
+@layer components {
+  .gradient-text {
+    background: linear-gradient(135deg, #a855f7 0%, #00d4ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .card {
+    background-color: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+  }
+
+  .card:hover {
+    border-color: var(--color-border-hover);
+    background-color: var(--color-card-hover);
+  }
+
+  .glow-accent {
+    box-shadow: 0 0 80px rgba(168, 85, 247, 0.08), 0 0 160px rgba(0, 212, 255, 0.04);
+  }
+
+  .nav-glass {
+    background: rgba(9, 9, 11, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
   }
 }

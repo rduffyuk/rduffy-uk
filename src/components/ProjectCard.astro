@@ -9,18 +9,21 @@ interface Props {
 const { title, description, tags, url } = Astro.props;
 ---
 
-<div class="rounded-lg border border-[--color-border] bg-[--color-card] p-6 transition-colors hover:border-[--color-border-hover]">
+<div class="card group p-6">
   <h3 class="mb-2 text-lg font-semibold">
     {url ? (
-      <a href={url} class="text-[--color-accent] hover:underline">{title}</a>
+      <a href={url} class="text-[--color-text] transition-colors group-hover:text-[--color-accent]">
+        {title}
+        <svg class="ml-1 inline h-4 w-4 opacity-0 transition-all group-hover:opacity-100 group-hover:translate-x-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
     ) : (
-      title
+      <span class="text-[--color-text]">{title}</span>
     )}
   </h3>
-  <p class="mb-4 text-sm text-[--color-text-muted]">{description}</p>
+  <p class="mb-4 text-sm leading-relaxed text-[--color-text-muted]">{description}</p>
   <div class="flex flex-wrap gap-2">
     {tags.map((tag) => (
-      <span class="rounded bg-[--color-border] px-2 py-0.5 font-mono text-xs text-[--color-text-subtle]">
+      <span class="rounded-md border border-[--color-border] bg-white/[0.02] px-2.5 py-0.5 font-mono text-xs text-[--color-text-subtle]">
         {tag}
       </span>
     ))}

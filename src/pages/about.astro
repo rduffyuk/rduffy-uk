@@ -7,10 +7,17 @@ const { Content } = await render(entry);
 ---
 
 <BaseLayout title="About">
-  <article class="mx-auto max-w-3xl px-6 py-16">
-    <h1 class="mb-8 text-3xl font-bold">About</h1>
-    <div class="prose prose-invert max-w-none prose-p:text-[--color-text-muted] prose-p:leading-relaxed">
-      <Content />
+  <article class="mx-auto max-w-3xl px-6 py-20">
+    <div class="mb-10">
+      <p class="mb-2 font-mono text-xs tracking-[0.2em] uppercase text-[--color-accent-cyan]">About</p>
+      <h1 class="text-4xl font-extrabold">
+        <span class="gradient-text">Who I Am</span>
+      </h1>
+    </div>
+    <div class="card p-8 md:p-10">
+      <div class="prose prose-invert max-w-none prose-p:text-[--color-text-muted] prose-p:leading-relaxed prose-strong:text-[--color-text]">
+        <Content />
+      </div>
     </div>
   </article>
 </BaseLayout>

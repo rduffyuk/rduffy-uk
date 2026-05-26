@@ -14,22 +14,29 @@ const rendered = await Promise.all(
 ---
 
 <BaseLayout title="CV" description="Ryan Duffy — CV. SRE Specialist, AI Platform Builder.">
-  <article class="mx-auto max-w-3xl px-6 py-16">
-    <div class="mb-8 flex items-center justify-between">
-      <h1 class="text-3xl font-bold">CV</h1>
+  <article class="mx-auto max-w-3xl px-6 py-20">
+    <div class="mb-10 flex items-end justify-between">
+      <div>
+        <p class="mb-2 font-mono text-xs tracking-[0.2em] uppercase text-[--color-accent-cyan]">Curriculum Vitae</p>
+        <h1 class="text-4xl font-extrabold">
+          <span class="gradient-text">Ryan Duffy</span>
+        </h1>
+      </div>
       <button
         onclick="window.print()"
-        class="rounded border border-[--color-border] px-4 py-2 text-sm text-[--color-text-muted] transition-colors hover:border-[--color-accent] hover:text-[--color-accent] print:hidden"
+        class="rounded-lg border border-[--color-border] px-4 py-2 text-sm text-[--color-text-subtle] transition-all hover:border-[--color-accent] hover:text-[--color-accent] hover:bg-white/[0.02] print:hidden"
       >
         Print / PDF
       </button>
     </div>
     {rendered.map(({ title, Content }) => (
-      <section class="mb-8">
-        <h2 class="mb-4 border-b border-[--color-border] pb-2 text-xl font-semibold text-[--color-accent]">
+      <section class="card mb-6 p-6 md:p-8">
+        <h2 class="mb-4 flex items-center gap-3 text-lg font-semibold text-[--color-accent]">
+          <span class="h-px flex-1 bg-gradient-to-r from-[--color-accent]/30 to-transparent" aria-hidden="true"></span>
           {title}
+          <span class="h-px flex-1 bg-gradient-to-l from-[--color-accent]/30 to-transparent" aria-hidden="true"></span>
         </h2>
-        <div class="prose prose-invert max-w-none prose-h2:text-lg prose-h2:text-[--color-text] prose-strong:text-[--color-text] prose-p:text-[--color-text-muted]">
+        <div class="prose prose-invert max-w-none prose-h2:text-base prose-h2:text-[--color-text] prose-strong:text-[--color-text] prose-p:text-[--color-text-muted] prose-li:text-[--color-text-muted]">
           <Content />
         </div>
       </section>
@@ -39,10 +46,11 @@ const rendered = await Promise.all(
 
 <style is:global>
   @media print {
-    nav, footer, .print\:hidden { display: none !important; }
+    nav, footer, .print\:hidden, a[href="#main-content"] { display: none !important; }
     body { background: white !important; color: black !important; }
-    h1, h2, h3 { color: black !important; }
-    p, li { color: #333 !important; }
-    .border-b { border-color: #ccc !important; }
+    main { padding-top: 0 !important; }
+    h1, h2, h3 { color: black !important; -webkit-text-fill-color: black !important; background: none !important; }
+    p, li, strong { color: #333 !important; }
+    .card { border-color: #e5e7eb !important; background: white !important; }
   }
 </style>

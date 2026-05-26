@@ -4,23 +4,79 @@ import HeroStats from "@components/HeroStats.astro";
 ---
 
 <BaseLayout title="Home" description="Ryan Duffy — SRE, AI Orchestrator, Builder. Building Rootweaver with Claude Code.">
-  <section class="mx-auto max-w-4xl px-6 py-24 text-center">
-    <p class="mb-4 font-mono text-sm text-[--color-accent-cyan]">SRE · AI Orchestrator · Builder</p>
-    <h1 class="mb-4 text-4xl font-bold md:text-6xl">
-      Ryan <span class="text-[--color-accent]">Duffy</span>
-    </h1>
-    <p class="mx-auto max-w-2xl text-lg text-[--color-text-muted]">
-      Building AI infrastructure one conversation at a time.
-      Documenting the journey from context window overflow to self-documenting systems.
-    </p>
-    <HeroStats />
-    <div class="mt-12 flex flex-wrap justify-center gap-4">
-      <a href="/journey" class="rounded-lg bg-[--color-accent] px-6 py-3 font-semibold text-white transition-opacity hover:opacity-90">
-        Explore the Journey
-      </a>
-      <a href="/cv" class="rounded-lg border border-[--color-border] px-6 py-3 text-[--color-text-muted] transition-colors hover:border-[--color-accent] hover:text-[--color-accent]">
-        View CV
-      </a>
+  <!-- Hero with subtle radial glow -->
+  <section class="relative overflow-hidden">
+    <div class="pointer-events-none absolute inset-0" aria-hidden="true">
+      <div class="absolute left-1/2 top-1/4 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[--color-accent] opacity-[0.04] blur-[120px]"></div>
+      <div class="absolute right-1/4 top-1/2 h-[300px] w-[300px] rounded-full bg-[--color-accent-cyan] opacity-[0.03] blur-[100px]"></div>
+    </div>
+
+    <div class="relative mx-auto max-w-4xl px-6 pb-20 pt-28 text-center md:pt-36">
+      <p class="mb-6 font-mono text-xs tracking-[0.25em] uppercase text-[--color-accent-cyan]">
+        SRE · AI Orchestrator · Builder
+      </p>
+      <h1 class="mb-6 text-5xl font-extrabold leading-tight md:text-7xl">
+        <span class="gradient-text">Ryan Duffy</span>
+      </h1>
+      <p class="mx-auto max-w-xl text-lg leading-relaxed text-[--color-text-muted]">
+        Building AI infrastructure one conversation at a time.
+        <span class="text-[--color-text]">Documenting the journey</span> from context window overflow to self-documenting systems.
+      </p>
+
+      <div class="mt-10 flex flex-wrap justify-center gap-4">
+        <a href="/journey" class="group relative inline-flex items-center gap-2 overflow-hidden rounded-lg bg-[--color-accent] px-7 py-3.5 font-semibold text-white transition-all hover:shadow-[0_0_24px_rgba(168,85,247,0.4)]">
+          Explore the Journey
+          <svg class="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="/cv" class="inline-flex items-center gap-2 rounded-lg border border-[--color-border] px-7 py-3.5 font-medium text-[--color-text-muted] transition-all hover:border-[--color-accent] hover:text-[--color-accent] hover:bg-white/[0.02]">
+          View CV
+        </a>
+      </div>
+
+      <HeroStats />
+    </div>
+  </section>
+
+  <!-- What I build section -->
+  <section class="border-t border-[--color-border]">
+    <div class="mx-auto max-w-5xl px-6 py-20">
+      <h2 class="mb-12 text-center text-sm font-medium tracking-[0.2em] uppercase text-[--color-text-subtle]">
+        What I Build
+      </h2>
+      <div class="grid gap-6 md:grid-cols-3">
+        <div class="card p-6">
+          <div class="mb-3 text-2xl">🔮</div>
+          <h3 class="mb-2 font-semibold text-[--color-accent]">Rootweaver Platform</h3>
+          <p class="text-sm leading-relaxed text-[--color-text-muted]">
+            AI-powered knowledge management with multi-agent RAG search, 148K+ indexed docs, and a full K3s observability stack.
+          </p>
+        </div>
+        <div class="card p-6">
+          <div class="mb-3 text-2xl">🛠️</div>
+          <h3 class="mb-2 font-semibold text-[--color-accent-cyan]">MCP Tool Suite</h3>
+          <p class="text-sm leading-relaxed text-[--color-text-muted]">
+            29 Model Context Protocol tools bridging Claude Code to semantic search, knowledge graphs, and workflow automation.
+          </p>
+        </div>
+        <div class="card p-6">
+          <div class="mb-3 text-2xl">✍️</div>
+          <h3 class="mb-2 font-semibold text-[--color-workflow]">Building in Public</h3>
+          <p class="text-sm leading-relaxed text-[--color-text-muted]">
+            Documenting every architectural decision, every migration, every lesson learned — from day one.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="border-t border-[--color-border]">
+    <div class="mx-auto max-w-3xl px-6 py-20 text-center">
+      <p class="font-mono text-sm text-[--color-text-subtle]">
+        Every line of code on this site was written through
+        <span class="text-[--color-accent]">human intent</span> shaped by
+        <span class="text-[--color-accent-cyan]">AI execution</span>.
+      </p>
     </div>
   </section>
 </BaseLayout>

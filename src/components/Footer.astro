@@ -2,13 +2,17 @@
 const year = new Date().getFullYear();
 ---
 
-<footer class="border-t border-[--color-border] px-6 py-8">
-  <div class="mx-auto flex max-w-6xl flex-col items-center gap-4 text-sm text-[--color-text-muted] md:flex-row md:justify-between">
-    <p>&copy; {year} Ryan Duffy. Built with Astro & Claude Code.</p>
-    <div class="flex gap-4">
-      <a href="https://blog.rduffy.uk" class="hover:text-[--color-accent]" target="_blank" rel="noopener noreferrer">Blog</a>
-      <a href="https://gitlab.com/ryanduffy.uk" class="hover:text-[--color-accent]" target="_blank" rel="noopener noreferrer">GitLab</a>
-      <a href="https://linkedin.com/in/rduffyuk" class="hover:text-[--color-accent]" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+<footer class="border-t border-[--color-border] px-6 py-10">
+  <div class="mx-auto flex max-w-6xl flex-col items-center gap-4 md:flex-row md:justify-between">
+    <p class="text-sm text-[--color-text-subtle]">
+      &copy; {year} <span class="text-[--color-text-muted]">Ryan Duffy</span>. Built with
+      <span class="font-mono text-[--color-accent]">Astro</span> &
+      <span class="font-mono text-[--color-accent-cyan]">Claude Code</span>.
+    </p>
+    <div class="flex gap-5">
+      <a href="https://blog.rduffy.uk" class="text-sm text-[--color-text-subtle] transition-colors hover:text-[--color-accent]" target="_blank" rel="noopener noreferrer">Blog</a>
+      <a href="https://gitlab.com/ryanduffy.uk" class="text-sm text-[--color-text-subtle] transition-colors hover:text-[--color-accent]" target="_blank" rel="noopener noreferrer">GitLab</a>
+      <a href="https://linkedin.com/in/rduffyuk" class="text-sm text-[--color-text-subtle] transition-colors hover:text-[--color-accent]" target="_blank" rel="noopener noreferrer">LinkedIn</a>
     </div>
   </div>
 </footer>

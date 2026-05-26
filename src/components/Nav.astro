@@ -1,6 +1,5 @@
 ---
 const navLinks = [
-  { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   { label: "CV", href: "/cv" },
   { label: "Rootweaver", href: "/rootweaver" },
@@ -17,32 +16,39 @@ const externalLinks = [
 const currentPath = Astro.url.pathname;
 ---
 
-<nav class="sticky top-0 z-50 border-b border-[--color-border] bg-[--color-bg]/90 backdrop-blur-md">
+<a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded focus:bg-[--color-accent] focus:px-4 focus:py-2 focus:text-white">
+  Skip to content
+</a>
+
+<nav aria-label="Main navigation" class="nav-glass sticky top-0 z-50 border-b border-[--color-border]">
   <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
-    <a href="/" class="font-mono text-sm font-bold text-[--color-accent]">
-      rduffy.uk
+    <a href="/" class="font-mono text-sm font-bold tracking-tight text-[--color-accent] transition-opacity hover:opacity-80">
+      rduffy<span class="text-[--color-accent-cyan]">.uk</span>
     </a>
 
-    <div class="hidden items-center gap-6 md:flex">
+    <div class="hidden items-center gap-1 md:flex">
       {navLinks.map((link) => (
         <a
           href={link.href}
+          aria-current={currentPath === link.href ? "page" : undefined}
           class:list={[
-            "text-sm transition-colors hover:text-[--color-accent]",
-            currentPath === link.href ? "text-[--color-accent]" : "text-[--color-text-muted]",
+            "rounded-md px-3 py-1.5 text-sm transition-colors hover:bg-white/5 hover:text-[--color-accent]",
+            currentPath === link.href
+              ? "text-[--color-accent] bg-white/5"
+              : "text-[--color-text-muted]",
           ]}
         >
           {link.label}
         </a>
       ))}
-      <span class="mx-2 h-4 w-px bg-[--color-border]" />
+      <span class="mx-2 h-4 w-px bg-[--color-border]" aria-hidden="true" />
       {externalLinks.map((link) => (
         <a
           href={link.href}
           target="_blank"
           rel="noopener noreferrer"
-          class="text-sm text-[--color-text-muted] transition-colors hover:text-[--color-accent-cyan]"
-          title={link.label}
+          aria-label={link.label}
+          class="rounded-md px-2 py-1.5 text-sm text-[--color-text-subtle] transition-colors hover:bg-white/5 hover:text-[--color-accent-cyan]"
         >
           {link.icon}
         </a>
@@ -51,33 +57,37 @@ const currentPath = Astro.url.pathname;
 
     <button
       id="menu-toggle"
-      class="text-[--color-text-muted] md:hidden"
+      class="rounded-md p-1.5 text-[--color-text-muted] transition-colors hover:bg-white/5 hover:text-[--color-text] md:hidden"
       aria-label="Toggle menu"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
     >
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
         <path d="M3 12h18M3 6h18M3 18h18" />
       </svg>
     </button>
   </div>
 
-  <div id="mobile-menu" class="hidden border-t border-[--color-border] px-6 pb-4 md:hidden">
+  <div id="mobile-menu" class="hidden border-t border-[--color-border] bg-[--color-card] px-6 pb-4 md:hidden">
     {navLinks.map((link) => (
       <a
         href={link.href}
+        aria-current={currentPath === link.href ? "page" : undefined}
         class:list={[
-          "block py-2 text-sm transition-colors hover:text-[--color-accent]",
+          "block rounded-md px-3 py-2 text-sm transition-colors hover:bg-white/5 hover:text-[--color-accent]",
           currentPath === link.href ? "text-[--color-accent]" : "text-[--color-text-muted]",
         ]}
       >
         {link.label}
       </a>
     ))}
-    <div class="mt-2 flex gap-4 border-t border-[--color-border] pt-2">
+    <div class="mt-2 flex gap-4 border-t border-[--color-border] pt-3">
       {externalLinks.map((link) => (
         <a
           href={link.href}
           target="_blank"
           rel="noopener noreferrer"
+          aria-label={link.label}
           class="text-sm text-[--color-text-muted] hover:text-[--color-accent-cyan]"
         >
           {link.icon} {link.label}
@@ -90,5 +100,8 @@ const currentPath = Astro.url.pathname;
 <script>
   const toggle = document.getElementById("menu-toggle");
   const menu = document.getElementById("mobile-menu");
-  toggle?.addEventListener("click", () => menu?.classList.toggle("hidden"));
+  toggle?.addEventListener("click", () => {
+    const expanded = menu?.classList.toggle("hidden");
+    toggle?.setAttribute("aria-expanded", String(!expanded));
+  });
 </script>
