@@ -1,11 +1,9 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
-import JourneyMap from "@components/journey/JourneyMap";
+import JourneyScrollytelling from "@components/journey/JourneyScrollytelling";
 import journeyData from "@data/journey-data.json";
 ---
 
 <BaseLayout title="Journey" description="Watch Rootweaver grow — an interactive 3D map of the platform's evolution.">
-  <div class="h-[calc(100vh-57px)]">
-    <JourneyMap client:load data={journeyData} />
-  </div>
+  <JourneyScrollytelling client:load data={journeyData} />
 </BaseLayout>

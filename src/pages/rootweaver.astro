@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
 import HeroStats from "@components/HeroStats.astro";
+import ReactFlowArch from "@components/diagrams/ReactFlowArch";
 ---
 
 <BaseLayout title="Rootweaver" description="The Rootweaver Platform — AI-powered knowledge management built with Claude Code.">
@@ -25,43 +26,16 @@ import HeroStats from "@components/HeroStats.astro";
     </div>
   </section>
 
-  <!-- Architecture diagram -->
+  <!-- Architecture diagram — React Flow -->
   <section class="border-t border-[--color-border]">
     <div class="mx-auto max-w-4xl px-6 py-16">
-      <h2 class="mb-8 text-center font-mono text-xs tracking-[0.2em] uppercase text-[--color-text-subtle]">
+      <h2 class="mb-2 text-center font-mono text-xs tracking-[0.2em] uppercase text-[--color-text-subtle]">
         Architecture
       </h2>
-      <div class="card overflow-hidden p-6 md:p-8">
-        <pre class="overflow-x-auto font-mono text-xs leading-6 md:text-sm md:leading-7"><code><span class="text-[--color-text-subtle]">User / Claude Code</span>
-      <span class="text-[--color-text-subtle]">│</span>
-      <span class="text-[--color-text-subtle]">▼</span> <span class="text-[--color-text-subtle]">MCP SSE</span>
-<span class="text-[--color-infra]">┌─────────────────────────┐</span>
-<span class="text-[--color-infra]">│</span>  <span class="text-[--color-infra] font-bold">MCP Bridge</span>  <span class="text-[--color-text-subtle]">:30002</span>   <span class="text-[--color-infra]">│</span>  <span class="text-[--color-text-subtle]">29 tools · SSE transport</span>
-<span class="text-[--color-infra]">└────────────┬────────────┘</span>
-             <span class="text-[--color-text-subtle]">│</span> <span class="text-[--color-text-subtle]">HTTP</span>
-<span class="text-[--color-accent]">┌────────────▼────────────┐</span>
-<span class="text-[--color-accent]">│</span>  <span class="text-[--color-accent] font-bold">RAG Gateway</span>  <span class="text-[--color-text-subtle]">:30808</span>  <span class="text-[--color-accent]">│</span>  <span class="text-[--color-text-subtle]">FastAPI · Agent routing</span>
-<span class="text-[--color-accent]">└──┬──────────┬───────────┘</span>
-   <span class="text-[--color-text-subtle]">│</span>          <span class="text-[--color-text-subtle]">│</span>
-   <span class="text-[--color-text-subtle]">▼</span>          <span class="text-[--color-text-subtle]">▼</span>
-<span class="text-[--color-success]">┌──────┐</span> <span class="text-[--color-workflow]">┌──────────┐</span> <span class="text-[--color-error]">┌──────────┐</span>
-<span class="text-[--color-success]">│</span><span class="text-[--color-success] font-bold">Fast</span><span class="text-[--color-success]">  │</span> <span class="text-[--color-workflow]">│</span><span class="text-[--color-workflow] font-bold">Deep      </span><span class="text-[--color-workflow]">│</span> <span class="text-[--color-error]">│</span><span class="text-[--color-error] font-bold">Oracle    </span><span class="text-[--color-error]">│</span>
-<span class="text-[--color-success]">│</span><span class="text-[--color-text-subtle]">&lt;1s</span><span class="text-[--color-success]">   │</span> <span class="text-[--color-workflow]">│</span><span class="text-[--color-text-subtle]">~10s</span><span class="text-[--color-workflow]">      │</span> <span class="text-[--color-error]">│</span><span class="text-[--color-text-subtle]">15-30s</span><span class="text-[--color-error]">    │</span>
-<span class="text-[--color-success]">└──┬───┘</span> <span class="text-[--color-workflow]">└────┬─────┘</span> <span class="text-[--color-error]">└─────┬────┘</span>
-   <span class="text-[--color-text-subtle]">│</span>         <span class="text-[--color-text-subtle]">│</span>           <span class="text-[--color-text-subtle]">│</span>
-   <span class="text-[--color-text-subtle]">└─────────┼───────────┘</span>
-             <span class="text-[--color-text-subtle]">▼</span>
-<span class="text-[--color-database]">┌────────────────────────────────┐</span>
-<span class="text-[--color-database]">│</span>  <span class="text-[--color-database] font-bold">RAG Retriever</span>  <span class="text-[--color-text-subtle]">:8001</span>         <span class="text-[--color-database]">│</span>
-<span class="text-[--color-database]">│</span>  <span class="text-[--color-text-subtle]">Vector + BM25 + Rerank</span>        <span class="text-[--color-database]">│</span>
-<span class="text-[--color-database]">└──┬──────────────┬─────────────┘</span>
-   <span class="text-[--color-text-subtle]">│</span>              <span class="text-[--color-text-subtle]">│</span>
-   <span class="text-[--color-text-subtle]">▼</span>              <span class="text-[--color-text-subtle]">▼</span>
-<span class="text-[--color-database]">┌──────────┐</span>  <span class="text-[--color-database]">┌──────────┐</span>
-<span class="text-[--color-database]">│</span><span class="text-[--color-database] font-bold"> Qdrant</span><span class="text-[--color-database]">   │</span>  <span class="text-[--color-database]">│</span><span class="text-[--color-database] font-bold"> FalkorDB</span><span class="text-[--color-database]"> │</span>
-<span class="text-[--color-database]">│</span><span class="text-[--color-text-subtle]"> 148K docs</span><span class="text-[--color-database]">│</span>  <span class="text-[--color-database]">│</span><span class="text-[--color-text-subtle]"> 7.7K nodes</span><span class="text-[--color-database]">│</span>
-<span class="text-[--color-database]">└──────────┘</span>  <span class="text-[--color-database]">└──────────┘</span></code></pre>
-      </div>
+      <p class="mb-8 text-center text-sm text-[--color-text-subtle]">
+        Zoom and pan to explore. Animated edges show data flow.
+      </p>
+      <ReactFlowArch client:load />
     </div>
   </section>
 

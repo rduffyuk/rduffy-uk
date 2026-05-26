@@ -69,6 +69,57 @@ import HeroStats from "@components/HeroStats.astro";
     </div>
   </section>
 
+  <!-- Architecture teaser -->
+  <section class="border-t border-[--color-border]">
+    <div class="mx-auto max-w-3xl px-6 py-20">
+      <h2 class="mb-8 text-center font-mono text-xs tracking-[0.2em] uppercase text-[--color-text-subtle]">
+        How It Works
+      </h2>
+      <div class="card overflow-hidden p-6 md:p-8">
+        <svg viewBox="0 0 600 680" class="mx-auto w-full max-w-xl" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Rootweaver platform architecture diagram">
+          <defs>
+            <marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8" />
+            </marker>
+            <filter id="glow-purple"><feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#a855f7" flood-opacity="0.3"/></filter>
+            <filter id="glow-blue"><feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#3b82f6" flood-opacity="0.3"/></filter>
+            <filter id="glow-orange"><feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#f97316" flood-opacity="0.3"/></filter>
+          </defs>
+          <g stroke="#94a3b8" stroke-width="1.5" fill="none" marker-end="url(#arrow)" opacity="0.5">
+            <line x1="300" y1="60" x2="300" y2="110" />
+            <line x1="300" y1="180" x2="300" y2="230" />
+            <line x1="300" y1="300" x2="140" y2="360" />
+            <line x1="300" y1="300" x2="300" y2="360" />
+            <line x1="300" y1="300" x2="460" y2="360" />
+            <line x1="140" y1="430" x2="300" y2="470" />
+            <line x1="300" y1="430" x2="300" y2="470" />
+            <line x1="460" y1="430" x2="300" y2="470" />
+            <line x1="300" y1="540" x2="200" y2="590" />
+            <line x1="300" y1="540" x2="400" y2="590" />
+          </g>
+          <circle r="3" fill="#a855f7"><animateMotion dur="2s" repeatCount="indefinite" path="M300,60 L300,110" /></circle>
+          <circle r="3" fill="#a855f7"><animateMotion dur="2s" repeatCount="indefinite" path="M300,180 L300,230" begin="0.3s" /></circle>
+          <circle r="3" fill="#f97316"><animateMotion dur="2s" repeatCount="indefinite" path="M300,540 L200,590" begin="0.6s" /></circle>
+          <g><rect x="220" y="10" width="160" height="50" rx="10" fill="#0f0f13" stroke="#f1f5f9" stroke-width="1" opacity="0.8" /><text x="300" y="32" text-anchor="middle" fill="#f1f5f9" font-size="11" font-weight="600">💻 Claude Code</text><text x="300" y="48" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="monospace">User / AI</text></g>
+          <g filter="url(#glow-blue)"><rect x="210" y="110" width="180" height="70" rx="10" fill="#0f0f13" stroke="#3b82f6" stroke-width="1.5" /><text x="300" y="140" text-anchor="middle" fill="#3b82f6" font-size="12" font-weight="600">🔌 MCP Bridge</text><text x="300" y="160" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="monospace">:30002 · 29 tools</text></g>
+          <g filter="url(#glow-purple)"><rect x="210" y="230" width="180" height="70" rx="10" fill="#0f0f13" stroke="#a855f7" stroke-width="1.5" /><text x="300" y="260" text-anchor="middle" fill="#a855f7" font-size="12" font-weight="600">🚪 RAG Gateway</text><text x="300" y="280" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="monospace">:30808 · Agent Routing</text></g>
+          <g><rect x="70" y="360" width="140" height="70" rx="10" fill="#0f0f13" stroke="#22c55e" stroke-width="1.5" /><text x="140" y="390" text-anchor="middle" fill="#22c55e" font-size="11" font-weight="600">FastSearch</text><text x="140" y="410" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="monospace">&lt;1s</text></g>
+          <g><rect x="230" y="360" width="140" height="70" rx="10" fill="#0f0f13" stroke="#ec4899" stroke-width="1.5" /><text x="300" y="390" text-anchor="middle" fill="#ec4899" font-size="11" font-weight="600">DeepResearch</text><text x="300" y="410" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="monospace">~10s</text></g>
+          <g><rect x="390" y="360" width="140" height="70" rx="10" fill="#0f0f13" stroke="#ef4444" stroke-width="1.5" /><text x="460" y="390" text-anchor="middle" fill="#ef4444" font-size="11" font-weight="600">Oracle</text><text x="460" y="410" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="monospace">15-30s</text></g>
+          <g filter="url(#glow-orange)"><rect x="210" y="470" width="180" height="70" rx="10" fill="#0f0f13" stroke="#f97316" stroke-width="1.5" /><text x="300" y="500" text-anchor="middle" fill="#f97316" font-size="12" font-weight="600">🔍 Retriever</text><text x="300" y="520" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="monospace">Vector + BM25 + Rerank</text></g>
+          <g><rect x="110" y="590" width="160" height="70" rx="10" fill="#0f0f13" stroke="#f97316" stroke-width="1.5" /><text x="190" y="618" text-anchor="middle" fill="#f97316" font-size="11" font-weight="600">🔮 Qdrant</text><text x="190" y="640" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="monospace">148K docs</text></g>
+          <g><rect x="330" y="590" width="160" height="70" rx="10" fill="#0f0f13" stroke="#f97316" stroke-width="1.5" /><text x="410" y="618" text-anchor="middle" fill="#f97316" font-size="11" font-weight="600">🕸️ FalkorDB</text><text x="410" y="640" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="monospace">7.7K nodes</text></g>
+        </svg>
+      </div>
+      <div class="mt-6 text-center">
+        <a href="/rootweaver" class="group inline-flex items-center gap-2 text-sm text-[--color-accent] hover:underline">
+          Explore the full architecture
+          <svg class="h-3 w-3 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
   <!-- CTA -->
   <section class="border-t border-[--color-border]">
     <div class="mx-auto max-w-3xl px-6 py-20 text-center">
