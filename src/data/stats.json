@@ -1,9 +1,13 @@
 {
   "updatedAt": "2026-05-26",
-  "qdrantDocs": 148000,
+  "qdrantChunks": 148000,
+  "vaultFiles": 1917,
   "graphNodes": 7768,
   "mcpTools": 29,
   "adrs": 43,
+  "kafkaTopics": 10,
+  "k3sNamespaces": 29,
+  "k3sPods": 150,
   "uptimeDays": 258,
   "blogEpisodes": 15
 }

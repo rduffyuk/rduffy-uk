@@ -2,10 +2,10 @@
 import stats from "@data/stats.json";
 
 const items = [
-  { label: "Indexed Docs", value: `${(stats.qdrantDocs / 1000).toFixed(0)}K` },
-  { label: "Graph Nodes", value: stats.graphNodes.toLocaleString() },
+  { label: "Vector Chunks", value: `${(stats.qdrantChunks / 1000).toFixed(0)}K` },
+  { label: "K3s Pods", value: `${stats.k3sPods}+` },
   { label: "MCP Tools", value: String(stats.mcpTools) },
-  { label: "ADRs", value: String(stats.adrs) },
+  { label: "Graph Nodes", value: stats.graphNodes.toLocaleString() },
 ];
 ---
 
