@@ -24,6 +24,8 @@
 @layer base {
   body {
     background-color: var(--color-bg);
+    background-image: radial-gradient(rgba(168, 85, 247, 0.03) 1px, transparent 1px);
+    background-size: 24px 24px;
     color: var(--color-text);
     font-family: var(--font-sans);
   }
@@ -42,6 +44,18 @@
   a {
     transition: color 0.15s ease;
   }
+
+  .prose a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-decoration-color: rgba(168, 85, 247, 0.3);
+    text-underline-offset: 3px;
+    transition: text-decoration-color 0.15s ease;
+  }
+
+  .prose a:hover {
+    text-decoration-color: var(--color-accent);
+  }
 }
 
 @layer components {
@@ -52,16 +66,24 @@
     background-clip: text;
   }
 
+  .gradient-number {
+    background: linear-gradient(135deg, #a855f7 0%, #c084fc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
   .card {
     background-color: var(--color-card);
     border: 1px solid var(--color-border);
     border-radius: 12px;
-    transition: border-color 0.2s ease, background-color 0.2s ease;
+    transition: border-color 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
   }
 
   .card:hover {
-    border-color: var(--color-border-hover);
+    border-color: rgba(168, 85, 247, 0.3);
     background-color: var(--color-card-hover);
+    box-shadow: 0 0 24px rgba(168, 85, 247, 0.06);
   }
 
   .glow-accent {
@@ -69,8 +91,25 @@
   }
 
   .nav-glass {
-    background: rgba(9, 9, 11, 0.85);
+    background: rgba(9, 9, 11, 0.8);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
+    border-bottom-color: rgba(30, 41, 59, 0.6);
+  }
+
+  .accent-line {
+    position: relative;
+    padding-left: 16px;
+  }
+
+  .accent-line::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    border-radius: 3px;
+    background: linear-gradient(180deg, var(--color-accent), var(--color-accent-cyan));
   }
 }

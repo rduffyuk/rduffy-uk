@@ -32,13 +32,16 @@ const currentPath = Astro.url.pathname;
           href={link.href}
           aria-current={currentPath === link.href ? "page" : undefined}
           class:list={[
-            "rounded-md px-3 py-1.5 text-sm transition-colors hover:bg-white/5 hover:text-[--color-accent]",
+            "relative rounded-md px-3 py-1.5 text-sm transition-all hover:bg-white/5 hover:text-[--color-accent]",
             currentPath === link.href
-              ? "text-[--color-accent] bg-white/5"
-              : "text-[--color-text-muted]",
+              ? "text-[--color-accent] bg-[--color-accent]/[0.08] font-medium"
+              : "text-[--color-text-subtle]",
           ]}
         >
           {link.label}
+          {currentPath === link.href && (
+            <span class="absolute bottom-0 left-1/2 h-0.5 w-4 -translate-x-1/2 rounded-full bg-[--color-accent]" aria-hidden="true" />
+          )}
         </a>
       ))}
       <span class="mx-2 h-4 w-px bg-[--color-border]" aria-hidden="true" />

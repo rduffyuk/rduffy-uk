@@ -4,6 +4,18 @@ import { getEntry, render } from "astro:content";
 
 const entry = await getEntry("pages", "about");
 const { Content } = await render(entry);
+
+const roles = [
+  { label: "SRE Specialist", icon: "⚙️", color: "--color-success" },
+  { label: "AI Orchestrator", icon: "🧠", color: "--color-accent" },
+  { label: "Platform Builder", icon: "🔮", color: "--color-accent-cyan" },
+];
+
+const principles = [
+  { title: "Direct, Don't Type", description: "I architect and orchestrate. Claude Code is my hands on the keyboard." },
+  { title: "Ship Daily", description: "Rootweaver grows every day. Organic, compounding progress." },
+  { title: "Document Everything", description: "43 ADRs and counting. If it's not written down, it didn't happen." },
+];
 ---
 
 <BaseLayout title="About">
@@ -14,10 +26,34 @@ const { Content } = await render(entry);
         <span class="gradient-text">Who I Am</span>
       </h1>
     </div>
+
+    <!-- Role badges -->
+    <div class="mb-8 flex flex-wrap gap-3">
+      {roles.map((role) => (
+        <span class="card inline-flex items-center gap-2 px-4 py-2 text-sm font-medium">
+          <span>{role.icon}</span>
+          <span style={`color: var(${role.color})`}>{role.label}</span>
+        </span>
+      ))}
+    </div>
+
+    <!-- Main content with accent line -->
     <div class="card p-8 md:p-10">
-      <div class="prose prose-invert max-w-none prose-p:text-[--color-text-muted] prose-p:leading-relaxed prose-strong:text-[--color-text]">
-        <Content />
+      <div class="accent-line">
+        <div class="prose prose-invert max-w-none prose-p:text-[--color-text-muted] prose-p:leading-relaxed prose-strong:text-[--color-text]">
+          <Content />
+        </div>
       </div>
+    </div>
+
+    <!-- Principles -->
+    <div class="mt-8 grid gap-4 md:grid-cols-3">
+      {principles.map((p) => (
+        <div class="card p-5">
+          <h3 class="mb-2 text-sm font-semibold text-[--color-accent]">{p.title}</h3>
+          <p class="text-sm leading-relaxed text-[--color-text-muted]">{p.description}</p>
+        </div>
+      ))}
     </div>
   </article>
 </BaseLayout>

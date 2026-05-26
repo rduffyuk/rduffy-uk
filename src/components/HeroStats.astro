@@ -2,20 +2,21 @@
 import stats from "@data/stats.json";
 
 const items = [
-  { label: "Indexed Docs", value: `${(stats.qdrantDocs / 1000).toFixed(0)}K`, color: "text-[--color-accent]" },
-  { label: "Graph Nodes", value: stats.graphNodes.toLocaleString(), color: "text-[--color-accent-cyan]" },
-  { label: "MCP Tools", value: stats.mcpTools, color: "text-[--color-infra]" },
-  { label: "ADRs", value: stats.adrs, color: "text-[--color-database]" },
+  { label: "Indexed Docs", value: `${(stats.qdrantDocs / 1000).toFixed(0)}K` },
+  { label: "Graph Nodes", value: stats.graphNodes.toLocaleString() },
+  { label: "MCP Tools", value: String(stats.mcpTools) },
+  { label: "ADRs", value: String(stats.adrs) },
 ];
 ---
 
 <div class="mt-14 grid grid-cols-2 gap-3 md:grid-cols-4">
   {items.map((item) => (
-    <div class="card glow-accent p-4 text-center">
-      <div class:list={["font-mono text-2xl font-bold", item.color]}>
+    <div class="card group p-5 text-center">
+      <div class="mb-1 h-0.5 w-6 mx-auto rounded-full bg-gradient-to-r from-[--color-accent] to-[--color-accent-cyan] opacity-40 transition-opacity group-hover:opacity-100"></div>
+      <div class="gradient-number mt-3 font-mono text-3xl font-extrabold">
         {item.value}
       </div>
-      <div class="mt-1 text-xs text-[--color-text-subtle]">{item.label}</div>
+      <div class="mt-2 font-mono text-[10px] tracking-[0.15em] uppercase text-[--color-text-subtle]">{item.label}</div>
     </div>
   ))}
 </div>
