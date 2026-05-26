@@ -1,0 +1,21 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import JourneyMap from "@components/journey/JourneyMap";
+import journeyData from "@data/journey-data.json";
+---
+
+<BaseLayout title="Journey" description="Watch Rootweaver grow — an interactive 3D map of the platform's evolution.">
+  <div class="flex h-[calc(100vh-57px)] flex-col">
+    <div class="border-b border-[--color-border] px-6 py-4">
+      <h1 class="text-xl font-bold">
+        The <span class="text-[--color-accent]">Rootweaver</span> Journey
+      </h1>
+      <p class="text-sm text-[--color-text-muted]">
+        Drag the timeline to watch the platform grow. Click nodes for details. Orbit with mouse.
+      </p>
+    </div>
+    <div class="flex-1">
+      <JourneyMap client:load data={journeyData} />
+    </div>
+  </div>
+</BaseLayout>
