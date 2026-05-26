@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 import dagre from "@dagrejs/dagre";
 import {
   ReactFlow,
@@ -15,12 +15,25 @@ import "@xyflow/react/dist/style.css";
 const NODE_W = 155;
 const NODE_H = 62;
 
+function useIsDark() {
+  const [dark, setDark] = useState(true);
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    setDark(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setDark(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+  return dark;
+}
+
 function ArchNode({ data }: { data: { label: string; sublabel?: string; color: string; icon?: string } }) {
+  const dark = useIsDark();
   return (
     <div style={{
-      background: "#0f0f13", border: `1px solid ${data.color}44`, borderTop: `3px solid ${data.color}`,
+      background: dark ? "#0f0f13" : "#ffffff", border: `1px solid ${data.color}44`, borderTop: `3px solid ${data.color}`,
       borderRadius: 10, padding: "8px 12px", width: NODE_W, textAlign: "center",
-      boxShadow: `0 0 16px ${data.color}12`,
+      boxShadow: `0 0 16px ${data.color}${dark ? "12" : "20"}`,
     }}>
       <Handle type="target" position={Position.Top} style={{ background: data.color, width: 5, height: 5 }} />
       {data.icon && <div style={{ fontSize: 15, marginBottom: 2 }}>{data.icon}</div>}
@@ -34,9 +47,10 @@ function ArchNode({ data }: { data: { label: string; sublabel?: string; color: s
 }
 
 function KafkaBus({ data }: { data: { label: string; topics: string[]; color: string } }) {
+  const dark = useIsDark();
   return (
     <div style={{
-      background: "#0f0f13", border: `2px solid ${data.color}66`, borderRadius: 12,
+      background: dark ? "#0f0f13" : "#ffffff", border: `2px solid ${data.color}66`, borderRadius: 12,
       padding: "10px 20px", minWidth: 280, textAlign: "center",
     }}>
       <Handle type="target" position={Position.Top} style={{ background: data.color, width: 5, height: 5 }} />
@@ -142,27 +156,28 @@ const indexEdges: Edge[] = [
 
 function DiagramPanel({ nodes, edges, title, accent, height }: { nodes: Node[]; edges: Edge[]; title: string; accent: string; height: number }) {
   const layouted = useMemo(() => layoutDagre(nodes, edges), []);
+  const dark = useIsDark();
   return (
     <div style={{ marginBottom: 24 }}>
       <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
         <div style={{ width: 20, height: 3, background: accent, borderRadius: 2 }} />
         <span style={{ fontSize: 12, fontWeight: 600, color: accent, fontFamily: "JetBrains Mono, monospace", letterSpacing: "0.1em", textTransform: "uppercase" }}>{title}</span>
       </div>
-      <div style={{ width: "100%", height, borderRadius: 12, overflow: "hidden", border: "1px solid #1e293b" }}>
+      <div style={{ width: "100%", height, borderRadius: 12, overflow: "hidden", border: `1px solid ${dark ? "#1e293b" : "#e2e8f0"}` }}>
         <ReactFlow
           nodes={layouted}
           edges={edges}
           nodeTypes={nodeTypes}
           fitView
           fitViewOptions={{ padding: 0.15 }}
-          colorMode="dark"
+          colorMode={dark ? "dark" : "light"}
           proOptions={{ hideAttribution: true }}
           defaultEdgeOptions={{ type: "bezier" }}
           nodesDraggable={false}
           nodesConnectable={false}
         >
-          <Background color="#1e293b" gap={24} size={1} />
-          <Controls showInteractive={false} style={{ background: "#0f0f13", border: "1px solid #1e293b", borderRadius: 8 }} />
+          <Background color={dark ? "#1e293b" : "#e2e8f0"} gap={24} size={1} />
+          <Controls showInteractive={false} style={{ background: dark ? "#0f0f13" : "#fff", border: `1px solid ${dark ? "#1e293b" : "#e2e8f0"}`, borderRadius: 8 }} />
         </ReactFlow>
       </div>
     </div>
