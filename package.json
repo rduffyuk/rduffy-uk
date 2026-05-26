@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@astrojs/react": "^5.0.5",
+    "@dagrejs/dagre": "^3.0.0",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.6.1",
     "@tailwindcss/vite": "^4.3.0",
@@ -26,6 +27,7 @@
     "three": "^0.184.0"
   },
   "devDependencies": {
+    "@types/dagre": "^0.7.54",
     "@types/three": "^0.184.1"
   }
 }
