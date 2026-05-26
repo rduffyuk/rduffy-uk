@@ -1,4 +1,6 @@
 ---
+import ThemeToggle from "@components/ThemeToggle.astro";
+
 const navLinks = [
   { label: "About", href: "/about" },
   { label: "CV", href: "/cv" },
@@ -56,20 +58,23 @@ const currentPath = Astro.url.pathname;
           {link.icon}
         </a>
       ))}
+      <ThemeToggle />
     </div>
 
-    <button
-      id="menu-toggle"
-      class="rounded-md p-1.5 text-[--color-text-muted] transition-colors hover:bg-white/5 hover:text-[--color-text] md:hidden"
-      aria-label="Toggle menu"
-      aria-expanded="false"
-      aria-controls="mobile-menu"
-    >
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-        <path d="M3 12h18M3 6h18M3 18h18" />
-      </svg>
-    </button>
-  </div>
+    <div class="flex items-center gap-2 md:hidden">
+      <ThemeToggle />
+      <button
+        id="menu-toggle"
+        class="rounded-md p-1.5 text-[--color-text-muted] transition-colors hover:bg-[--color-border]/30 hover:text-[--color-text]"
+        aria-label="Toggle menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M3 12h18M3 6h18M3 18h18" />
+        </svg>
+      </button>
+    </div>
 
   <div id="mobile-menu" class="hidden border-t border-[--color-border] bg-[--color-card] px-6 pb-4 md:hidden">
     {navLinks.map((link) => (

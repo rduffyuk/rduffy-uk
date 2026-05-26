@@ -31,6 +31,12 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       rel="stylesheet"
     />
     <title>{title} | rduffy.uk</title>
+    <script is:inline>
+      (function() {
+        var t = localStorage.getItem("rduffy-theme");
+        if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+      })();
+    </script>
   </head>
   <body class="min-h-screen">
     <Nav />

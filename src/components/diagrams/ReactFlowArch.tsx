@@ -18,11 +18,18 @@ const NODE_H = 62;
 function useIsDark() {
   const [dark, setDark] = useState(true);
   useEffect(() => {
+    function check() {
+      const attr = document.documentElement.getAttribute("data-theme");
+      if (attr === "light") return setDark(false);
+      if (attr === "dark") return setDark(true);
+      setDark(window.matchMedia("(prefers-color-scheme: dark)").matches);
+    }
+    check();
     const mq = window.matchMedia("(prefers-color-scheme: dark)");
-    setDark(mq.matches);
-    const handler = (e: MediaQueryListEvent) => setDark(e.matches);
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
+    mq.addEventListener("change", check);
+    const observer = new MutationObserver(check);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    return () => { mq.removeEventListener("change", check); observer.disconnect(); };
   }, []);
   return dark;
 }
