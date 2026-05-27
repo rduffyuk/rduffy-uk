@@ -3,23 +3,21 @@
     {
       "date": "2025-09-11",
       "title": "The Founding Conversation",
-      "description": "First vault indexed into ChromaDB. Semantic search born.",
+      "description": "First vault indexed into ChromaDB. 1,399 markdown files became semantically searchable in a single session.",
       "nodes": [
         { "id": "vault", "label": "Obsidian Vault", "group": "core", "color": "#a855f7" },
         { "id": "chromadb", "label": "ChromaDB", "group": "database", "color": "#f97316" }
       ],
-      "edges": [
-        { "from": "vault", "to": "chromadb" }
-      ],
+      "edges": [{ "from": "vault", "to": "chromadb" }],
       "blogEpisode": "https://blog.rduffy.uk/posts/s1e1-founding"
     },
     {
       "date": "2025-10-07",
       "title": "Multi-Agent Search",
-      "description": "Fast, Deep, and Oracle agents with intelligent routing.",
+      "description": "FastSearch (<1s), DeepResearch (~10s), and AgentRouter with heuristic-based intent classification.",
       "nodes": [
-        { "id": "fast-agent", "label": "FastSearch", "group": "core", "color": "#a855f7" },
-        { "id": "deep-agent", "label": "DeepResearch", "group": "core", "color": "#a855f7" },
+        { "id": "fast-agent", "label": "FastSearch", "group": "core", "color": "#22c55e" },
+        { "id": "deep-agent", "label": "DeepResearch", "group": "core", "color": "#ec4899" },
         { "id": "router", "label": "AgentRouter", "group": "core", "color": "#a855f7" }
       ],
       "edges": [
@@ -28,96 +26,362 @@
         { "from": "fast-agent", "to": "chromadb" },
         { "from": "deep-agent", "to": "chromadb" }
       ],
+      "blogEpisode": "https://blog.rduffy.uk/posts/s1e3-ai-awakening"
+    },
+    {
+      "date": "2025-10-09",
+      "title": "Temporal Filtering",
+      "description": "Date-range search across the vault. +40 percentage points accuracy for historical queries by reversing metadata priority (frontmatter first, filename second).",
+      "nodes": [
+        { "id": "temporal", "label": "Temporal Filter", "group": "core", "color": "#a855f7" }
+      ],
+      "edges": [{ "from": "temporal", "to": "chromadb" }],
       "blogEpisode": null
+    },
+    {
+      "date": "2025-10-12",
+      "title": "54 Minutes to Production",
+      "description": "Six systems deployed in one day — GPU monitor, Perplexity gateway, agent router, MCP bridge, Prometheus exporter, and vault indexer.",
+      "nodes": [
+        { "id": "gpu-monitor", "label": "GPU Monitor", "group": "monitoring", "color": "#f97316" },
+        { "id": "perplexity", "label": "Perplexity GW", "group": "infra", "color": "#3b82f6" }
+      ],
+      "edges": [],
+      "blogEpisode": "https://blog.rduffy.uk/posts/s2e3-54-minutes"
     },
     {
       "date": "2025-12-01",
       "title": "MCP Bridge",
-      "description": "Model Context Protocol bridge connecting Claude Code to the platform.",
+      "description": "Model Context Protocol bridge connecting Claude Code to the platform via SSE. The interface that makes everything accessible from a conversation.",
       "nodes": [
         { "id": "mcp-bridge", "label": "MCP Bridge", "group": "infra", "color": "#3b82f6" }
       ],
-      "edges": [
-        { "from": "mcp-bridge", "to": "router" }
+      "edges": [{ "from": "mcp-bridge", "to": "router" }],
+      "blogEpisode": null
+    },
+    {
+      "date": "2025-12-31",
+      "title": "K3s Migration Begins",
+      "description": "First K3s manifests committed. Platform moving from systemd services to Kubernetes with FluxCD GitOps.",
+      "nodes": [
+        { "id": "k3s", "label": "K3s Cluster", "group": "infra", "color": "#3b82f6" },
+        { "id": "flux", "label": "FluxCD", "group": "infra", "color": "#38bdf8" }
       ],
+      "edges": [{ "from": "k3s", "to": "flux" }],
       "blogEpisode": null
     },
     {
       "date": "2026-01-04",
-      "title": "K3s Migration",
-      "description": "Full platform migrated to Kubernetes with GitOps.",
+      "title": "K3s Production — 26 Commits in One Day",
+      "description": "RAG Gateway, Retriever, MCP Bridge, Ollama, and ChromaDB all deployed to K3s. Prefect work queues wired. CrashLoopBackOff fixed (K8s env var parsing). Platform is cloud-native.",
       "nodes": [
-        { "id": "k3s", "label": "K3s Cluster", "group": "infra", "color": "#3b82f6" },
-        { "id": "flux", "label": "FluxCD", "group": "infra", "color": "#38bdf8" },
-        { "id": "rag-gateway", "label": "RAG Gateway", "group": "core", "color": "#a855f7" }
+        { "id": "rag-gateway", "label": "RAG Gateway", "group": "core", "color": "#a855f7" },
+        { "id": "retriever", "label": "Retriever", "group": "core", "color": "#a855f7" },
+        { "id": "ollama", "label": "Ollama", "group": "gpu", "color": "#ef4444" },
+        { "id": "prefect", "label": "Prefect", "group": "workflow", "color": "#ec4899" }
       ],
       "edges": [
-        { "from": "k3s", "to": "flux" },
         { "from": "k3s", "to": "rag-gateway" },
-        { "from": "rag-gateway", "to": "router" },
-        { "from": "mcp-bridge", "to": "rag-gateway" }
+        { "from": "rag-gateway", "to": "retriever" },
+        { "from": "mcp-bridge", "to": "rag-gateway" },
+        { "from": "k3s", "to": "ollama" }
       ],
       "blogEpisode": null
     },
     {
-      "date": "2026-02-01",
-      "title": "Qdrant & Knowledge Graph",
-      "description": "Migrated to Qdrant vector DB. FalkorDB knowledge graph activated.",
+      "date": "2026-01-07",
+      "title": "vLLM GPU Inference",
+      "description": "vLLM deployed on RTX 4080 for GPU-accelerated model serving. Ollama relegated to CPU-only fallback. 30x embedding speedup.",
       "nodes": [
-        { "id": "qdrant", "label": "Qdrant", "group": "database", "color": "#f97316" },
-        { "id": "falkordb", "label": "FalkorDB", "group": "database", "color": "#f97316" }
+        { "id": "vllm", "label": "vLLM", "group": "gpu", "color": "#ef4444" }
       ],
       "edges": [
-        { "from": "fast-agent", "to": "qdrant" },
-        { "from": "deep-agent", "to": "qdrant" },
+        { "from": "k3s", "to": "vllm" },
+        { "from": "rag-gateway", "to": "vllm" }
+      ],
+      "blogEpisode": null
+    },
+    {
+      "date": "2026-01-25",
+      "title": "PDG Pipeline on K3s",
+      "description": "Program Dependency Graph deployed to production. OPA policy enforcement, DORA metrics exporter, Discord notifications for high-risk MRs. 221 passing tests.",
+      "nodes": [
+        { "id": "pdg", "label": "PDG Generator", "group": "core", "color": "#a855f7" },
+        { "id": "opa", "label": "OPA Server", "group": "infra", "color": "#3b82f6" },
+        { "id": "dora", "label": "DORA Metrics", "group": "monitoring", "color": "#f97316" }
+      ],
+      "edges": [
+        { "from": "pdg", "to": "falkordb" },
+        { "from": "pdg", "to": "opa" }
+      ],
+      "blogEpisode": null
+    },
+    {
+      "date": "2026-01-31",
+      "title": "NER Auto-Tagging",
+      "description": "spaCy NER (en_core_web_lg + EntityRuler + YAKE) replaces LLM-based tagging at ~1000x lower cost. ADR-040 accepted.",
+      "nodes": [
+        { "id": "ner", "label": "NER Consumer", "group": "workflow", "color": "#ec4899" }
+      ],
+      "edges": [{ "from": "ner", "to": "qdrant" }],
+      "blogEpisode": null
+    },
+    {
+      "date": "2026-02-01",
+      "title": "Jira + Confluence Integration",
+      "description": "VW Jira project created. Jira-first development workflow, automated Confluence documentation, bidirectional vault-Confluence linking. LinkedIn automation pipeline (ADR-001).",
+      "nodes": [
+        { "id": "jira", "label": "Jira", "group": "workflow", "color": "#ec4899" },
+        { "id": "confluence", "label": "Confluence", "group": "workflow", "color": "#ec4899" }
+      ],
+      "edges": [
+        { "from": "jira", "to": "confluence" },
+        { "from": "mcp-bridge", "to": "jira" }
+      ],
+      "blogEpisode": "https://blog.rduffy.uk/posts/s3e1-from-side-project-to-platform"
+    },
+    {
+      "date": "2026-02-07",
+      "title": "Sealed Secrets + Harbor",
+      "description": "19 Bitnami Sealed Secrets deployed. Harbor container registry on K3s. NetBox IPAM for infrastructure tracking.",
+      "nodes": [
+        { "id": "harbor", "label": "Harbor", "group": "infra", "color": "#3b82f6" },
+        { "id": "sealed-secrets", "label": "Sealed Secrets", "group": "infra", "color": "#3b82f6" }
+      ],
+      "edges": [
+        { "from": "k3s", "to": "harbor" },
+        { "from": "k3s", "to": "sealed-secrets" }
+      ],
+      "blogEpisode": null
+    },
+    {
+      "date": "2026-02-11",
+      "title": "Gateway Memory Leak — 7.5GB to 532MB",
+      "description": "VW-51/52: Dead ChromaDB import causing 7.5GB per replica. 93% memory reduction. Kafka consumer crash-loop fixed (VW-62, 837 restarts).",
+      "nodes": [],
+      "edges": [],
+      "blogEpisode": "https://blog.rduffy.uk/posts/s3e2-streaming-journals"
+    },
+    {
+      "date": "2026-02-15",
+      "title": "Qdrant Migration + Reranking",
+      "description": "ChromaDB replaced by Qdrant (148K chunks). FlashRank reranker deployed, then replaced by ColBERT after benchmark comparison. FalkorDB knowledge graph activated (VW-79).",
+      "nodes": [
+        { "id": "qdrant", "label": "Qdrant", "group": "database", "color": "#f97316" },
+        { "id": "falkordb", "label": "FalkorDB", "group": "database", "color": "#f97316" },
+        { "id": "reranker", "label": "Reranker", "group": "core", "color": "#a855f7" }
+      ],
+      "edges": [
+        { "from": "retriever", "to": "qdrant" },
+        { "from": "retriever", "to": "reranker" },
         { "from": "deep-agent", "to": "falkordb" }
       ],
       "blogEpisode": null
     },
     {
-      "date": "2026-03-01",
-      "title": "Observability Stack",
-      "description": "Prometheus, Grafana, Jaeger, and OpenTelemetry deployed.",
+      "date": "2026-02-17",
+      "title": "Shared Embedding Service — 2560d Vectors",
+      "description": "Qwen3-Embedding-4B at 2560 dimensions. Graph ingestion bug fixes (VW-85/86/90 — asyncio event loop scoping). HLD/LLD modularised (ADR-016).",
       "nodes": [
-        { "id": "prometheus", "label": "Prometheus", "group": "monitoring", "color": "#f97316" },
-        { "id": "grafana", "label": "Grafana", "group": "monitoring", "color": "#f97316" },
-        { "id": "jaeger", "label": "Jaeger", "group": "monitoring", "color": "#f97316" }
+        { "id": "embedding", "label": "Embedding 2560d", "group": "core", "color": "#a855f7" }
       ],
       "edges": [
-        { "from": "prometheus", "to": "grafana" },
-        { "from": "rag-gateway", "to": "jaeger" }
+        { "from": "embedding", "to": "qdrant" }
       ],
       "blogEpisode": null
     },
     {
-      "date": "2026-04-01",
-      "title": "Kafka Streaming",
-      "description": "Event-driven architecture with Kafka for vault changes and NER tagging.",
+      "date": "2026-02-20",
+      "title": "NetworkPolicies + Security Hardening",
+      "description": "55+ NetworkPolicies deployed (default-deny + per-service whitelists). Vault indexer exclusion list alignment after 13,880-chunk data leak incident.",
       "nodes": [
-        { "id": "kafka", "label": "Kafka", "group": "workflow", "color": "#ec4899" },
-        { "id": "ner-consumer", "label": "NER Consumer", "group": "workflow", "color": "#ec4899" },
+        { "id": "netpol", "label": "NetworkPolicies", "group": "infra", "color": "#3b82f6" }
+      ],
+      "edges": [],
+      "blogEpisode": null
+    },
+    {
+      "date": "2026-02-22",
+      "title": "LinkedIn Carousel Publishing",
+      "description": "Full LinkedIn automation pipeline: text posts, PDF carousel generation (Puppeteer + pdf-lib), and publishing via REST API. ADR-019: Claude Voice Agent architecture proposed.",
+      "nodes": [
+        { "id": "linkedin", "label": "LinkedIn API", "group": "workflow", "color": "#ec4899" }
+      ],
+      "edges": [],
+      "blogEpisode": null
+    },
+    {
+      "date": "2026-03-01",
+      "title": "Observability Stack",
+      "description": "Prometheus, Grafana (18+ panels), Tempo (distributed tracing), Loki (log aggregation), Beyla eBPF, Blackbox Exporter. SLOs defined: RAG Gateway 99.9%, MCP Bridge 99.5%.",
+      "nodes": [
+        { "id": "prometheus", "label": "Prometheus", "group": "monitoring", "color": "#f97316" },
+        { "id": "grafana", "label": "Grafana", "group": "monitoring", "color": "#f97316" },
+        { "id": "tempo", "label": "Tempo", "group": "monitoring", "color": "#f97316" },
+        { "id": "loki", "label": "Loki", "group": "monitoring", "color": "#f97316" }
+      ],
+      "edges": [
+        { "from": "prometheus", "to": "grafana" },
+        { "from": "rag-gateway", "to": "tempo" }
+      ],
+      "blogEpisode": null
+    },
+    {
+      "date": "2026-03-08",
+      "title": "Event-Driven NER Pipeline",
+      "description": "Kafka event bus activated. File watcher (inotify) → Kafka → NER consumer (spaCy + YAKE) → auto-tagging → Qdrant indexing. KEDA scales consumers 0→N.",
+      "nodes": [
+        { "id": "kafka", "label": "Kafka", "group": "workflow", "color": "#00d4ff" },
         { "id": "file-watcher", "label": "File Watcher", "group": "workflow", "color": "#ec4899" }
       ],
       "edges": [
         { "from": "file-watcher", "to": "kafka" },
-        { "from": "kafka", "to": "ner-consumer" },
-        { "from": "ner-consumer", "to": "qdrant" }
+        { "from": "kafka", "to": "ner" },
+        { "from": "ner", "to": "qdrant" }
+      ],
+      "blogEpisode": null
+    },
+    {
+      "date": "2026-03-10",
+      "title": "PDG Activation — Code Intelligence",
+      "description": "FalkorDB code_knowledge graph live: 7,768 nodes. Community detection (Leiden clustering), impact radius queries, tree-sitter AST parsing.",
+      "nodes": [],
+      "edges": [{ "from": "pdg", "to": "mcp-bridge" }],
+      "blogEpisode": "https://blog.rduffy.uk/posts/s3e5-second-graph-online"
+    },
+    {
+      "date": "2026-03-15",
+      "title": "Platform Hardening — 52 Commits",
+      "description": "Biggest single-day push. Leiden clustering, TreeSitter, local model optimisations, Scout fleet deployment, shared_constants.py for exclusion lists, benchmark suite designed.",
+      "nodes": [
+        { "id": "scout", "label": "Scout Fleet", "group": "workflow", "color": "#ec4899" }
+      ],
+      "edges": [{ "from": "scout", "to": "kafka" }],
+      "blogEpisode": null
+    },
+    {
+      "date": "2026-03-19",
+      "title": "Security Audit + Feature Flags",
+      "description": "VW-147 security hardening. Unleash feature flags deployed. CRAG and Speculative RAG prototyped behind flags. Infrastructure upgrades across the cluster.",
+      "nodes": [
+        { "id": "unleash", "label": "Unleash", "group": "infra", "color": "#3b82f6" }
+      ],
+      "edges": [],
+      "blogEpisode": null
+    },
+    {
+      "date": "2026-04-15",
+      "title": "Data Source Connectors",
+      "description": "ADR-034: Multi-source connector architecture. Jira, Confluence, GitLab, and vault connectors for unified indexing into Qdrant.",
+      "nodes": [
+        { "id": "connectors", "label": "Connectors", "group": "workflow", "color": "#ec4899" }
+      ],
+      "edges": [
+        { "from": "connectors", "to": "kafka" },
+        { "from": "connectors", "to": "qdrant" }
+      ],
+      "blogEpisode": null
+    },
+    {
+      "date": "2026-04-29",
+      "title": "KEDA GPU Swap Controller",
+      "description": "ADR-029: KEDA scales TEI embedding service 0→1 on demand, swapping GPU between vLLM and TEI. Desktop + MacBook multi-device setup via Tailscale.",
+      "nodes": [
+        { "id": "keda", "label": "KEDA", "group": "infra", "color": "#3b82f6" },
+        { "id": "tei", "label": "TEI Embedding", "group": "gpu", "color": "#ef4444" }
+      ],
+      "edges": [
+        { "from": "keda", "to": "tei" },
+        { "from": "keda", "to": "vllm" }
       ],
       "blogEpisode": null
     },
     {
       "date": "2026-05-01",
-      "title": "ADR-030: Repo Restructure",
-      "description": "14-package uv workspace. Canonical module boundaries.",
+      "title": "Kafka Streaming Pipeline — Flink",
+      "description": "Apache Flink deployed for real-time conversation processing. Journal session parser, synthesizer, and DLQ reprocessor. Claim-check pattern for large payloads.",
       "nodes": [
-        { "id": "workspace", "label": "uv Workspace", "group": "core", "color": "#a855f7" },
-        { "id": "pdg", "label": "PDG Generator", "group": "core", "color": "#a855f7" }
+        { "id": "flink", "label": "Apache Flink", "group": "workflow", "color": "#ec4899" },
+        { "id": "journal-parser", "label": "Session Parser", "group": "workflow", "color": "#ec4899" }
+      ],
+      "edges": [
+        { "from": "kafka", "to": "flink" },
+        { "from": "kafka", "to": "journal-parser" }
+      ],
+      "blogEpisode": null
+    },
+    {
+      "date": "2026-05-11",
+      "title": "ADR-030: Repository Restructure",
+      "description": "14-package uv workspace. 6-stage migration plan. Canonical module boundaries, per-package AGENTS.md, service Dockerfiles with workspace-dep linting. 40 commits.",
+      "nodes": [
+        { "id": "workspace", "label": "uv Workspace", "group": "core", "color": "#a855f7" }
       ],
       "edges": [
         { "from": "workspace", "to": "rag-gateway" },
         { "from": "workspace", "to": "mcp-bridge" },
-        { "from": "pdg", "to": "falkordb" }
+        { "from": "workspace", "to": "retriever" }
       ],
+      "blogEpisode": null
+    },
+    {
+      "date": "2026-05-17",
+      "title": "Long-Term Memory System",
+      "description": "Postgres-backed structured memory pipeline. GDPR-compliant tombstoning (ADR-043). 6 recall MCP tools: session, origin, decisions, state-at-time, trace chain, save context. Backfill flow processes 222 sessions. Git commit trailers (VW-393).",
+      "nodes": [
+        { "id": "memory", "label": "Memory System", "group": "core", "color": "#a855f7" },
+        { "id": "postgres", "label": "Postgres", "group": "database", "color": "#f97316" }
+      ],
+      "edges": [
+        { "from": "memory", "to": "postgres" },
+        { "from": "mcp-bridge", "to": "memory" }
+      ],
+      "blogEpisode": null
+    },
+    {
+      "date": "2026-05-19",
+      "title": "Engineering Memory Benchmark",
+      "description": "Empirical study: layered retrieval (typed→semantic→grep) scores 0.954. 5 conditions, 3 model tiers, 36 generated ADRs. Published as open-source on GitHub.",
+      "nodes": [
+        { "id": "benchmark", "label": "Benchmark Suite", "group": "core", "color": "#a855f7" }
+      ],
+      "edges": [],
+      "blogEpisode": null
+    },
+    {
+      "date": "2026-05-21",
+      "title": "SRE Agent + Security ADRs",
+      "description": "Autonomous SRE triage: Alertmanager webhook → event collector → LLM-powered brain → Jira issue creation. ADR-047 (LLM Content Trust Boundary), ADR-048 (Egress Control with Squid proxy).",
+      "nodes": [
+        { "id": "sre-agent", "label": "SRE Agent", "group": "core", "color": "#22c55e" },
+        { "id": "alertmanager", "label": "Alertmanager", "group": "monitoring", "color": "#f97316" }
+      ],
+      "edges": [
+        { "from": "alertmanager", "to": "sre-agent" },
+        { "from": "sre-agent", "to": "jira" }
+      ],
+      "blogEpisode": "https://blog.rduffy.uk/posts/s3e6-wednesday-audit"
+    },
+    {
+      "date": "2026-05-26",
+      "title": "Score Decomposition + DAT",
+      "description": "Per-result vector_score, bm25_score, rerank_score. Dynamic Alpha Tuning (arXiv:2503.23013) — LLM-as-judge per-query weighting. Temporal edge timestamps on FalkorDB PDG. Competitive analysis: 5 research repos evaluated.",
+      "nodes": [
+        { "id": "dat", "label": "DAT Tuning", "group": "core", "color": "#a855f7" }
+      ],
+      "edges": [
+        { "from": "dat", "to": "retriever" }
+      ],
+      "blogEpisode": null
+    },
+    {
+      "date": "2026-05-27",
+      "title": "rduffy.uk Goes Live",
+      "description": "Personal website deployed to Cloudflare Workers. Contribution heatmap (GitHub + GitLab), interactive architecture diagrams, CV from vault. Built with Astro 6, React Islands, and Tailwind CSS 4.",
+      "nodes": [
+        { "id": "website", "label": "rduffy.uk", "group": "infra", "color": "#3b82f6" }
+      ],
+      "edges": [],
       "blogEpisode": null
     }
   ]
