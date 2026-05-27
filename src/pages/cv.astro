@@ -1,26 +1,22 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
-import { getCollection, render } from "astro:content";
-
-const cvEntries = await getCollection("cv");
-const sorted = cvEntries.sort((a, b) => a.data.order - b.data.order);
-
-const rendered = await Promise.all(
-  sorted.map(async (entry) => {
-    const { Content } = await render(entry);
-    return { title: entry.data.title, Content };
-  })
-);
 ---
 
-<BaseLayout title="CV" description="Ryan Duffy — CV. SRE Specialist, AI Platform Builder.">
+<BaseLayout title="CV" description="Ryan Duffy — SRE Specialist, AI Platform Builder. 14+ years at BT, Rootweaver AI platform.">
   <article class="mx-auto max-w-3xl px-6 py-20">
+    <!-- Header -->
     <div class="mb-10 flex items-end justify-between">
       <div>
         <p class="mb-2 font-mono text-xs tracking-[0.2em] uppercase text-[--color-accent-cyan]">Curriculum Vitae</p>
         <h1 class="text-4xl font-extrabold">
           <span class="gradient-text">Ryan Duffy</span>
         </h1>
+        <p class="mt-2 font-mono text-sm text-[--color-text-subtle]">
+          Site Reliability Engineering · AI Infrastructure · Observability
+        </p>
+        <p class="mt-1 text-sm text-[--color-text-muted]">
+          Ipswich, UK · <a href="https://rduffy.uk" class="text-[--color-accent] hover:underline">rduffy.uk</a> · <a href="https://blog.rduffy.uk" class="text-[--color-accent] hover:underline">blog.rduffy.uk</a> · <a href="https://linkedin.com/in/rduffyuk" class="text-[--color-accent] hover:underline">linkedin</a>
+        </p>
       </div>
       <button
         onclick="window.print()"
@@ -29,28 +25,258 @@ const rendered = await Promise.all(
         Print / PDF
       </button>
     </div>
-    {rendered.map(({ title, Content }) => (
-      <section class="card mb-6 p-6 md:p-8">
-        <h2 class="mb-4 flex items-center gap-3 text-lg font-semibold text-[--color-accent]">
-          <span class="h-px flex-1 bg-gradient-to-r from-[--color-accent]/30 to-transparent" aria-hidden="true"></span>
-          {title}
-          <span class="h-px flex-1 bg-gradient-to-l from-[--color-accent]/30 to-transparent" aria-hidden="true"></span>
-        </h2>
-        <div class="accent-line prose dark:prose-invert max-w-none prose-h2:text-base prose-h2:font-semibold prose-h2:text-[--color-text] prose-strong:text-[--color-accent] prose-p:text-[--color-text-muted] prose-li:text-[--color-text-muted]">
-          <Content />
+
+    <!-- Profile -->
+    <section class="card mb-8 p-6">
+      <p class="text-sm leading-relaxed text-[--color-text-muted]">
+        SRE Specialist with 14+ years at BT, currently embedded within the product engineering team on
+        <strong class="text-[--color-text]">Global Fabric</strong> — BT International's next-generation NaaS platform
+        serving enterprise customers across 200+ global points of presence. Championed the adoption of Google SRE practice
+        inside BT. In parallel, designed and operate <strong class="text-[--color-accent]">Rootweaver</strong> — a personal
+        AI infrastructure platform running GPU-accelerated model serving, hybrid graph + vector retrieval, and a full LGTM
+        observability stack on Kubernetes.
+      </p>
+    </section>
+
+    <!-- Experience -->
+    <section class="mb-8">
+      <h2 class="cv-section-title">Experience</h2>
+
+      <div class="cv-role">
+        <div class="cv-role-header">
+          <h3 class="text-base font-semibold text-[--color-text]">SRE Specialist</h3>
+          <span class="cv-badge">Current</span>
         </div>
-      </section>
-    ))}
+        <div class="cv-meta">BT Group — Global Fabric Programme · Ipswich · Mar 2026 – Present</div>
+        <ul class="cv-list">
+          <li><strong>Driving adoption of Google SRE practice</strong> — championed SLIs, SLOs, and error budgets (from <em>The Site Reliability Workbook</em>) into Global Fabric</li>
+          <li><strong>Observability platform design</strong> — crafted scope and acceptance criteria for end-to-end monitoring overlay with full service journey traceability</li>
+          <li><strong>Alarm correlation</strong> — drafted correlation logic across multiple scenarios (PoP isolation, orbiting IS-IS/OSPF links); first scenario now operational</li>
+          <li><strong>PI Planning</strong> — leading prioritisation of product engineering work across multiple SME stakeholders</li>
+          <li><strong>BT Tech Fellowship</strong> — AI Squad member, contributing to on-premise private cloud AI data centre initiative with NVIDIA advisory</li>
+        </ul>
+        <div class="cv-tech">Multi-vendor (Cisco, Juniper, Nokia, Itential) · BGP · IS-IS · OSPF · Segment Routing · YANG/OpenConfig · Linux · K8s · Prometheus · Elastic · Kafka · Python · Ansible</div>
+      </div>
+
+      <div class="cv-role">
+        <div class="cv-role-header">
+          <h3 class="text-base font-semibold text-[--color-text]">Senior Delivery, Operations & Support Engineer</h3>
+        </div>
+        <div class="cv-meta">BT Group · Ipswich · Nov 2016 – Feb 2026 (9 yrs 3 mos)</div>
+        <ul class="cv-list">
+          <li>Led P1/major incident management and RCA for critical infrastructure serving Fortune 500 customers across financial services, automotive, and logistics</li>
+          <li>End-to-end support: Cloud Connect (MPLS-to-AWS/Azure), Agile Connect SD-WAN, MPLS core, NFVi, BT Connect</li>
+          <li>Multi-vendor fault coordination across international service paths, SLA management and contractual compliance</li>
+        </ul>
+      </div>
+
+      <div class="cv-role">
+        <div class="cv-role-header">
+          <h3 class="text-base font-semibold text-[--color-text]">Delivery, Operations & Support Engineer</h3>
+        </div>
+        <div class="cv-meta">BT Group — NCCA · Ipswich · Mar 2015 – Nov 2016 (1 yr 9 mos)</div>
+        <p class="cv-desc">24/7 rotational shift cover for BT's MPLS network platforms. Major incident handling and escalation management.</p>
+      </div>
+
+      <div class="cv-role">
+        <div class="cv-role-header">
+          <h3 class="text-base font-semibold text-[--color-text]">Case Management / Service Desk Analyst</h3>
+        </div>
+        <div class="cv-meta">BT Group · Newcastle upon Tyne · Jan 2012 – Feb 2015 (3 yrs 1 mo)</div>
+        <p class="cv-desc">Technical support, complex fault diagnosis, case management for BT TV/BT Sport. Coaching and mentoring.</p>
+      </div>
+    </section>
+
+    <!-- Rootweaver -->
+    <section class="mb-8">
+      <h2 class="cv-section-title">Personal Project — Rootweaver AI Platform</h2>
+
+      <div class="card p-6">
+        <div class="cv-meta mb-3">2025 – Present · Private repository (walkthrough available) · <a href="https://blog.rduffy.uk" class="text-[--color-accent] hover:underline">blog.rduffy.uk</a></div>
+        <p class="mb-4 text-sm leading-relaxed text-[--color-text-muted]">
+          AI engineering platform on K3s (RTX 4080, 64GB DDR5) across 28 namespaces. 10 HLD modules, 9 LLD modules, 46+ ADRs. 14-package uv workspace.
+        </p>
+        <div class="grid gap-3 md:grid-cols-2">
+          {[
+            { label: "Model Serving", detail: "vLLM (Qwen3-8B-AWQ, 32K ctx) + Ollama CPU fallback" },
+            { label: "Hybrid Retrieval", detail: "Qdrant ~45K chunks at 2560d, BM25 + vector fusion, cross-encoder reranking, 3-tier agent routing" },
+            { label: "Code Intelligence", detail: "FalkorDB ~7.8K nodes, PDG pipeline, OPA policy, DORA metrics" },
+            { label: "Long-Term Memory", detail: "Postgres-backed, GDPR tombstoning, 6 recall MCP tools" },
+            { label: "Streaming", detail: "Kafka → Flink → vLLM workers, claim-check, DLQ replay" },
+            { label: "Observability", detail: "Prometheus, Grafana 18+ panels, OTel, Tempo, Loki, Beyla eBPF" },
+            { label: "Security", detail: "19 Sealed Secrets, 55+ NetworkPolicies, audit logging" },
+            { label: "GitOps", detail: "FluxCD, Prefect, KEDA, Harbor registry, Unleash flags" },
+          ].map((item) => (
+            <div class="rounded-lg border border-[--color-border] px-3 py-2">
+              <span class="font-mono text-[10px] font-semibold uppercase tracking-wide text-[--color-accent]">{item.label}</span>
+              <p class="mt-0.5 text-xs leading-relaxed text-[--color-text-muted]">{item.detail}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills -->
+    <section class="mb-8">
+      <h2 class="cv-section-title">Technical Skills</h2>
+
+      <div class="card p-6">
+        <div class="space-y-3">
+          {[
+            { cat: "Reliability & SRE", skills: "SLO/SLI/SLA frameworks · Error budgets · Burn-rate alerting · DORA metrics · OPA · Incident management · ITIL · PI Planning" },
+            { cat: "Observability", skills: "Prometheus · Grafana · OpenTelemetry · Tempo · Loki · Jaeger · Beyla eBPF · Blackbox Exporter · ELK · ServiceNow ITOM" },
+            { cat: "AI/ML Infrastructure", skills: "vLLM · Ollama · Qdrant · FalkorDB · RAG pipelines · Hybrid retrieval · Embeddings · KEDA · MCP" },
+            { cat: "Containers & GitOps", skills: "Kubernetes (K3s) · Docker · FluxCD · Helm · HAMi GPU · Harbor · Sealed Secrets" },
+            { cat: "Automation & Code", skills: "Python (uv-workspace) · Ansible · Prefect · Pydantic · FastAPI · Bash · Git" },
+            { cat: "Networking", skills: "MPLS · BGP · OSPF · IS-IS · Segment Routing · PCE/PCEP · YANG/OpenConfig · SD-WAN · IPSec" },
+            { cat: "Vendors", skills: "Cisco · Juniper · Nokia · Itential · AWS · Cloudflare · Linux · Jira · Confluence" },
+          ].map((row) => (
+            <div>
+              <span class="font-mono text-[10px] font-semibold uppercase tracking-wide text-[--color-accent]">{row.cat}</span>
+              <p class="mt-0.5 text-sm text-[--color-text-muted]">{row.skills}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Certifications -->
+    <section class="mb-8">
+      <h2 class="cv-section-title">Certifications</h2>
+
+      <div class="card p-6">
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-sm text-[--color-text]">Juniper Networks Certified Specialist — SP Routing & Switching (JNCIS-SP)</span>
+            <span class="font-mono text-xs text-[--color-text-subtle]">2023</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-sm text-[--color-text]">Juniper Networks Certified Associate — Junos (JNCIA-Junos)</span>
+            <span class="font-mono text-xs text-[--color-text-subtle]">2020</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-sm text-[--color-text]">Member, Institution of Engineering and Technology (IET)</span>
+            <span class="font-mono text-xs text-[--color-text-subtle]"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Education -->
+    <section class="mb-8">
+      <h2 class="cv-section-title">Education</h2>
+
+      <div class="card p-6">
+        <div class="space-y-3">
+          <div>
+            <span class="text-sm font-medium text-[--color-text]">BSc Computer Games Design & Production</span>
+            <div class="cv-meta">Northumbria University · 2008 – 2011</div>
+          </div>
+          <div>
+            <span class="text-sm font-medium text-[--color-text]">Cisco Networking (CCNA modules)</span>
+            <div class="cv-meta">The Open University · 2013 – 2014</div>
+          </div>
+          <div>
+            <span class="text-sm font-medium text-[--color-text]">A Levels: Graphics, Economics & Business, Computing</span>
+            <div class="cv-meta">Queen Alexandra Sixth Form College · 2007 – 2009</div>
+          </div>
+        </div>
+      </div>
+    </section>
   </article>
 </BaseLayout>
 
-<style is:global>
+<style>
+  .cv-section-title {
+    font-family: ui-monospace, monospace;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  .cv-role {
+    border-left: 2px solid var(--color-border);
+    padding-left: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .cv-role:last-child {
+    margin-bottom: 0;
+  }
+  .cv-role-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.25rem;
+  }
+  .cv-badge {
+    font-family: ui-monospace, monospace;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: rgba(168, 85, 247, 0.15);
+    color: var(--color-accent);
+  }
+  .cv-meta {
+    font-family: ui-monospace, monospace;
+    font-size: 12px;
+    color: var(--color-text-subtle);
+    margin-bottom: 0.5rem;
+  }
+  .cv-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .cv-list li {
+    position: relative;
+    padding-left: 1rem;
+    margin-bottom: 0.4rem;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--color-text-muted);
+  }
+  .cv-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    opacity: 0.5;
+  }
+  .cv-list li strong {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+  .cv-tech {
+    margin-top: 0.5rem;
+    font-family: ui-monospace, monospace;
+    font-size: 11px;
+    color: var(--color-text-subtle);
+    line-height: 1.5;
+  }
+  .cv-desc {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--color-text-muted);
+  }
+
   @media print {
     nav, footer, .print\:hidden, a[href="#main-content"] { display: none !important; }
     body { background: white !important; color: black !important; }
     main { padding-top: 0 !important; }
     h1, h2, h3 { color: black !important; -webkit-text-fill-color: black !important; background: none !important; }
-    p, li, strong { color: #333 !important; }
+    p, li, strong, span { color: #333 !important; }
     .card { border-color: #e5e7eb !important; background: white !important; }
+    .cv-role { border-color: #d1d5db !important; }
+    .cv-badge { background: #f3e8ff !important; color: #7c3aed !important; }
+    .cv-list li::before { background: #7c3aed !important; }
   }
 </style>
