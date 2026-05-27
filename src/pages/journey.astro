@@ -4,6 +4,185 @@ import JourneyScrollytelling from "@components/journey/JourneyScrollytelling";
 import journeyData from "@data/journey-data.json";
 ---
 
-<BaseLayout title="Journey" description="Watch Rootweaver grow — an interactive 3D map of the platform's evolution.">
+<BaseLayout title="Journey" description="Watch Rootweaver grow — an interactive map of the platform's evolution.">
   <JourneyScrollytelling client:load data={journeyData} />
 </BaseLayout>
+
+<style is:global>
+  /* ===== MOBILE: stacked, smaller canvas ===== */
+  .journey-layout {
+    display: flex;
+    flex-direction: column;
+  }
+  .journey-canvas {
+    position: sticky;
+    top: 57px;
+    height: 35vh;
+    z-index: 5;
+  }
+  .journey-canvas-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-bottom: 1px solid var(--color-border, #1e293b);
+  }
+  .journey-cards {
+    padding: 24px 16px;
+  }
+
+  /* ===== DESKTOP: side by side ===== */
+  @media (min-width: 768px) {
+    .journey-layout {
+      flex-direction: row;
+      height: calc(100vh - 57px);
+    }
+    .journey-canvas {
+      position: relative;
+      top: auto;
+      height: auto;
+      flex: 1;
+      min-width: 0;
+    }
+    .journey-canvas-inner {
+      border-bottom: none;
+      border-right: 1px solid var(--color-border, #1e293b);
+    }
+    .journey-cards {
+      width: 380px;
+      min-width: 380px;
+      overflow-y: auto;
+      padding: 32px 20px;
+    }
+  }
+  @media (min-width: 1024px) {
+    .journey-cards {
+      width: 440px;
+      min-width: 440px;
+      padding: 40px 24px;
+    }
+  }
+
+  /* ===== Overlay ===== */
+  .journey-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 8px 16px;
+    background: linear-gradient(transparent, rgba(9, 9, 11, 0.95));
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  @media (min-width: 768px) {
+    .journey-overlay { padding: 12px 24px; }
+  }
+  .journey-overlay-date {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    color: #00d4ff;
+  }
+  .journey-overlay-sep {
+    width: 1px;
+    height: 14px;
+    background: #1e293b;
+  }
+  .journey-overlay-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: #f1f5f9;
+  }
+  @media (min-width: 768px) {
+    .journey-overlay-date { font-size: 11px; }
+    .journey-overlay-title { font-size: 14px; }
+  }
+
+  /* ===== Hint ===== */
+  .journey-hint {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #94a3b8;
+    margin-bottom: 20px;
+  }
+  @media (min-width: 768px) {
+    .journey-hint { margin-bottom: 32px; }
+  }
+
+  /* ===== Cards ===== */
+  .journey-card {
+    margin-bottom: 16px;
+    padding: 14px;
+    border: 1px solid var(--color-border, #1e293b);
+    border-radius: 10px;
+    transition: all 0.4s ease;
+  }
+  @media (min-width: 768px) {
+    .journey-card {
+      margin-bottom: 24px;
+      padding: 20px;
+      border-radius: 12px;
+    }
+  }
+  .journey-card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  .journey-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    transition: all 0.4s ease;
+  }
+  .journey-card-date {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    color: #00d4ff;
+  }
+  .journey-card-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #f1f5f9;
+    margin: 0;
+  }
+  @media (min-width: 768px) {
+    .journey-card-title { font-size: 16px; }
+  }
+  .journey-card-desc {
+    font-size: 12px;
+    color: #cbd5e1;
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+  @media (min-width: 768px) {
+    .journey-card-desc { font-size: 14px; line-height: 1.6; margin-top: 6px; }
+  }
+  .journey-card-tags {
+    margin-top: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .journey-tag {
+    font-size: 9px;
+    font-family: "JetBrains Mono", monospace;
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+  @media (min-width: 768px) {
+    .journey-tag { font-size: 10px; padding: 2px 8px; border-radius: 6px; }
+  }
+  .journey-card-link {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 11px;
+    color: #a855f7;
+  }
+  @media (min-width: 768px) {
+    .journey-card-link { font-size: 12px; }
+  }
+</style>
