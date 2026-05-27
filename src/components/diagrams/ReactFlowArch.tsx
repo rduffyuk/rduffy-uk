@@ -182,6 +182,8 @@ function DiagramPanel({ nodes, edges, title, accent, height }: { nodes: Node[]; 
           defaultEdgeOptions={{ type: "bezier" }}
           nodesDraggable={false}
           nodesConnectable={false}
+          zoomOnScroll={false}
+          preventScrolling={false}
         >
           <Background color={dark ? "#1e293b" : "#e2e8f0"} gap={24} size={1} />
           <Controls showInteractive={false} style={{ background: dark ? "#0f0f13" : "#fff", border: `1px solid ${dark ? "#1e293b" : "#e2e8f0"}`, borderRadius: 8 }} />
