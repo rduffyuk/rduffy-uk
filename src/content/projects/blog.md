@@ -1,9 +1,9 @@
 ---
 title: Building in Public Blog
-description: Documenting the journey from context window overflow to self-documenting systems.
+description: Technical blog chronicling Rootweaver's evolution — from first vault index to production K3s platform.
 tags: ["astro", "writing", "cloudflare"]
 url: https://blog.rduffy.uk
 order: 2
 ---
 
-A technical blog series chronicling Rootweaver's evolution season by season. From the first vault indexed in September 2025 to a production Kubernetes platform with 29 MCP tools.
+A season-by-season documentary of building an AI engineering platform with Claude Code. Astro 5 + Cloudflare Pages. Open source on GitHub.

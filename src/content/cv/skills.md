@@ -1,19 +1,25 @@
 ---
-title: Skills
+title: Technical Skills
 order: 2
 ---
 
-## Infrastructure & SRE
-Kubernetes (K3s), Docker, GitOps (FluxCD), Terraform, Prometheus, Grafana, Jaeger, OpenTelemetry
+## Reliability & SRE
+SLO/SLI/SLA frameworks, error budgets, burn-rate alerting, deployment governance, blameless postmortems, incident management, change management (ITIL), PI Planning, DORA metrics, OPA policy enforcement
 
-## AI & ML Platforms
-RAG Pipelines, Vector Databases (Qdrant), LLM Serving (vLLM), Embeddings, Multi-Agent Systems, MCP (Model Context Protocol)
+## Observability
+Prometheus, Grafana, OpenTelemetry, Tempo, Loki, Jaeger, Beyla eBPF, Blackbox Exporter, ELK Stack, ServiceNow ITOM
 
-## Languages & Frameworks
-Python, TypeScript, FastAPI, Astro, React, Bash
+## AI/ML Infrastructure
+vLLM (GPU model serving), Ollama, Qdrant (vector DB), FalkorDB (graph DB), RAG pipelines, hybrid retrieval, embedding models, LLM inference optimisation, KEDA autoscaling, MCP (Model Context Protocol)
 
-## Data & Messaging
-Kafka, PostgreSQL, FalkorDB (Graph), Redis, Apache Flink
+## Containers & GitOps
+Kubernetes (K3s), Docker, FluxCD, Helm, HAMi GPU plugin, Harbor registry, Bitnami Sealed Secrets
 
-## Cloud & Networking
-Cloudflare (Tunnels, Pages, Workers), Tailscale, Kong API Gateway
+## Automation & Code
+Python (uv-workspace), Ansible, Prefect, Pydantic, FastAPI, Bash, YAML/JSON, Git
+
+## Networking
+MPLS, BGP, OSPF, IS-IS, Segment Routing, PCE/PCEP, YANG/OpenConfig, SD-WAN, IPSec, DNS
+
+## Vendors & Platforms
+Cisco, Juniper, Nokia, Itential, AWS, Cloudflare, Linux, Jira, Confluence
