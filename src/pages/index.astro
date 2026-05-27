@@ -1,6 +1,8 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
 import HeroStats from "@components/HeroStats.astro";
+import ContributionHeatmap from "@components/ContributionHeatmap";
+import contributions from "@data/contributions.json";
 ---
 
 <BaseLayout title="Home" description="Ryan Duffy — SRE, AI Orchestrator, Builder. Building Rootweaver with Claude Code.">
@@ -34,6 +36,16 @@ import HeroStats from "@components/HeroStats.astro";
       </div>
 
       <HeroStats />
+    </div>
+  </section>
+
+  <!-- Activity heatmap -->
+  <section class="border-t border-[--color-border]">
+    <div class="mx-auto max-w-4xl px-6 py-12">
+      <h2 class="mb-6 text-center font-mono text-xs tracking-[0.2em] uppercase text-[--color-text-subtle]">
+        Activity
+      </h2>
+      <ContributionHeatmap variant="compact" data={contributions} client:load />
     </div>
   </section>
 
