@@ -81,8 +81,8 @@ import contributions from "@data/contributions.json";
     </div>
   </section>
 
-  <!-- Architecture teaser -->
-  <section class="border-t border-[--color-border]">
+  <!-- Architecture teaser (hidden on mobile — diagram too complex for small screens) -->
+  <section class="hidden border-t border-[--color-border] md:block">
     <div class="mx-auto max-w-3xl px-6 py-20">
       <h2 class="mb-8 text-center font-mono text-xs tracking-[0.2em] uppercase text-[--color-text-subtle]">
         How It Works
@@ -177,8 +177,5 @@ import contributions from "@data/contributions.json";
 </BaseLayout>
 
 <style>
-  .svg-node-bg { fill: #0f0f13; }
-  @media (prefers-color-scheme: light) {
-    .svg-node-bg { fill: #ffffff; }
-  }
+  .svg-node-bg { fill: var(--color-card, #0f0f13); }
 </style>
