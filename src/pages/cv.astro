@@ -3,31 +3,33 @@ import BaseLayout from "@layouts/BaseLayout.astro";
 ---
 
 <BaseLayout title="CV" description="Ryan Duffy — SRE Specialist, AI Platform Builder. 14+ years at BT, Rootweaver AI platform.">
-  <article class="mx-auto max-w-3xl px-6 py-20">
+  <article class="mx-auto max-w-3xl px-4 py-12 md:px-6 md:py-20">
     <!-- Header -->
-    <div class="mb-10 flex items-end justify-between">
-      <div>
-        <p class="mb-2 font-mono text-xs tracking-[0.2em] uppercase text-[--color-accent-cyan]">Curriculum Vitae</p>
-        <h1 class="text-4xl font-extrabold">
-          <span class="gradient-text">Ryan Duffy</span>
-        </h1>
-        <p class="mt-2 font-mono text-sm text-[--color-text-subtle]">
-          Site Reliability Engineering · AI Infrastructure · Observability
-        </p>
-        <p class="mt-1 text-sm text-[--color-text-muted]">
-          Ipswich, UK · <a href="https://rduffy.uk" class="text-[--color-accent] hover:underline">rduffy.uk</a> · <a href="https://blog.rduffy.uk" class="text-[--color-accent] hover:underline">blog.rduffy.uk</a> · <a href="https://linkedin.com/in/rduffyuk" class="text-[--color-accent] hover:underline">linkedin</a>
-        </p>
+    <div class="mb-10">
+      <div class="flex items-start justify-between">
+        <div>
+          <p class="mb-2 font-mono text-xs tracking-[0.2em] uppercase text-[--color-accent-cyan]">Curriculum Vitae</p>
+          <h1 class="text-3xl font-extrabold md:text-4xl">
+            <span class="gradient-text">Ryan Duffy</span>
+          </h1>
+        </div>
+        <button
+          onclick="window.print()"
+          class="mt-6 hidden shrink-0 rounded-lg border border-[--color-border] px-4 py-2 text-sm text-[--color-text-subtle] transition-all hover:border-[--color-accent] hover:text-[--color-accent] hover:bg-white/[0.02] print:hidden md:block"
+        >
+          Print / PDF
+        </button>
       </div>
-      <button
-        onclick="window.print()"
-        class="rounded-lg border border-[--color-border] px-4 py-2 text-sm text-[--color-text-subtle] transition-all hover:border-[--color-accent] hover:text-[--color-accent] hover:bg-white/[0.02] print:hidden"
-      >
-        Print / PDF
-      </button>
+      <p class="mt-2 font-mono text-xs text-[--color-text-subtle] md:text-sm">
+        Site Reliability Engineering · AI Infrastructure · Observability
+      </p>
+      <p class="mt-1 font-mono text-xs text-[--color-text-muted]">
+        Ipswich, UK · rduffy.uk · blog.rduffy.uk · linkedin.com/in/rduffyuk
+      </p>
     </div>
 
     <!-- Profile -->
-    <section class="card mb-8 p-6">
+    <section class="card mb-8 p-4 md:p-6">
       <p class="text-sm leading-relaxed text-[--color-text-muted]">
         SRE Specialist with 14+ years at BT, currently embedded within the product engineering team on
         <strong class="text-[--color-text]">Global Fabric</strong> — BT International's next-generation NaaS platform
@@ -91,12 +93,12 @@ import BaseLayout from "@layouts/BaseLayout.astro";
     <section class="mb-8">
       <h2 class="cv-section-title">Personal Project — Rootweaver AI Platform</h2>
 
-      <div class="card p-6">
+      <div class="card p-4 md:p-6">
         <div class="cv-meta mb-3">2025 – Present · Private repository (walkthrough available) · <a href="https://blog.rduffy.uk" class="text-[--color-accent] hover:underline">blog.rduffy.uk</a></div>
         <p class="mb-4 text-sm leading-relaxed text-[--color-text-muted]">
           AI engineering platform on K3s (RTX 4080, 64GB DDR5) across 28 namespaces. 10 HLD modules, 9 LLD modules, 46+ ADRs. 14-package uv workspace.
         </p>
-        <div class="grid gap-3 md:grid-cols-2">
+        <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-3">
           {[
             { label: "Model Serving", detail: "vLLM (Qwen3-8B-AWQ, 32K ctx) + Ollama CPU fallback" },
             { label: "Hybrid Retrieval", detail: "Qdrant ~45K chunks at 2560d, BM25 + vector fusion, cross-encoder reranking, 3-tier agent routing" },
@@ -120,7 +122,7 @@ import BaseLayout from "@layouts/BaseLayout.astro";
     <section class="mb-8">
       <h2 class="cv-section-title">Technical Skills</h2>
 
-      <div class="card p-6">
+      <div class="card p-4 md:p-6">
         <div class="space-y-3">
           {[
             { cat: "Reliability & SRE", skills: "SLO/SLI/SLA frameworks · Error budgets · Burn-rate alerting · DORA metrics · OPA · Incident management · ITIL · PI Planning" },
@@ -144,19 +146,18 @@ import BaseLayout from "@layouts/BaseLayout.astro";
     <section class="mb-8">
       <h2 class="cv-section-title">Certifications</h2>
 
-      <div class="card p-6">
+      <div class="card p-4 md:p-6">
         <div class="space-y-2">
-          <div class="flex items-center justify-between">
+          <div class="flex flex-col gap-0.5 sm:flex-row sm:items-center sm:justify-between">
             <span class="text-sm text-[--color-text]">Juniper Networks Certified Specialist — SP Routing & Switching (JNCIS-SP)</span>
             <span class="font-mono text-xs text-[--color-text-subtle]">2023</span>
           </div>
-          <div class="flex items-center justify-between">
+          <div class="flex flex-col gap-0.5 sm:flex-row sm:items-center sm:justify-between">
             <span class="text-sm text-[--color-text]">Juniper Networks Certified Associate — Junos (JNCIA-Junos)</span>
             <span class="font-mono text-xs text-[--color-text-subtle]">2020</span>
           </div>
-          <div class="flex items-center justify-between">
+          <div>
             <span class="text-sm text-[--color-text]">Member, Institution of Engineering and Technology (IET)</span>
-            <span class="font-mono text-xs text-[--color-text-subtle]"></span>
           </div>
         </div>
       </div>
@@ -166,7 +167,7 @@ import BaseLayout from "@layouts/BaseLayout.astro";
     <section class="mb-8">
       <h2 class="cv-section-title">Education</h2>
 
-      <div class="card p-6">
+      <div class="card p-4 md:p-6">
         <div class="space-y-3">
           <div>
             <span class="text-sm font-medium text-[--color-text]">BSc Computer Games Design & Production</span>
