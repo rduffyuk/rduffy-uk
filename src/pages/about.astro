@@ -1,6 +1,8 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { getEntry, render } from "astro:content";
+import ContributionHeatmap from "@components/ContributionHeatmap";
+import contributions from "@data/contributions.json";
 
 const entry = await getEntry("pages", "about");
 const { Content } = await render(entry);
@@ -54,6 +56,14 @@ const principles = [
           <p class="text-sm leading-relaxed text-[--color-text-muted]">{p.description}</p>
         </div>
       ))}
+    </div>
+
+    <!-- Contribution activity -->
+    <div class="mt-10">
+      <h3 class="mb-6 text-center font-mono text-xs tracking-[0.2em] uppercase text-[--color-text-subtle]">
+        Contribution Activity
+      </h3>
+      <ContributionHeatmap variant="full" data={contributions} client:load />
     </div>
   </article>
 </BaseLayout>
