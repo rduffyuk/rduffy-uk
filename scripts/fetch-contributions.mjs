@@ -1,5 +1,5 @@
 import { execSync } from "child_process";
-import { writeFileSync } from "fs";
+import { writeFileSync, existsSync } from "fs";
 import { resolve, dirname } from "path";
 import { fileURLToPath } from "url";
 
@@ -124,15 +124,19 @@ async function main() {
   ]);
 
   if (!ghWeeks) {
-    console.warn("⚠ No GitHub data — writing empty contributions.json");
-    writeFileSync(
-      OUT_PATH,
-      JSON.stringify(
-        { generatedAt: new Date().toISOString().split("T")[0], totalContributions: 0, weeks: [] },
-        null,
-        2
-      )
-    );
+    if (existsSync(OUT_PATH)) {
+      console.log("⚠ GitHub fetch failed — keeping existing contributions.json");
+    } else {
+      console.warn("⚠ No GitHub data and no existing file — writing empty contributions.json");
+      writeFileSync(
+        OUT_PATH,
+        JSON.stringify(
+          { generatedAt: new Date().toISOString().split("T")[0], totalContributions: 0, weeks: [] },
+          null,
+          2
+        )
+      );
+    }
     return;
   }
 
