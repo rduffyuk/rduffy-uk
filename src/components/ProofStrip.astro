@@ -1,0 +1,33 @@
+---
+import { getCollection } from "astro:content";
+import stats from "@data/stats.json";
+
+// Single source of truth: stats.json + live collection counts (can't drift)
+const writing = await getCollection("writing", ({ data }) => !data.draft);
+const adrs = await getCollection("adrs");
+
+const buildingSince = new Date("2025-09-11");
+const days = Math.floor((Date.now() - buildingSince.getTime()) / 86400000);
+const asOf = new Date().toISOString().slice(0, 10);
+
+const items = [
+  { value: stats.qdrantChunks.toLocaleString(), label: "vector chunks indexed" },
+  { value: String(stats.adrsTotal ?? 46), label: "architecture decision records" },
+  { value: String(writing.length), label: "posts published" },
+  { value: `${days} d`, label: "building in public" },
+];
+---
+
+<div class="u-panel overflow-hidden">
+  <div class="grid grid-cols-2 md:grid-cols-4">
+    {items.map((item, i) => (
+      <div class:list={["px-5 py-4", i > 0 && "md:border-l md:border-[--color-border]", i % 2 === 1 && "border-l border-[--color-border] md:border-l", i > 1 && "border-t border-[--color-border] md:border-t-0"]}>
+        <div class="font-mono text-2xl font-bold tabular-nums text-[--color-text]">{item.value}</div>
+        <div class="mt-1 text-xs text-[--color-text-muted]">{item.label}</div>
+      </div>
+    ))}
+  </div>
+  <div class="border-t border-[--color-border] px-5 py-2 font-mono text-[0.65625rem] text-[--color-text-subtle]">
+    source: stats.json + content collections · build-time · as of {asOf} · {adrs.length} ADRs published here
+  </div>
+</div>

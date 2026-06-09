@@ -20,5 +20,15 @@
       "persist": true,
       "head_sampling_rate": 1
     }
+  },
+  "env": {
+    "dev": {
+      "name": "rduffy-uk-dev",
+      "workers_dev": true,
+      "preview_urls": false,
+      "assets": {
+        "directory": "dist"
+      }
+    }
   }
 }

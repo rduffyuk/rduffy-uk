@@ -1,0 +1,133 @@
+---
+import { render, getCollection, type CollectionEntry } from "astro:content";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { episodeChip } from "@/utils/writing";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("writing", ({ data }) => !data.draft);
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+interface Props {
+  post: CollectionEntry<"writing">;
+}
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const chip = episodeChip(post.id);
+const fmt = (d: Date) => d.toISOString().slice(0, 10);
+
+// ADRs that declare this episode
+const allAdrs = await getCollection("adrs");
+const linkedAdrs = allAdrs.filter((a) => a.data.episode === post.id);
+
+// prev / next within the collection, chronological
+const posts = (await getCollection("writing", ({ data }) => !data.draft))
+  .sort((a, b) => a.data.pubDatetime.getTime() - b.data.pubDatetime.getTime());
+const idx = posts.findIndex((p) => p.id === post.id);
+const prev = idx > 0 ? posts[idx - 1] : null;
+const next = idx < posts.length - 1 ? posts[idx + 1] : null;
+---
+
+<BaseLayout title={post.data.title} description={post.data.description ?? ""}>
+  <!-- reading progress -->
+  <div class="sticky top-[3.3125rem] z-40 h-0.5 bg-[--color-border]">
+    <div id="progress-bar" class="h-0.5 w-0 bg-[--color-accent]"></div>
+  </div>
+
+  <article class="mx-auto max-w-[44rem] px-6 py-11">
+    <nav class="mb-4 font-mono text-xs text-[--color-text-subtle]" aria-label="Breadcrumb">
+      <a href="/writing" class="text-[--color-accent] hover:underline">writing</a>
+      {chip !== "ESSAY" && <span> / {chip.toLowerCase().replace("·", "-")}</span>}
+    </nav>
+    <h1 class="text-[1.75rem] font-semibold leading-snug tracking-tight md:text-[2rem]">
+      {post.data.title}
+    </h1>
+    <div class="mt-4 flex flex-wrap items-baseline gap-3 font-mono text-xs text-[--color-text-subtle]">
+      <span class="u-chip u-chip--post">{chip}</span>
+      <span class="tabular-nums">{fmt(post.data.pubDatetime)}</span>
+      {post.data.reading_time && <><span>·</span><span>{post.data.reading_time}</span></>}
+      {post.data.tags.length > 0 && <><span>·</span><span>{post.data.tags.slice(0, 4).join(" · ")}</span></>}
+    </div>
+
+    {linkedAdrs.length > 0 && (
+      <div class="mt-6 flex flex-col gap-2">
+        {linkedAdrs.map((adr) => (
+          <a href={`/adrs/${adr.id}/`} class="u-panel flex items-baseline gap-3.5 border-l-[3px] !border-l-[--color-adr] px-4 py-3 transition-colors hover:bg-[--color-card-hover]">
+            <span class="u-chip u-chip--adr flex-none">ADR-{String(adr.data.id).padStart(3, "0")}</span>
+            <span class="text-sm">{adr.data.title}</span>
+            <span class="ml-auto flex-none font-mono text-[0.6875rem] text-[--color-accent]">read decision →</span>
+          </a>
+        ))}
+      </div>
+    )}
+
+    <div class="prose prose-rd mt-8 max-w-none">
+      <Content />
+    </div>
+
+    <div class="mt-12 grid gap-3.5 md:grid-cols-2">
+      {prev ? (
+        <a href={`/writing/${prev.id}/`} class="u-panel px-4 py-3.5 transition-colors hover:bg-[--color-card-hover]">
+          <div class="u-label mb-1.5 !text-[0.625rem]">← previous · {episodeChip(prev.id)}</div>
+          <div class="text-[0.8125rem] font-medium">{prev.data.title}</div>
+        </a>
+      ) : <div></div>}
+      {next ? (
+        <a href={`/writing/${next.id}/`} class="u-panel px-4 py-3.5 text-right transition-colors hover:bg-[--color-card-hover]">
+          <div class="u-label mb-1.5 !text-[0.625rem]">next · {episodeChip(next.id)}</div>
+          <div class="text-[0.8125rem] font-medium">{next.data.title}</div>
+        </a>
+      ) : (
+        <div class="u-panel px-4 py-3.5 text-right">
+          <div class="u-label mb-1.5 !text-[0.625rem]">next episode</div>
+          <div class="text-[0.8125rem] font-medium text-[--color-text-subtle]">not yet published</div>
+        </div>
+      )}
+    </div>
+  </article>
+</BaseLayout>
+
+<style is:global>
+  /* Article typography — unified system */
+  .prose-rd {
+    color: var(--color-text);
+    font-size: 1.03125rem;
+    line-height: 1.75;
+  }
+  .prose-rd h2, .prose-rd h3, .prose-rd h4 { color: var(--color-text); font-weight: 600; letter-spacing: -0.01em; }
+  .prose-rd h2 { font-size: 1.375rem; margin-top: 2.2em; }
+  .prose-rd h3 { font-size: 1.125rem; }
+  .prose-rd strong { color: var(--color-text); }
+  .prose-rd p, .prose-rd li { color: var(--color-text); }
+  .prose-rd blockquote { border-left: 3px solid var(--color-rule); color: var(--color-text-muted); font-style: normal; }
+  .prose-rd code { font-family: var(--font-mono); font-size: 0.875em; background: var(--color-chip); border-radius: 4px; padding: 0.1em 0.4em; }
+  .prose-rd pre { border: 1px solid var(--color-border); border-radius: 8px; font-size: 0.8125rem; line-height: 1.7; }
+  .prose-rd pre code { background: none; padding: 0; }
+  .prose-rd img { border: 1px solid var(--color-border); border-radius: 8px; margin-inline: auto; }
+  .prose-rd hr { border-color: var(--color-border); }
+  .prose-rd table { font-size: 0.875rem; }
+  .prose-rd th, .prose-rd td { border: 1px solid var(--color-border); padding: 0.5rem 0.75rem; }
+  .prose-rd a { color: var(--color-accent); text-underline-offset: 3px; }
+</style>
+
+<script>
+  // Reading progress
+  const bar = document.getElementById("progress-bar");
+  document.addEventListener("scroll", () => {
+    const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    if (bar && h > 0) bar.style.width = `${(window.scrollY / h) * 100}%`;
+  }, { passive: true });
+
+  // Heading anchor links
+  document.querySelectorAll("article h2[id], article h3[id]").forEach((heading) => {
+    const link = document.createElement("a");
+    link.href = `#${heading.id}`;
+    link.textContent = " #";
+    link.className = "heading-anchor";
+    link.style.cssText = "text-decoration:none;opacity:0;transition:opacity .15s";
+    heading.appendChild(link);
+    heading.addEventListener("mouseenter", () => (link.style.opacity = "0.6"));
+    heading.addEventListener("mouseleave", () => (link.style.opacity = "0"));
+  });
+</script>

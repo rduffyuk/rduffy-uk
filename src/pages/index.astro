@@ -1,181 +1,137 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
-import HeroStats from "@components/HeroStats.astro";
-import ContributionHeatmap from "@components/ContributionHeatmap";
-import contributions from "@data/contributions.json";
+import ProofStrip from "@components/ProofStrip.astro";
+import ShippingLog from "@components/ShippingLog.astro";
+
+const kvRows = [
+  { k: "Day job", v: "SRE Specialist · BT Global Fabric — NaaS across 140 PoPs, 40 countries" },
+  { k: "Night job", v: "Rootweaver — self-hosted AI platform on K3s, built with Claude Code", accent: true },
+  { k: "Decisions", v: "46 ADRs written · curated set published here" },
+  { k: "Writing", v: "21 episodes · 3 seasons · essays" },
+];
 ---
 
-<BaseLayout title="Home" description="Ryan Duffy — SRE, AI Orchestrator, Builder. Building Rootweaver with Claude Code.">
-  <!-- Hero with subtle radial glow -->
-  <section class="relative overflow-hidden">
-    <div class="pointer-events-none absolute inset-0" aria-hidden="true">
-      <div class="absolute left-1/2 top-1/4 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[--color-accent] opacity-[0.04] blur-[120px]"></div>
-      <div class="absolute right-1/4 top-1/2 h-[300px] w-[300px] rounded-full bg-[--color-accent-cyan] opacity-[0.03] blur-[100px]"></div>
-    </div>
-
-    <div class="relative mx-auto max-w-4xl px-6 pb-20 pt-28 text-center md:pt-36">
-      <p class="mb-6 font-mono text-xs tracking-[0.2em] uppercase text-[--color-accent-cyan]">
-        SRE · AI Orchestrator · Builder
-      </p>
-      <h1 class="mb-6 text-5xl font-extrabold leading-tight md:text-7xl">
-        <span class="gradient-text">Ryan Duffy</span>
+<BaseLayout title="Home" description="Ryan Duffy — SRE who builds AI infrastructure. A global network by day, a self-hosted AI platform by night, every decision documented.">
+  <!-- Identity -->
+  <section class="mx-auto grid max-w-6xl gap-10 px-6 pt-14 md:grid-cols-[1.25fr_1fr] md:gap-12">
+    <div>
+      <h1 class="text-4xl font-semibold leading-tight tracking-tight md:text-[2.75rem]">
+        Ryan Duffy
       </h1>
-      <p class="mx-auto max-w-xl text-lg leading-relaxed text-[--color-text-muted]">
-        Building AI infrastructure one conversation at a time.
-        <span class="text-[--color-text]">Documenting the journey</span> from context window overflow to self-documenting systems.
+      <p class="mt-3 max-w-xl text-lg leading-relaxed text-[--color-text-muted] md:text-xl">
+        Site reliability engineer who builds AI infrastructure. I keep a global
+        network honest by day, run a self-hosted AI platform by night — and
+        write down every decision.
       </p>
-
-      <div class="mt-10 flex flex-wrap justify-center gap-4">
-        <a href="/journey" class="group relative inline-flex items-center gap-2 overflow-hidden rounded-lg bg-[--color-accent] px-7 py-3.5 font-semibold text-white transition-all hover:shadow-[0_0_24px_rgba(168,85,247,0.4)]">
-          Explore the Journey
-          <svg class="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-        <a href="/cv" class="inline-flex items-center gap-2 rounded-lg border border-[--color-border] px-7 py-3.5 font-medium text-[--color-text-muted] transition-all hover:border-[--color-accent] hover:text-[--color-accent] hover:bg-white/[0.02]">
-          View CV
-        </a>
+      <div class="mt-7 flex gap-3">
+        <a href="/writing" class="u-btn-primary">writing →</a>
+        <a href="/cv" class="u-btn-secondary">cv</a>
       </div>
-
-      <HeroStats />
     </div>
-  </section>
-
-  <!-- Activity heatmap -->
-  <section class="border-t border-[--color-border]">
-    <div class="mx-auto max-w-4xl px-6 py-12">
-      <h2 class="mb-6 text-center font-mono text-xs tracking-[0.2em] uppercase text-[--color-text-subtle]">
-        Activity
-      </h2>
-      <ContributionHeatmap variant="compact" data={contributions} client:load />
-    </div>
-  </section>
-
-  <!-- What I build section -->
-  <section class="border-t border-[--color-border]">
-    <div class="mx-auto max-w-5xl px-6 py-20">
-      <h2 class="mb-12 text-center font-mono text-xs tracking-[0.2em] uppercase text-[--color-text-subtle]">
-        What I Build
-      </h2>
-      <div class="grid gap-6 md:grid-cols-3">
-        <div class="card p-6">
-          <div class="mb-3 text-2xl">🔮</div>
-          <h3 class="mb-2 text-sm font-semibold text-[--color-accent]">Rootweaver Platform</h3>
-          <p class="text-sm leading-relaxed text-[--color-text-muted]">
-            A self-hosted AI engineering platform — multi-agent RAG, knowledge graphs, GPU inference, Kafka streaming, SRE automation, and 29 MCP tools. Running on K3s, built entirely with Claude Code.
-          </p>
+    <div class="self-start">
+      {kvRows.map((row) => (
+        <div class="flex gap-4 border-b border-[--color-border] py-2.5">
+          <span class="u-label w-[7.5rem] flex-none pt-0.5">{row.k}</span>
+          <span class:list={["text-sm leading-relaxed", row.accent ? "font-semibold text-[--color-accent]" : "text-[--color-text]"]}>{row.v}</span>
         </div>
-        <div class="card p-6">
-          <div class="mb-3 text-2xl">🛠️</div>
-          <h3 class="mb-2 text-sm font-semibold text-[--color-accent-cyan]">MCP Tool Suite</h3>
-          <p class="text-sm leading-relaxed text-[--color-text-muted]">
-            29 Model Context Protocol tools bridging Claude Code to semantic search, knowledge graphs, and workflow automation.
-          </p>
-        </div>
-        <div class="card p-6">
-          <div class="mb-3 text-2xl">✍️</div>
-          <h3 class="mb-2 text-sm font-semibold text-[--color-workflow]">Building in Public</h3>
-          <p class="text-sm leading-relaxed text-[--color-text-muted]">
-            Documenting every architectural decision, every migration, every lesson learned — from day one.
-          </p>
-        </div>
-      </div>
+      ))}
     </div>
   </section>
 
-  <!-- Architecture teaser -->
-  <section class="border-t border-[--color-border]">
-    <div class="mx-auto max-w-3xl px-6 py-20">
-      <h2 class="mb-8 text-center font-mono text-xs tracking-[0.2em] uppercase text-[--color-text-subtle]">
-        How It Works
-      </h2>
-      <div class="card overflow-hidden p-6 md:p-8">
-        <svg viewBox="0 0 750 700" class="mx-auto w-full" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Rootweaver platform architecture — search flow and indexing pipeline">
-          <defs>
-            <marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8" /></marker>
-            <filter id="gp"><feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#a855f7" flood-opacity="0.3"/></filter>
-            <filter id="gb"><feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#3b82f6" flood-opacity="0.3"/></filter>
-            <filter id="go"><feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#f97316" flood-opacity="0.3"/></filter>
-            <filter id="gr"><feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#ef4444" flood-opacity="0.3"/></filter>
-          </defs>
-
-          <!-- Column labels -->
-          <text x="150" y="22" text-anchor="middle" fill="#ec4899" font-size="8" font-family="monospace" letter-spacing="0.15em" opacity="0.6">INDEXING PIPELINE</text>
-          <text x="450" y="22" text-anchor="middle" fill="#a855f7" font-size="8" font-family="monospace" letter-spacing="0.15em" opacity="0.6">SEARCH FLOW</text>
-          <text x="670" y="22" text-anchor="middle" fill="#ef4444" font-size="8" font-family="monospace" letter-spacing="0.15em" opacity="0.6">LLM</text>
-
-          <!-- Search flow edges -->
-          <g stroke="#94a3b8" stroke-width="1.5" fill="none" marker-end="url(#arrow)" opacity="0.4">
-            <line x1="450" y1="80" x2="450" y2="130" /><line x1="450" y1="200" x2="450" y2="250" />
-            <line x1="450" y1="320" x2="330" y2="370" /><line x1="450" y1="320" x2="450" y2="370" /><line x1="450" y1="320" x2="570" y2="370" />
-            <line x1="330" y1="440" x2="420" y2="480" /><line x1="450" y1="440" x2="450" y2="480" /><line x1="570" y1="440" x2="480" y2="480" />
-            <line x1="420" y1="550" x2="320" y2="600" /><line x1="480" y1="550" x2="520" y2="600" />
-          </g>
-          <!-- Indexing edges -->
-          <g stroke="#ec4899" stroke-width="1.5" fill="none" marker-end="url(#arrow)" opacity="0.4">
-            <line x1="150" y1="110" x2="150" y2="190" /><line x1="150" y1="260" x2="150" y2="340" /><line x1="150" y1="410" x2="150" y2="490" />
-            <line x1="150" y1="560" x2="250" y2="600" />
-          </g>
-          <!-- LLM edge -->
-          <g stroke="#ef4444" stroke-width="1.5" fill="none" marker-end="url(#arrow)" opacity="0.4">
-            <line x1="610" y1="390" x2="640" y2="120" />
-          </g>
-
-          <!-- Animated data flow -->
-          <circle r="3" fill="#a855f7"><animateMotion dur="2s" repeatCount="indefinite" path="M450,80 L450,130" /></circle>
-          <circle r="3" fill="#a855f7"><animateMotion dur="2.5s" repeatCount="indefinite" path="M450,200 L450,250" begin="0.3s" /></circle>
-          <circle r="3" fill="#ec4899"><animateMotion dur="2s" repeatCount="indefinite" path="M150,260 L150,340" begin="0.5s" /></circle>
-          <circle r="3" fill="#f97316"><animateMotion dur="2s" repeatCount="indefinite" path="M420,550 L320,600" begin="0.8s" /></circle>
-
-          <!-- SEARCH: Claude Code -->
-          <g><rect x="370" y="35" width="160" height="45" rx="10" class="svg-node-bg" stroke="#f1f5f9" stroke-width="1" opacity="0.8" /><text x="450" y="55" text-anchor="middle" fill="#f1f5f9" font-size="11" font-weight="600">💻 Claude Code</text><text x="450" y="70" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="monospace">MCP SSE</text></g>
-          <!-- SEARCH: MCP Bridge -->
-          <g filter="url(#gb)"><rect x="360" y="130" width="180" height="70" rx="10" class="svg-node-bg" stroke="#3b82f6" stroke-width="1.5" /><text x="450" y="157" text-anchor="middle" fill="#3b82f6" font-size="11" font-weight="600">🔌 MCP Bridge</text><text x="450" y="175" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="monospace">:30002 · 29 tools</text></g>
-          <!-- SEARCH: RAG Gateway -->
-          <g filter="url(#gp)"><rect x="360" y="250" width="180" height="70" rx="10" class="svg-node-bg" stroke="#a855f7" stroke-width="1.5" /><text x="450" y="277" text-anchor="middle" fill="#a855f7" font-size="11" font-weight="600">🚪 RAG Gateway</text><text x="450" y="295" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="monospace">:30808 · 2 replicas</text></g>
-          <!-- SEARCH: Agents -->
-          <g><rect x="265" y="370" width="130" height="70" rx="10" class="svg-node-bg" stroke="#22c55e" stroke-width="1.5" /><text x="330" y="398" text-anchor="middle" fill="#22c55e" font-size="10" font-weight="600">FastSearch</text><text x="330" y="418" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="monospace">&lt;1s</text></g>
-          <g><rect x="405" y="370" width="130" height="70" rx="10" class="svg-node-bg" stroke="#ec4899" stroke-width="1.5" /><text x="470" y="398" text-anchor="middle" fill="#ec4899" font-size="10" font-weight="600">DeepResearch</text><text x="470" y="418" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="monospace">~10s</text></g>
-          <g><rect x="540" y="370" width="110" height="70" rx="10" class="svg-node-bg" stroke="#ef4444" stroke-width="1.5" /><text x="595" y="398" text-anchor="middle" fill="#ef4444" font-size="10" font-weight="600">Oracle</text><text x="595" y="418" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="monospace">15-30s</text></g>
-          <!-- SEARCH: Retriever -->
-          <g filter="url(#go)"><rect x="370" y="480" width="180" height="70" rx="10" class="svg-node-bg" stroke="#f97316" stroke-width="1.5" /><text x="460" y="507" text-anchor="middle" fill="#f97316" font-size="11" font-weight="600">🔍 Retriever</text><text x="460" y="527" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="monospace">:8001 · BM25+Vector+Rerank</text></g>
-
-          <!-- INDEXING: Vault -->
-          <g><rect x="65" y="45" width="170" height="60" rx="10" class="svg-node-bg" stroke="#a855f7" stroke-width="1.5" /><text x="150" y="70" text-anchor="middle" fill="#a855f7" font-size="11" font-weight="600">📂 Obsidian Vault</text><text x="150" y="88" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="monospace">1,917 files</text></g>
-          <!-- INDEXING: File Watcher -->
-          <g><rect x="65" y="190" width="170" height="65" rx="10" class="svg-node-bg" stroke="#ec4899" stroke-width="1.5" /><text x="150" y="216" text-anchor="middle" fill="#ec4899" font-size="10" font-weight="600">👁️ File Watcher</text><text x="150" y="234" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="monospace">inotify → Kafka</text></g>
-          <!-- INDEXING: Kafka -->
-          <g><rect x="65" y="340" width="170" height="65" rx="10" class="svg-node-bg" stroke="#00d4ff" stroke-width="1.5" /><text x="150" y="366" text-anchor="middle" fill="#00d4ff" font-size="10" font-weight="600">📬 Kafka</text><text x="150" y="384" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="monospace">10+ topics · streaming</text></g>
-          <!-- INDEXING: NER -->
-          <g><rect x="65" y="490" width="170" height="65" rx="10" class="svg-node-bg" stroke="#ec4899" stroke-width="1.5" /><text x="150" y="516" text-anchor="middle" fill="#ec4899" font-size="10" font-weight="600">🏷️ NER Consumer</text><text x="150" y="534" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="monospace">spaCy · KEDA 0→1</text></g>
-
-          <!-- DATA STORES -->
-          <g><rect x="240" y="600" width="160" height="65" rx="10" class="svg-node-bg" stroke="#f97316" stroke-width="1.5" /><text x="320" y="626" text-anchor="middle" fill="#f97316" font-size="10" font-weight="600">🔮 Qdrant</text><text x="320" y="644" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="monospace">148K chunks · 2560d</text></g>
-          <g><rect x="440" y="600" width="160" height="65" rx="10" class="svg-node-bg" stroke="#f97316" stroke-width="1.5" /><text x="520" y="626" text-anchor="middle" fill="#f97316" font-size="10" font-weight="600">🕸️ FalkorDB</text><text x="520" y="644" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="monospace">7.7K nodes · graph</text></g>
-
-          <!-- LLM: vLLM -->
-          <g filter="url(#gr)"><rect x="630" y="55" width="110" height="70" rx="10" class="svg-node-bg" stroke="#ef4444" stroke-width="1.5" /><text x="685" y="80" text-anchor="middle" fill="#ef4444" font-size="10" font-weight="600">🎮 vLLM</text><text x="685" y="96" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="monospace">Qwen3-8B</text><text x="685" y="110" text-anchor="middle" fill="#94a3b8" font-size="7" font-family="monospace">RTX 4080 GPU</text></g>
-        </svg>
-      </div>
-      <div class="mt-6 text-center">
-        <a href="/rootweaver" class="group inline-flex items-center gap-2 text-sm text-[--color-accent] hover:underline">
-          Explore the full architecture
-          <svg class="h-3 w-3 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-      </div>
-    </div>
+  <!-- Proof strip -->
+  <section class="mx-auto max-w-6xl px-6 pt-10">
+    <ProofStrip />
   </section>
 
-  <!-- CTA -->
-  <section class="border-t border-[--color-border]">
-    <div class="mx-auto max-w-3xl px-6 py-20 text-center">
-      <p class="font-mono text-sm text-[--color-text-subtle]">
-        Every line of code on this site was written through
-        <span class="text-[--color-accent]">human intent</span> shaped by
-        <span class="text-[--color-accent-cyan]">AI execution</span>.
+  <!-- Shipping log -->
+  <section class="mx-auto max-w-6xl px-6 pt-12">
+    <div class="mb-3 flex flex-wrap items-baseline justify-between gap-2">
+      <div class="flex items-baseline gap-4">
+        <h2 class="text-lg font-semibold">Shipping log</h2>
+        <span class="u-label hidden sm:inline">posts · ADRs · commits</span>
+      </div>
+      <div id="log-filters" class="flex gap-1 font-mono text-[0.6875rem]">
+        {["all", "posts", "adrs", "commits"].map((f, i) => (
+          <button
+            data-filter={f}
+            class:list={[
+              "rounded-full border px-3 py-1 transition-colors",
+              i === 0 ? "border-[--color-rule] bg-[--color-chip] text-[--color-text]" : "border-transparent text-[--color-text-subtle] hover:text-[--color-text]",
+            ]}
+          >{f}</button>
+        ))}
+      </div>
+    </div>
+    <ShippingLog limit={10} />
+    <p class="mt-2.5 font-mono text-[0.6875rem] text-[--color-text-subtle]">
+      commit digests are generated weekly at build time from curated repos — messages filtered, private repos excluded
+    </p>
+  </section>
+
+  <!-- Platform teaser -->
+  <section class="mx-auto grid max-w-6xl gap-10 px-6 pb-16 pt-12 md:grid-cols-[1fr_1.1fr]">
+    <div>
+      <div class="u-label mb-3.5">The platform</div>
+      <p class="text-[0.9375rem] leading-relaxed text-[--color-text-muted]">
+        <strong class="font-semibold text-[--color-text]">Rootweaver</strong> turns Claude Code into a long-term
+        infrastructure collaborator: hybrid graph + vector retrieval, GPU inference, Kafka streaming, and a
+        full observability stack — on one GPU node and a MacBook.
       </p>
+      <a href="/rootweaver" class="mt-4 inline-block font-mono text-xs text-[--color-accent] hover:underline">architecture deep-dive →</a>
+    </div>
+    <div class="u-panel relative min-h-[200px]">
+      <svg class="absolute inset-0 h-full w-full" viewBox="0 0 540 200" role="img" aria-label="Rootweaver architecture overview">
+        <g stroke="var(--color-rule)" stroke-width="1">
+          <line x1="270" y1="50" x2="270" y2="80"></line><line x1="270" y1="110" x2="180" y2="140"></line><line x1="270" y1="110" x2="360" y2="140"></line>
+          <line x1="100" y1="50" x2="100" y2="138"></line><line x1="430" y1="88" x2="320" y2="96"></line>
+        </g>
+        <circle r="3" fill="var(--color-accent)"><animateMotion dur="2.2s" repeatCount="indefinite" path="M270,50 L270,80"></animateMotion></circle>
+        <circle r="3" fill="var(--color-accent)"><animateMotion dur="2.6s" repeatCount="indefinite" path="M270,110 L180,140" begin="0.5s"></animateMotion></circle>
+        {[
+          { n: "Claude Code", x: 212, y: 24, w: 116 },
+          { n: "RAG Gateway", x: 212, y: 82, w: 116 },
+          { n: "Qdrant", x: 128, y: 140, w: 104 },
+          { n: "FalkorDB", x: 308, y: 140, w: 104 },
+          { n: "Vault", x: 58, y: 24, w: 84 },
+          { n: "Kafka", x: 58, y: 138, w: 84 },
+          { n: "vLLM · GPU", x: 396, y: 62, w: 96 },
+        ].map((node) => (
+          <g>
+            <rect x={node.x} y={node.y} width={node.w} height="28" rx="4" fill="var(--color-node-bg)" stroke="var(--color-rule)" stroke-width="1"></rect>
+            <circle cx={node.x + 10} cy={node.y + 14} r="2.5" fill="var(--color-ok)"></circle>
+            <text x={node.x + node.w / 2 + 5} y={node.y + 18} text-anchor="middle" fill="var(--color-text)" font-size="10.5" font-family="JetBrains Mono">{node.n}</text>
+          </g>
+        ))}
+      </svg>
     </div>
   </section>
 </BaseLayout>
 
-<style>
-  .svg-node-bg { fill: var(--color-node-bg, #0f0f13); }
-</style>
+<script>
+  // Shipping-log filters
+  const filterMap: Record<string, string[]> = {
+    all: [],
+    posts: ["post", "essay"],
+    adrs: ["adr"],
+    commits: ["commit"],
+  };
+  const buttons = document.querySelectorAll<HTMLButtonElement>("#log-filters button");
+  const rows = document.querySelectorAll<HTMLElement>("[data-kind]");
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const kinds = filterMap[btn.dataset.filter ?? "all"];
+      rows.forEach((row) => {
+        const show = kinds.length === 0 || kinds.includes(row.dataset.kind ?? "");
+        row.style.display = show ? "" : "none";
+      });
+      buttons.forEach((b) => {
+        const active = b === btn;
+        b.classList.toggle("bg-[--color-chip]", active);
+        b.classList.toggle("border-[--color-rule]", active);
+        b.classList.toggle("text-[--color-text]", active);
+        b.classList.toggle("border-transparent", !active);
+        b.classList.toggle("text-[--color-text-subtle]", !active);
+      });
+    });
+  });
+</script>

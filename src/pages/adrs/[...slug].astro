@@ -1,0 +1,76 @@
+---
+import { render, getCollection, type CollectionEntry } from "astro:content";
+import BaseLayout from "@layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+  const adrs = await getCollection("adrs");
+  return adrs.map((adr) => ({ params: { slug: adr.id }, props: { adr } }));
+}
+
+interface Props {
+  adr: CollectionEntry<"adrs">;
+}
+const { adr } = Astro.props;
+const { Content } = await render(adr);
+
+const pad = `ADR-${String(adr.data.id).padStart(3, "0")}`;
+const fmt = (d: Date) => d.toISOString().slice(0, 10);
+
+const writing = await getCollection("writing");
+const episode = adr.data.episode ? writing.find((p) => p.id === adr.data.episode) : null;
+const epChipM = adr.data.episode?.match(/season-(\d+)-episode-(\d+)/);
+const epChip = epChipM ? `S${epChipM[1]}·E${String(epChipM[2]).padStart(2, "0")}` : null;
+---
+
+<BaseLayout title={`${pad} — ${adr.data.title}`} description={adr.data.title}>
+  <section class="mx-auto grid max-w-5xl gap-10 px-6 py-11 md:grid-cols-[1fr_16.5rem]">
+    <article>
+      <nav class="mb-4 font-mono text-xs text-[--color-text-subtle]" aria-label="Breadcrumb">
+        <a href="/adrs" class="text-[--color-accent] hover:underline">adrs</a>
+        <span> / </span>
+        <span class="u-chip u-chip--adr">{pad}</span>
+      </nav>
+      <h1 class="text-[1.625rem] font-semibold leading-snug tracking-tight md:text-[1.75rem]">
+        {adr.data.title}
+      </h1>
+      <div class="prose prose-rd mt-6 max-w-none">
+        <Content />
+      </div>
+    </article>
+
+    <aside class="self-start md:sticky md:top-20">
+      <div class="u-panel px-4 py-3.5">
+        {[
+          ["status", adr.data.status],
+          ["date", fmt(adr.data.date)],
+          ...(adr.data.supersedes ? [["supersedes", adr.data.supersedes]] : []),
+          ...(adr.data.supersededBy ? [["superseded by", adr.data.supersededBy]] : []),
+          ...(adr.data.tags.length ? [["tags", adr.data.tags.join(" · ")]] : []),
+        ].map(([k, v]) => (
+          <div class="flex items-baseline gap-3 border-b border-[--color-border] py-2 last:border-b-0">
+            <span class="u-label w-[4.75rem] flex-none !text-[0.625rem]">{k}</span>
+            {k === "status" ? (
+              <span class:list={["u-status-pill", `u-status-pill--${v}`]}>{v}</span>
+            ) : (
+              <span class="font-mono text-xs text-[--color-text]">{v}</span>
+            )}
+          </div>
+        ))}
+        {episode && (
+          <div class="pt-3">
+            <div class="u-label mb-2 !text-[0.625rem]">discussed in</div>
+            <a href={`/writing/${episode.id}/`} class="flex items-baseline gap-2.5 rounded-md border border-[--color-border] px-3 py-2 transition-colors hover:bg-[--color-card-hover]">
+              <span class="u-chip u-chip--post flex-none">{epChip}</span>
+              <span class="text-xs leading-snug">{episode.data.title}</span>
+            </a>
+          </div>
+        )}
+      </div>
+    </aside>
+  </section>
+</BaseLayout>
+
+<style is:global>
+  .prose-rd h2 { font-size: 1.1875rem; margin-top: 1.9em; }
+  .prose-rd h2 .adr-num { font-family: var(--font-mono); font-size: 0.8125rem; color: var(--color-text-subtle); margin-right: 0.625rem; }
+</style>
