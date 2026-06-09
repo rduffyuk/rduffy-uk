@@ -8,7 +8,7 @@ interface Props {
   description?: string;
 }
 
-const { title, description = "Ryan Duffy — SRE, AI Orchestrator, Builder" } = Astro.props;
+const { title, description = "Ryan Duffy — SRE who builds AI infrastructure. Every decision documented." } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
@@ -27,7 +27,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="anonymous" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <title>{title} | rduffy.uk</title>
@@ -38,9 +38,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       })();
     </script>
   </head>
-  <body class="min-h-screen">
+  <body class="min-h-screen flex flex-col">
     <Nav />
-    <main id="main-content">
+    <main id="main-content" class="flex-1">
       <slot />
     </main>
     <Footer />

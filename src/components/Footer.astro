@@ -1,18 +1,26 @@
 ---
 const year = new Date().getFullYear();
+const buildingSince = new Date("2025-09-11");
+const uptimeDays = Math.floor((Date.now() - buildingSince.getTime()) / 86400000);
+
+const socials = [
+  { label: "github", href: "https://github.com/rduffyuk" },
+  { label: "gitlab", href: "https://gitlab.com/ryanduffy.uk" },
+  { label: "linkedin", href: "https://linkedin.com/in/rduffyuk" },
+  { label: "rss", href: "/rss.xml" },
+];
 ---
 
-<footer class="border-t border-[--color-border] px-6 py-10">
-  <div class="mx-auto flex max-w-6xl flex-col items-center gap-4 md:flex-row md:justify-between">
-    <p class="text-sm text-[--color-text-subtle]">
-      &copy; {year} <span class="text-[--color-text-muted]">Ryan Duffy</span>. Built with
-      <span class="font-mono text-[--color-accent]">Astro</span> &
-      <span class="font-mono text-[--color-accent-cyan]">Claude Code</span>.
+<footer class="border-t border-[--color-rule] px-6 py-5">
+  <div class="mx-auto flex max-w-6xl flex-col items-center gap-3 font-mono text-[0.71875rem] text-[--color-text-subtle] md:flex-row md:justify-between">
+    <p>
+      &copy; {year} Ryan Duffy · Astro + Claude Code ·
+      <span class="text-[--color-ok]">&#9679; platform nominal · building {uptimeDays}d</span>
     </p>
-    <div class="flex gap-5">
-      <a href="https://blog.rduffy.uk" class="text-sm text-[--color-text-subtle] transition-colors hover:text-[--color-accent]" target="_blank" rel="noopener noreferrer">Blog</a>
-      <a href="https://gitlab.com/ryanduffy.uk" class="text-sm text-[--color-text-subtle] transition-colors hover:text-[--color-accent]" target="_blank" rel="noopener noreferrer">GitLab</a>
-      <a href="https://linkedin.com/in/rduffyuk" class="text-sm text-[--color-text-subtle] transition-colors hover:text-[--color-accent]" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+    <div class="flex gap-4">
+      {socials.map((s) => (
+        <a href={s.href} class="transition-colors hover:text-[--color-accent]" target={s.href.startsWith("http") ? "_blank" : undefined} rel={s.href.startsWith("http") ? "noopener noreferrer" : undefined}>{s.label}</a>
+      ))}
     </div>
   </div>
 </footer>

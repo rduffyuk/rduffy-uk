@@ -7,10 +7,12 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "prebuild": "node scripts/fetch-contributions.mjs",
+    "prebuild": "node scripts/fetch-contributions.mjs && node scripts/build-shipping-log.mjs",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "sync-adrs": "node scripts/sync-adrs.mjs",
+    "deploy:dev": "astro build && wrangler deploy --env dev"
   },
   "dependencies": {
     "@astrojs/react": "^5.0.5",

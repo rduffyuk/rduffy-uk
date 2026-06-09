@@ -1,0 +1,85 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import stats from "@data/stats.json";
+
+const adrs = await getCollection("adrs");
+adrs.sort((a, b) => b.data.id - a.data.id);
+
+const total = stats.adrsTotal ?? 46;
+const counts = {
+  accepted: adrs.filter((a) => a.data.status === "accepted").length,
+  superseded: adrs.filter((a) => a.data.status === "superseded").length,
+  proposed: adrs.filter((a) => a.data.status === "proposed").length,
+};
+const fmt = (d: Date) => d.toISOString().slice(0, 10);
+const pad = (n: number) => `ADR-${String(n).padStart(3, "0")}`;
+const chipOf = (ep?: string) => {
+  const m = ep?.match(/season-(\d+)-episode-(\d+)/);
+  return m ? `S${m[1]}·E${String(m[2]).padStart(2, "0")}` : null;
+};
+---
+
+<BaseLayout title="ADRs" description="Architecture Decision Records for the Rootweaver platform — context, decision, consequences. Curated subset; operational records stay private.">
+  <section class="mx-auto max-w-5xl px-6 py-12">
+    <h1 class="text-3xl font-semibold tracking-tight md:text-[2.125rem]">Architecture Decision Records</h1>
+    <p class="mt-3 max-w-2xl text-[0.9375rem] leading-relaxed text-[--color-text-muted]">
+      The decisions behind Rootweaver — context, the call that was made, and what it cost.
+      <strong class="font-semibold text-[--color-text]"> {adrs.length} of {total} published</strong>;
+      operational records stay in the platform repo.
+    </p>
+
+    <div id="adr-filters" class="mt-6 mb-4 flex gap-1.5 font-mono text-[0.6875rem]">
+      <button data-status="all" class="rounded-full border border-[--color-rule] bg-[--color-chip] px-3 py-1 text-[--color-text]">all · {adrs.length}</button>
+      <button data-status="accepted" class="rounded-full border border-transparent px-3 py-1 text-[--color-text-subtle] hover:text-[--color-text]">accepted · {counts.accepted}</button>
+      <button data-status="superseded" class="rounded-full border border-transparent px-3 py-1 text-[--color-text-subtle] hover:text-[--color-text]">superseded · {counts.superseded}</button>
+      {counts.proposed > 0 && <button data-status="proposed" class="rounded-full border border-transparent px-3 py-1 text-[--color-text-subtle] hover:text-[--color-text]">proposed · {counts.proposed}</button>}
+    </div>
+
+    <div class="u-panel">
+      <div class="u-label grid grid-cols-[5rem_1fr_6rem] gap-3.5 border-b border-[--color-rule] px-4 py-2.5 !text-[0.625rem] md:grid-cols-[5.25rem_1fr_6.5rem_6rem_5.5rem]">
+        <span>id</span><span>decision</span><span>status</span><span class="hidden md:inline">date</span><span class="hidden md:inline">discussed in</span>
+      </div>
+      {adrs.map((adr, i) => (
+        <a
+          href={`/adrs/${adr.id}/`}
+          data-status={adr.data.status}
+          class:list={[
+            "grid grid-cols-[5rem_1fr_6rem] items-baseline gap-3.5 px-4 py-3 transition-colors hover:bg-[--color-card-hover] md:grid-cols-[5.25rem_1fr_6.5rem_6rem_5.5rem]",
+            i < adrs.length - 1 && "border-b border-[--color-border]",
+          ]}
+        >
+          <span class="u-chip u-chip--adr">{pad(adr.data.id)}</span>
+          <span class="text-sm font-medium leading-snug">{adr.data.title}</span>
+          <span><span class:list={["u-status-pill", `u-status-pill--${adr.data.status}`]}>{adr.data.status}</span></span>
+          <span class="hidden font-mono text-[0.71875rem] tabular-nums text-[--color-text-subtle] md:inline">{fmt(adr.data.date)}</span>
+          <span class="hidden font-mono text-[0.6875rem] md:inline" class:list={[chipOf(adr.data.episode) ? "text-[--color-accent]" : "text-[--color-text-subtle]"]}>{chipOf(adr.data.episode) ?? "—"}</span>
+        </a>
+      ))}
+    </div>
+    <p class="mt-2.5 font-mono text-[0.6875rem] text-[--color-text-subtle]">
+      published from the platform repo at build time · adr/*.md with `public: true` frontmatter
+    </p>
+  </section>
+</BaseLayout>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>("#adr-filters button");
+  const rows = document.querySelectorAll<HTMLElement>("a[data-status]");
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const s = btn.dataset.status;
+      rows.forEach((row) => {
+        row.style.display = s === "all" || row.dataset.status === s ? "" : "none";
+      });
+      buttons.forEach((b) => {
+        const active = b === btn;
+        b.classList.toggle("bg-[--color-chip]", active);
+        b.classList.toggle("border-[--color-rule]", active);
+        b.classList.toggle("text-[--color-text]", active);
+        b.classList.toggle("border-transparent", !active);
+        b.classList.toggle("text-[--color-text-subtle]", !active);
+      });
+    });
+  });
+</script>

@@ -5,5 +5,15 @@
   "preview_urls": false,
   "assets": {
     "directory": "dist"
+  },
+  "env": {
+    "dev": {
+      "name": "rduffy-uk-dev",
+      "workers_dev": true,
+      "preview_urls": false,
+      "assets": {
+        "directory": "dist"
+      }
+    }
   }
 }
