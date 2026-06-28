@@ -1,5 +1,5 @@
 [Unit]
-Description=Refresh rduffy.uk journey component liveness from the live cluster
+Description=Refresh rduffy.uk cluster-derived site data (journey liveness + CV stats)
 Documentation=https://github.com/rduffy-uk/rduffy-uk/blob/main/ops/systemd/README.md
 After=network-online.target
 Wants=network-online.target
@@ -16,10 +16,12 @@ User=rduffy
 Environment=KUBECONFIG=%h/.kube/config
 Environment=RDUFFY_UK_REPO=%h/rduffy-uk
 Environment=RDUFFY_UK_BRANCH=main
-# Ensure node/git/kubectl resolve under the minimal systemd PATH.
+# Platform repo on disk — the CV stats refresh reads its uv-workspace + vault.
+Environment=PLATFORM_REPO=/mnt/2tb/rootweaver-platform
+# Ensure node/git/kubectl/curl resolve under the minimal systemd PATH.
 Environment=PATH=%h/.local/bin:/usr/local/bin:/usr/bin:/bin
 
-ExecStart=%h/rduffy-uk/scripts/cron-refresh-liveness.sh
+ExecStart=%h/rduffy-uk/scripts/cron-refresh-site-data.sh
 
 # Containment: the job writes only inside the repo (and ~/.ssh known_hosts on a
 # first push to a new host). System dirs stay read-only.

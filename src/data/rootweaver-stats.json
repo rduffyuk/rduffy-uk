@@ -1,0 +1,16 @@
+{
+  "generatedAt": "2026-06-28",
+  "source": "k3s-live-read",
+  "namespaces": 42,
+  "networkPolicies": 135,
+  "sealedSecrets": 61,
+  "workspacePackages": 26,
+  "adrs": 77,
+  "qdrantPoints": 55015,
+  "vllmModel": "Qwen3-8B-AWQ",
+  "vllmContextK": 40,
+  "embeddingDim": 2560,
+  "hldModules": 10,
+  "lldModules": 9,
+  "recallMcpTools": 6
+}

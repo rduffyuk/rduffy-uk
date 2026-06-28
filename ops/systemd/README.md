@@ -1,16 +1,17 @@
-# Automated journey liveness (systemd)
+# Automated site data refresh (systemd)
 
-Keeps the `/journey` graph honest with **zero hand-editing**: a weekly timer on a
-cluster-reachable host reads which components are actually running in K3s and, if
-anything changed, commits + pushes `journey-liveness.json` so Cloudflare Pages
-redeploys with the new dark (retired) / lit (live) state.
+Keeps the cluster-derived parts of the site honest with **zero hand-editing** — the
+`/journey` graph's live/retired state *and* the CV's Rootweaver metrics. A weekly
+timer on a cluster-reachable host reads the running platform and, if anything
+changed, commits + pushes so Cloudflare Pages redeploys.
 
 ```
-rduffy-liveness.timer ──► rduffy-liveness.service ──► scripts/cron-refresh-liveness.sh
+rduffy-liveness.timer ──► rduffy-liveness.service ──► scripts/cron-refresh-site-data.sh
                                                           │
-   reads live K3s workloads ──► refresh-cluster-liveness.mjs ──► journey-liveness.json
+   live K3s workloads ──► refresh-cluster-liveness.mjs ──► journey-liveness.json
+   live cluster+repo+vault ─► refresh-rootweaver-stats.mjs ─► rootweaver-stats.json
                                                           │
-   regenerates ──► build-journey.mjs ──► journey-data.json ──► git push ──► CF redeploy
+   build-journey.mjs ──► journey-data.json ──► git push ──► CF redeploy
 ```
 
 ## Where to run it
@@ -54,9 +55,10 @@ The service passes these to the wrapper (edit in `rduffy-liveness.service`):
 
 | Env | Default | Meaning |
 |-----|---------|---------|
-| `RDUFFY_UK_REPO`   | `%h/rduffy-uk`     | repo checkout path |
-| `RDUFFY_UK_BRANCH` | `main`             | the branch Cloudflare deploys |
-| `KUBECONFIG`       | `%h/.kube/config`  | cluster credentials |
+| `RDUFFY_UK_REPO`   | `%h/rduffy-uk`              | repo checkout path |
+| `RDUFFY_UK_BRANCH` | `main`                     | the branch Cloudflare deploys |
+| `KUBECONFIG`       | `%h/.kube/config`          | cluster credentials |
+| `PLATFORM_REPO`    | `/mnt/2tb/rootweaver-platform` | uv-workspace + vault, for CV stats |
 
 ## ⚠️ Before enabling
 
@@ -72,9 +74,14 @@ The service passes these to the wrapper (edit in `rduffy-liveness.service`):
 
 ## Manual alternative
 
-No timer needed to refresh by hand from any mesh machine:
+No timer needed to refresh by hand. Liveness works from any mesh machine; the CV
+stats refresh is best run on the K3s node (it needs the platform repo, vault, and
+in-cluster Qdrant on disk/network):
 
 ```bash
+# from any machine on the mesh
 CLUSTER_SSH="user@cluster-host" pnpm run refresh:liveness
-git add src/data/journey-liveness.json && git commit && git push
+# from the K3s node
+PLATFORM_REPO=/mnt/2tb/rootweaver-platform pnpm run refresh:stats
+git add src/data/journey-liveness.json src/data/rootweaver-stats.json && git commit && git push
 ```
