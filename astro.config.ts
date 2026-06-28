@@ -13,21 +13,13 @@ export default defineConfig({
       [
         rehypeMermaid,
         {
-          // build-time render → inline static SVG (no client JS)
-          strategy: "inline-svg",
-          mermaidConfig: {
-            theme: "base",
-            themeVariables: {
-              primaryColor: "#fffefb",
-              primaryTextColor: "#21262e",
-              primaryBorderColor: "#c9c4b6",
-              lineColor: "#8a8e96",
-              fontFamily: "JetBrains Mono, monospace",
-              fontSize: "14px",
-              clusterBkg: "#f1eee6",
-              clusterBorder: "#dfdbd1",
-            },
-          },
+          // pre-mermaid = emit <pre class="mermaid"> at build, render CLIENT-side.
+          // inline-svg needs a headless Chromium at build time, which cannot
+          // launch in Cloudflare's non-root build container (missing system
+          // libs) — that failure was emptying ALL content-collection bodies.
+          // Client-side rendering removes the build-time browser dependency.
+          // Theme is applied in the client init (see BaseLayout.astro).
+          strategy: "pre-mermaid",
         },
       ],
     ],

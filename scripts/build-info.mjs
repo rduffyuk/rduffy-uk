@@ -5,23 +5,9 @@ import { writeFileSync, mkdirSync } from "node:fs";
 
 mkdirSync("public", { recursive: true });
 
-// Decisive test: can headless Chromium actually launch in this build env?
-// rehype-mermaid (strategy: inline-svg) depends on it; if it can't launch here
-// but can locally, that's the platform-specific cause of empty content bodies.
-let chromium = { ok: false, error: null };
-try {
-  const { chromium: cr } = await import("playwright");
-  const b = await cr.launch();
-  await b.close();
-  chromium.ok = true;
-} catch (e) {
-  chromium.error = String(e?.message || e).slice(0, 300);
-}
-
 const info = {
   node: process.version,
   platform: `${process.platform}/${process.arch}`,
-  chromium,
   // Cloudflare Workers Builds / Pages expose the commit SHA under varying names.
   sha:
     process.env.WORKERS_CI_COMMIT_SHA ||

@@ -44,5 +44,29 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       <slot />
     </main>
     <Footer />
+    <script>
+      // Render Mermaid diagrams client-side (rehype-mermaid strategy: pre-mermaid).
+      // Only pull in the ~heavy mermaid bundle on pages that actually have a diagram.
+      const blocks = document.querySelectorAll<HTMLElement>("pre.mermaid, .mermaid");
+      if (blocks.length) {
+        const { default: mermaid } = await import("mermaid");
+        const dark = document.documentElement.getAttribute("data-theme") === "dark";
+        mermaid.initialize({
+          startOnLoad: false,
+          theme: "base",
+          fontFamily: "JetBrains Mono, monospace",
+          themeVariables: {
+            primaryColor: dark ? "#1b2027" : "#fffefb",
+            primaryTextColor: dark ? "#e6e8eb" : "#21262e",
+            primaryBorderColor: dark ? "#3a4049" : "#c9c4b6",
+            lineColor: "#8a8e96",
+            fontSize: "14px",
+            clusterBkg: dark ? "#21262e" : "#f1eee6",
+            clusterBorder: dark ? "#3a4049" : "#dfdbd1",
+          },
+        });
+        await mermaid.run({ nodes: blocks });
+      }
+    </script>
   </body>
 </html>

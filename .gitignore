@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# generated at build by scripts/build-info.mjs
+public/build-info.json
