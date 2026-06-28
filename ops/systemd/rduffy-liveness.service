@@ -1,0 +1,28 @@
+[Unit]
+Description=Refresh rduffy.uk journey component liveness from the live cluster
+Documentation=https://github.com/rduffy-uk/rduffy-uk/blob/main/ops/systemd/README.md
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+# Run as the user that owns the repo checkout AND has both a working kubeconfig
+# and a GitHub push credential (SSH key / token) for this repo. Adjust to taste.
+User=rduffy
+
+# systemd does not load your login shell profile, so point kubectl at the
+# kubeconfig explicitly. K3s' own config is /etc/rancher/k3s/k3s.yaml (root); a
+# user copy usually lives at ~/.kube/config. Edit if yours differs.
+Environment=KUBECONFIG=%h/.kube/config
+Environment=RDUFFY_UK_REPO=%h/rduffy-uk
+Environment=RDUFFY_UK_BRANCH=main
+# Ensure node/git/kubectl resolve under the minimal systemd PATH.
+Environment=PATH=%h/.local/bin:/usr/local/bin:/usr/bin:/bin
+
+ExecStart=%h/rduffy-uk/scripts/cron-refresh-liveness.sh
+
+# Containment: the job writes only inside the repo (and ~/.ssh known_hosts on a
+# first push to a new host). System dirs stay read-only.
+ProtectSystem=strict
+ReadWritePaths=%h/rduffy-uk %h/.ssh
+NoNewPrivileges=true

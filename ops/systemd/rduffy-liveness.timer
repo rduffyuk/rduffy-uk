@@ -1,0 +1,15 @@
+[Unit]
+Description=Weekly refresh of rduffy.uk journey component liveness
+Documentation=https://github.com/rduffy-uk/rduffy-uk/blob/main/ops/systemd/README.md
+
+[Timer]
+# Sunday 04:30 local — low-traffic window. Liveness changes rarely, so weekly is
+# plenty; bump to daily if you decommission things often.
+OnCalendar=Sun 04:30
+# Catch up one missed run if the box was off at the scheduled time.
+Persistent=true
+# Avoid a thundering-herd-of-one landing exactly on the minute.
+RandomizedDelaySec=300
+
+[Install]
+WantedBy=timers.target
