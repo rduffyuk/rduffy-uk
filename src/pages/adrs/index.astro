@@ -38,16 +38,20 @@ const chipOf = (ep?: string) => {
 
     <div class="u-panel">
       <div class="u-label grid grid-cols-[5rem_1fr_6rem] gap-3.5 border-b border-[--color-rule] px-4 py-2.5 !text-[0.625rem] md:grid-cols-[5.25rem_1fr_6.5rem_6rem_5.5rem]">
-        <span>id</span><span>decision</span><span>status</span><span class="hidden md:inline">date</span><span class="hidden md:inline">discussed in</span>
+        <span class="adr-sort cursor-pointer select-none whitespace-nowrap hover:text-[--color-text]" data-sort="id" role="button" tabindex="0">id<span class="adr-arrow" aria-hidden="true"></span></span>
+        <span class="adr-sort cursor-pointer select-none hover:text-[--color-text]" data-sort="title" role="button" tabindex="0">decision<span class="adr-arrow" aria-hidden="true"></span></span>
+        <span class="adr-sort cursor-pointer select-none whitespace-nowrap hover:text-[--color-text]" data-sort="status" role="button" tabindex="0">status<span class="adr-arrow" aria-hidden="true"></span></span>
+        <span class="adr-sort hidden cursor-pointer select-none whitespace-nowrap hover:text-[--color-text] md:inline" data-sort="date" role="button" tabindex="0">date<span class="adr-arrow" aria-hidden="true"></span></span>
+        <span class="hidden md:inline">discussed in</span>
       </div>
-      {adrs.map((adr, i) => (
+      {adrs.map((adr) => (
         <a
           href={`/adrs/${adr.id}/`}
           data-status={adr.data.status}
-          class:list={[
-            "grid grid-cols-[5rem_1fr_6rem] items-baseline gap-3.5 px-4 py-3 transition-colors hover:bg-[--color-card-hover] md:grid-cols-[5.25rem_1fr_6.5rem_6rem_5.5rem]",
-            i < adrs.length - 1 && "border-b border-[--color-border]",
-          ]}
+          data-id={String(adr.data.id)}
+          data-title={adr.data.title}
+          data-date={fmt(adr.data.date)}
+          class="grid grid-cols-[5rem_1fr_6rem] items-baseline gap-3.5 border-b border-[--color-border] px-4 py-3 transition-colors hover:bg-[--color-card-hover] md:grid-cols-[5.25rem_1fr_6.5rem_6rem_5.5rem]"
         >
           <span class="u-chip u-chip--adr">{pad(adr.data.id)}</span>
           <span class="text-sm font-medium leading-snug">{adr.data.title}</span>
@@ -64,15 +68,65 @@ const chipOf = (ep?: string) => {
 </BaseLayout>
 
 <script>
-  const buttons = document.querySelectorAll<HTMLButtonElement>("#adr-filters button");
-  const rows = document.querySelectorAll<HTMLElement>("a[data-status]");
-  buttons.forEach((btn) => {
+  type SortKey = "id" | "title" | "status" | "date";
+
+  const panel = document.querySelector<HTMLElement>(".u-panel");
+  const filterButtons = document.querySelectorAll<HTMLButtonElement>("#adr-filters button");
+  const sortHeaders = document.querySelectorAll<HTMLElement>(".adr-sort");
+  const rows = Array.from(document.querySelectorAll<HTMLAnchorElement>("a[data-status]"));
+
+  // First click on a column uses its natural default; clicking again flips.
+  const defaultDir: Record<SortKey, "asc" | "desc"> = { id: "desc", title: "asc", status: "asc", date: "desc" };
+  const state: { filter: string; sortKey: SortKey; dir: "asc" | "desc" } = {
+    filter: "all",
+    sortKey: "id",
+    dir: "desc",
+  };
+
+  const valueOf = (el: HTMLElement, key: SortKey): string | number =>
+    key === "id" ? Number(el.dataset.id) : (el.dataset[key] ?? "").toLowerCase();
+
+  function applySort() {
+    const dir = state.dir === "asc" ? 1 : -1;
+    [...rows]
+      .sort((a, b) => {
+        const va = valueOf(a, state.sortKey);
+        const vb = valueOf(b, state.sortKey);
+        if (va < vb) return -dir;
+        if (va > vb) return dir;
+        return Number(b.dataset.id) - Number(a.dataset.id); // stable tiebreak: newest id first
+      })
+      .forEach((row) => panel?.appendChild(row));
+  }
+
+  function applyFilterAndBorders() {
+    // Read current DOM order — applySort reorders the rows, so the static
+    // `rows` snapshot no longer reflects which row is visually last.
+    const ordered = Array.from(panel?.querySelectorAll<HTMLAnchorElement>("a[data-status]") ?? []);
+    let lastVisible: HTMLElement | null = null;
+    ordered.forEach((row) => {
+      const show = state.filter === "all" || row.dataset.status === state.filter;
+      row.style.display = show ? "" : "none";
+      if (show) lastVisible = row;
+    });
+    ordered.forEach((row) => {
+      row.classList.toggle("border-b", row.style.display !== "none" && row !== lastVisible);
+    });
+  }
+
+  function updateArrows() {
+    sortHeaders.forEach((h) => {
+      const arrow = h.querySelector(".adr-arrow");
+      const active = h.dataset.sort === state.sortKey;
+      if (arrow) arrow.textContent = active ? (state.dir === "asc" ? " ▲" : " ▼") : "";
+      h.classList.toggle("text-[--color-text]", active);
+    });
+  }
+
+  filterButtons.forEach((btn) => {
     btn.addEventListener("click", () => {
-      const s = btn.dataset.status;
-      rows.forEach((row) => {
-        row.style.display = s === "all" || row.dataset.status === s ? "" : "none";
-      });
-      buttons.forEach((b) => {
+      state.filter = btn.dataset.status ?? "all";
+      filterButtons.forEach((b) => {
         const active = b === btn;
         b.classList.toggle("bg-[--color-chip]", active);
         b.classList.toggle("border-[--color-rule]", active);
@@ -80,6 +134,33 @@ const chipOf = (ep?: string) => {
         b.classList.toggle("border-transparent", !active);
         b.classList.toggle("text-[--color-text-subtle]", !active);
       });
+      applyFilterAndBorders();
     });
   });
+
+  sortHeaders.forEach((h) => {
+    const key = h.dataset.sort as SortKey;
+    const activate = () => {
+      if (state.sortKey === key) {
+        state.dir = state.dir === "asc" ? "desc" : "asc";
+      } else {
+        state.sortKey = key;
+        state.dir = defaultDir[key];
+      }
+      applySort();
+      applyFilterAndBorders();
+      updateArrows();
+    };
+    h.addEventListener("click", activate);
+    h.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        activate();
+      }
+    });
+  });
+
+  // SSR already renders id-desc; just sync indicators + borders on load.
+  updateArrows();
+  applyFilterAndBorders();
 </script>
