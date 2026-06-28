@@ -1,8 +1,13 @@
 [
   {
+    "week": "WK·26",
+    "date": "2026-06-28",
+    "title": "22 commits — ADRs+diagrams, articles rename, auto-journey from ADRs, theme-aware graph, sync 3 posts from blog.rduffy.uk (S3E8, S3E9, Speedometer), render diagrams at readable size (useMaxWidth:false + scroll)"
+  },
+  {
     "week": "WK·24",
     "date": "2026-06-10",
-    "title": "4 commits — unified notebook + shipping log (dev), apply unified design package, add sharp for image optimization"
+    "title": "5 commits — Configure observability settings in wrangler.json, unified notebook + shipping log (dev), apply unified design package"
   },
   {
     "week": "WK·22",
