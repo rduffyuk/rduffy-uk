@@ -17,6 +17,10 @@ export interface Milestone {
   nodes: JourneyNode[];
   edges: JourneyEdge[];
   blogEpisode: string | null;
+  /** Optional internal link (e.g. to an ADR). Auto-set for ADR-derived milestones. */
+  link?: { href: string; label: string } | null;
+  /** Card-only chips (not 3D nodes). Used by ADR milestones for their tags. */
+  tags?: { id: string; label: string; color: string }[];
 }
 
 export interface JourneyData {

@@ -7,7 +7,7 @@ const kvRows = [
   { k: "Day job", v: "SRE Specialist · BT Global Fabric — NaaS across 140 PoPs, 40 countries" },
   { k: "Night job", v: "Rootweaver — self-hosted AI platform on K3s, built with Claude Code", accent: true },
   { k: "Decisions", v: "46 ADRs written · curated set published here" },
-  { k: "Writing", v: "21 episodes · 3 seasons · essays" },
+  { k: "Writing", v: "21 episodes · 3 seasons · articles" },
 ];
 ---
 
@@ -81,25 +81,30 @@ const kvRows = [
     </div>
     <div class="u-panel relative min-h-[200px]">
       <svg class="absolute inset-0 h-full w-full" viewBox="0 0 540 200" role="img" aria-label="Rootweaver architecture overview">
-        <g stroke="var(--color-rule)" stroke-width="1">
-          <line x1="270" y1="50" x2="270" y2="80"></line><line x1="270" y1="110" x2="180" y2="140"></line><line x1="270" y1="110" x2="360" y2="140"></line>
-          <line x1="100" y1="50" x2="100" y2="138"></line><line x1="430" y1="88" x2="320" y2="96"></line>
+        <g stroke="var(--color-rule)" stroke-width="1" fill="none">
+          <line x1="320" y1="52" x2="320" y2="90"></line>
+          <line x1="380" y1="104" x2="420" y2="104"></line>
+          <line x1="310" y1="118" x2="275" y2="156"></line>
+          <line x1="330" y1="118" x2="425" y2="156"></line>
+          <line x1="110" y1="52" x2="110" y2="156"></line>
+          <line x1="156" y1="170" x2="220" y2="170"></line>
         </g>
-        <circle r="3" fill="var(--color-accent)"><animateMotion dur="2.2s" repeatCount="indefinite" path="M270,50 L270,80"></animateMotion></circle>
-        <circle r="3" fill="var(--color-accent)"><animateMotion dur="2.6s" repeatCount="indefinite" path="M270,110 L180,140" begin="0.5s"></animateMotion></circle>
+        <circle r="3" fill="var(--color-accent)"><animateMotion dur="2.2s" repeatCount="indefinite" path="M320,52 L320,90"></animateMotion></circle>
+        <circle r="3" fill="var(--color-accent)"><animateMotion dur="2.8s" repeatCount="indefinite" path="M110,52 L110,156" begin="0.4s"></animateMotion></circle>
+        <circle r="3" fill="var(--color-accent)"><animateMotion dur="2.6s" repeatCount="indefinite" path="M310,118 L275,156" begin="0.7s"></animateMotion></circle>
         {[
-          { n: "Claude Code", x: 212, y: 24, w: 116 },
-          { n: "RAG Gateway", x: 212, y: 82, w: 116 },
-          { n: "Qdrant", x: 128, y: 140, w: 104 },
-          { n: "FalkorDB", x: 308, y: 140, w: 104 },
-          { n: "Vault", x: 58, y: 24, w: 84 },
-          { n: "Kafka", x: 58, y: 138, w: 84 },
-          { n: "vLLM · GPU", x: 396, y: 62, w: 96 },
+          { n: "Vault", x: 64, y: 24, w: 92 },
+          { n: "Claude Code", x: 260, y: 24, w: 120 },
+          { n: "RAG Gateway", x: 260, y: 90, w: 120 },
+          { n: "vLLM · GPU", x: 420, y: 90, w: 100 },
+          { n: "Kafka", x: 64, y: 156, w: 92 },
+          { n: "Qdrant", x: 220, y: 156, w: 100 },
+          { n: "FalkorDB", x: 378, y: 156, w: 104 },
         ].map((node) => (
           <g>
             <rect x={node.x} y={node.y} width={node.w} height="28" rx="4" fill="var(--color-node-bg)" stroke="var(--color-rule)" stroke-width="1"></rect>
-            <circle cx={node.x + 10} cy={node.y + 14} r="2.5" fill="var(--color-ok)"></circle>
-            <text x={node.x + node.w / 2 + 5} y={node.y + 18} text-anchor="middle" fill="var(--color-text)" font-size="10.5" font-family="JetBrains Mono">{node.n}</text>
+            <circle cx={node.x + 11} cy={node.y + 14} r="2.5" fill="var(--color-ok)"></circle>
+            <text x={node.x + 11 + (node.w - 11) / 2} y={node.y + 18} text-anchor="middle" fill="var(--color-text)" font-size="10.5" font-family="JetBrains Mono">{node.n}</text>
           </g>
         ))}
       </svg>
@@ -111,7 +116,7 @@ const kvRows = [
   // Shipping-log filters
   const filterMap: Record<string, string[]> = {
     all: [],
-    posts: ["post", "essay"],
+    posts: ["post", "article"],
     adrs: ["adr"],
     commits: ["commit"],
   };

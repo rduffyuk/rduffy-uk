@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "prebuild": "node scripts/fetch-contributions.mjs && node scripts/build-shipping-log.mjs",
+    "prebuild": "node scripts/fetch-contributions.mjs && node scripts/build-shipping-log.mjs && node scripts/build-journey.mjs",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
@@ -32,6 +32,8 @@
   },
   "devDependencies": {
     "@types/dagre": "^0.7.54",
-    "@types/three": "^0.184.1"
+    "@types/three": "^0.184.1",
+    "playwright": "^1.61.1",
+    "rehype-mermaid": "^3.0.0"
   }
 }

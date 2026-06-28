@@ -8,9 +8,10 @@ interface EdgeLineProps {
   from: PositionedNode;
   to: PositionedNode;
   visible: boolean;
+  dark?: boolean;
 }
 
-export function EdgeLine({ from, to, visible }: EdgeLineProps) {
+export function EdgeLine({ from, to, visible, dark = true }: EdgeLineProps) {
   const opacityRef = useRef(0);
   const target = visible ? 0.6 : 0;
 
@@ -28,7 +29,7 @@ export function EdgeLine({ from, to, visible }: EdgeLineProps) {
   return (
     <Line
       points={points}
-      color="#94a3b8"
+      color={dark ? "#94a3b8" : "#8a8e96"}
       lineWidth={1.5}
       opacity={opacityRef.current}
       transparent

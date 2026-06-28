@@ -28,6 +28,7 @@ import journeyData from "@data/journey-data.json";
   }
   .journey-cards {
     padding: 24px 16px;
+    background: var(--color-bg);
   }
 
   /* ===== DESKTOP: side by side ===== */
@@ -69,7 +70,7 @@ import journeyData from "@data/journey-data.json";
     left: 0;
     right: 0;
     padding: 8px 16px;
-    background: linear-gradient(transparent, rgba(9, 9, 11, 0.95));
+    background: linear-gradient(transparent, var(--color-bg));
     display: flex;
     align-items: center;
     gap: 10px;
@@ -80,17 +81,17 @@ import journeyData from "@data/journey-data.json";
   .journey-overlay-date {
     font-family: "JetBrains Mono", monospace;
     font-size: 10px;
-    color: #00d4ff;
+    color: var(--color-text-subtle);
   }
   .journey-overlay-sep {
     width: 1px;
     height: 14px;
-    background: #1e293b;
+    background: var(--color-border);
   }
   .journey-overlay-title {
     font-size: 12px;
     font-weight: 600;
-    color: #f1f5f9;
+    color: var(--color-text);
   }
   @media (min-width: 768px) {
     .journey-overlay-date { font-size: 11px; }
@@ -103,7 +104,7 @@ import journeyData from "@data/journey-data.json";
     font-size: 10px;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: #94a3b8;
+    color: var(--color-text-subtle);
     margin-bottom: 20px;
   }
   @media (min-width: 768px) {
@@ -141,12 +142,12 @@ import journeyData from "@data/journey-data.json";
   .journey-card-date {
     font-family: "JetBrains Mono", monospace;
     font-size: 10px;
-    color: #00d4ff;
+    color: var(--color-text-subtle);
   }
   .journey-card-title {
     font-size: 14px;
     font-weight: 600;
-    color: #f1f5f9;
+    color: var(--color-text);
     margin: 0;
   }
   @media (min-width: 768px) {
@@ -154,7 +155,7 @@ import journeyData from "@data/journey-data.json";
   }
   .journey-card-desc {
     font-size: 12px;
-    color: #cbd5e1;
+    color: var(--color-text-muted);
     margin-top: 4px;
     line-height: 1.5;
   }

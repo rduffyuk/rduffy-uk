@@ -8,7 +8,29 @@ interface Props {
   data: JourneyData;
 }
 
+// Track the site's light/dark theme (data-theme attribute, falling back to the
+// OS preference) so the 3D canvas and cards follow the toggle.
+function useIsDark() {
+  const [dark, setDark] = useState(true);
+  useEffect(() => {
+    const check = () => {
+      const attr = document.documentElement.getAttribute("data-theme");
+      if (attr === "light") return setDark(false);
+      if (attr === "dark") return setDark(true);
+      setDark(window.matchMedia("(prefers-color-scheme: dark)").matches);
+    };
+    check();
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    mq.addEventListener("change", check);
+    const observer = new MutationObserver(check);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    return () => { mq.removeEventListener("change", check); observer.disconnect(); };
+  }, []);
+  return dark;
+}
+
 export default function JourneyScrollytelling({ data }: Props) {
+  const dark = useIsDark();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedNode, setSelectedNode] = useState<PositionedNode | null>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
@@ -50,12 +72,13 @@ export default function JourneyScrollytelling({ data }: Props) {
         <div className="journey-canvas-inner">
           <Canvas
             camera={{ position: [0, 0, 14], fov: 45 }}
-            style={{ background: "#09090b" }}
+            style={{ background: dark ? "#09090b" : "#f7f6f2" }}
           >
             <GraphScene
               data={data}
               currentIndex={currentIndex}
               onNodeClick={handleNodeClick}
+              dark={dark}
             />
           </Canvas>
 
@@ -83,11 +106,11 @@ export default function JourneyScrollytelling({ data }: Props) {
             className="journey-card"
             style={{
               background:
-                i === currentIndex ? "rgba(168,85,247,0.06)" : "#0f0f13",
+                i === currentIndex ? "rgba(168,85,247,0.12)" : "var(--color-card)",
               borderColor:
                 i === currentIndex
-                  ? "rgba(168,85,247,0.3)"
-                  : "var(--color-border, #1e293b)",
+                  ? "rgba(168,85,247,0.45)"
+                  : "var(--color-border)",
             }}
           >
             <div className="journey-card-header">
@@ -106,7 +129,7 @@ export default function JourneyScrollytelling({ data }: Props) {
             <h3 className="journey-card-title">{m.title}</h3>
             <p className="journey-card-desc">{m.description}</p>
             <div className="journey-card-tags">
-              {m.nodes.map((n) => (
+              {(m.tags ?? m.nodes).map((n) => (
                 <span
                   key={n.id}
                   style={{
@@ -120,6 +143,11 @@ export default function JourneyScrollytelling({ data }: Props) {
                 </span>
               ))}
             </div>
+            {m.link && (
+              <a href={m.link.href} className="journey-card-link">
+                {m.link.label} →
+              </a>
+            )}
             {m.blogEpisode && (
               <a
                 href={m.blogEpisode}

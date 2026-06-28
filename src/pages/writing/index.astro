@@ -6,7 +6,7 @@ import { episodeChip, seasonOf, SEASONS } from "@/utils/writing";
 const posts = await getCollection("writing", ({ data }) => !data.draft);
 posts.sort((a, b) => b.data.pubDatetime.getTime() - a.data.pubDatetime.getTime());
 
-const essays = posts.filter((p) => seasonOf(p.id) === null);
+const articles = posts.filter((p) => seasonOf(p.id) === null);
 const seasonNumbers = [...new Set(posts.map((p) => seasonOf(p.id)).filter((s): s is number => s !== null))].sort((a, b) => b - a);
 const currentSeason = seasonNumbers[0];
 const bySeason = (n: number) => posts.filter((p) => seasonOf(p.id) === n);
@@ -14,7 +14,7 @@ const bySeason = (n: number) => posts.filter((p) => seasonOf(p.id) === n);
 const fmt = (d: Date) => d.toISOString().slice(0, 10);
 ---
 
-<BaseLayout title="Writing" description="Building AI infrastructure in public — seasons of episodes plus standalone essays. Every episode links the ADRs it discusses.">
+<BaseLayout title="Writing" description="Building AI infrastructure in public — seasons of episodes plus standalone articles. Every episode links the ADRs it discusses.">
   <section class="mx-auto max-w-5xl px-6 py-12">
     <div class="flex items-baseline justify-between">
       <h1 class="text-3xl font-semibold tracking-tight md:text-[2.125rem]">Writing</h1>
@@ -22,7 +22,7 @@ const fmt = (d: Date) => d.toISOString().slice(0, 10);
     </div>
     <p class="mt-3 max-w-xl text-[0.9375rem] leading-relaxed text-[--color-text-muted]">
       Building AI infrastructure in public — documented as seasons of episodes, plus standalone
-      essays. Every episode links the ADRs it discusses.
+      articles. Every episode links the ADRs it discusses.
     </p>
 
     {currentSeason && (
@@ -46,17 +46,17 @@ const fmt = (d: Date) => d.toISOString().slice(0, 10);
       </div>
     )}
 
-    {essays.length > 0 && (
+    {articles.length > 0 && (
       <div class="mt-10">
         <div class="flex items-baseline gap-3.5 border-b-2 border-[--color-text] pb-2">
-          <h2 class="text-base font-semibold">Essays</h2>
+          <h2 class="text-base font-semibold">Articles</h2>
           <span class="u-label">standalone</span>
         </div>
         <ul>
-          {essays.map((post) => (
+          {articles.map((post) => (
             <li class="border-b border-[--color-border]">
               <a href={`/writing/${post.id}/`} class="grid grid-cols-[4.5rem_1fr] items-baseline gap-3 py-3.5 transition-colors hover:bg-[--color-card-hover] md:grid-cols-[4.5rem_6.25rem_1fr_4rem] md:gap-4">
-                <span class="u-chip u-chip--essay">ESSAY</span>
+                <span class="u-chip u-chip--article">ARTICLE</span>
                 <span class="hidden font-mono text-[0.71875rem] tabular-nums text-[--color-text-subtle] md:inline">{fmt(post.data.pubDatetime)}</span>
                 <span class="text-[0.9375rem] font-medium leading-snug">{post.data.title}</span>
                 <span class="hidden text-right font-mono text-[0.6875rem] text-[--color-text-subtle] md:inline">{post.data.reading_time ?? ""}</span>

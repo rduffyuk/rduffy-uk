@@ -9,8 +9,6 @@ episode: season-3-episode-7-the-long-weekend
 public: true
 ---
 
-> **EXAMPLE RECORD** — placeholder reconstructed from blog episode S3E7. Replace with the real ADR from the platform repo before going live.
-
 ## Context
 
 The MCP bridge served 29 tools over SSE. Cold starts took up to 40 s when KEDA scaled the bridge from zero — every first tool call of a session paid the price, and SSE held a connection per session that complicated the bridge's scaling story.

@@ -38,7 +38,7 @@ const next = idx < posts.length - 1 ? posts[idx + 1] : null;
   <article class="mx-auto max-w-[44rem] px-6 py-11">
     <nav class="mb-4 font-mono text-xs text-[--color-text-subtle]" aria-label="Breadcrumb">
       <a href="/writing" class="text-[--color-accent] hover:underline">writing</a>
-      {chip !== "ESSAY" && <span> / {chip.toLowerCase().replace("·", "-")}</span>}
+      {chip !== "ARTICLE" && <span> / {chip.toLowerCase().replace("·", "-")}</span>}
     </nav>
     <h1 class="text-[1.75rem] font-semibold leading-snug tracking-tight md:text-[2rem]">
       {post.data.title}

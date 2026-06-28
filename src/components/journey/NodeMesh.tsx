@@ -8,6 +8,7 @@ interface NodeMeshProps {
   node: PositionedNode;
   onClick: (node: PositionedNode) => void;
   visible: boolean;
+  dark?: boolean;
 }
 
 function NodeGeometry({ group }: { group: string }) {
@@ -35,11 +36,13 @@ const groupLabels: Record<string, string> = {
   workflow: "⬟",
 };
 
-export function NodeMesh({ node, onClick, visible }: NodeMeshProps) {
+export function NodeMesh({ node, onClick, visible, dark = true }: NodeMeshProps) {
   const groupRef = useRef<THREE.Group>(null);
   const meshRef = useRef<THREE.Mesh>(null);
   const [hovered, setHovered] = useState(false);
   const scaleRef = useRef(0);
+  // Per-node spin speed so the constellation tumbles organically, not in lockstep.
+  const spinSeed = useRef(0.3 + Math.random() * 0.55);
   const targetScale = visible ? (hovered ? 1.25 : 1) : 0;
 
   useFrame((_, delta) => {
@@ -49,7 +52,8 @@ export function NodeMesh({ node, onClick, visible }: NodeMeshProps) {
       groupRef.current.scale.set(s, s, s);
     }
     if (meshRef.current && visible) {
-      meshRef.current.rotation.y += delta * 0.3;
+      meshRef.current.rotation.y += delta * spinSeed.current;
+      meshRef.current.rotation.x += delta * spinSeed.current * 0.4;
     }
   });
 
@@ -78,7 +82,7 @@ export function NodeMesh({ node, onClick, visible }: NodeMeshProps) {
       <Text
         position={[0, 0.55, 0]}
         fontSize={0.16}
-        color="#f1f5f9"
+        color={dark ? "#f1f5f9" : "#21262e"}
         anchorX="center"
         anchorY="bottom"
         fillOpacity={Math.min(scaleRef.current, 1)}

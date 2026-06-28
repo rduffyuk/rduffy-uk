@@ -8,6 +8,7 @@ interface GraphSceneProps {
   data: JourneyData;
   currentIndex: number;
   onNodeClick: (node: PositionedNode) => void;
+  dark?: boolean;
 }
 
 function layoutNodes(data: JourneyData): Map<string, PositionedNode> {
@@ -19,6 +20,7 @@ function layoutNodes(data: JourneyData): Map<string, PositionedNode> {
     database:   { center: [-5, 3],    spread: 1.8 },
     monitoring: { center: [-5, -3.5], spread: 1.8 },
     workflow:   { center: [5, -3.5],  spread: 1.8 },
+    decision:   { center: [0, -3.5],  spread: 1.3 },
   };
 
   const groupCounters: Record<string, number> = {};
@@ -49,7 +51,7 @@ function layoutNodes(data: JourneyData): Map<string, PositionedNode> {
   return nodeMap;
 }
 
-export function GraphScene({ data, currentIndex, onNodeClick }: GraphSceneProps) {
+export function GraphScene({ data, currentIndex, onNodeClick, dark = true }: GraphSceneProps) {
   const nodeMap = useMemo(() => layoutNodes(data), [data]);
 
   const visibleNodeIds = useMemo(() => {
@@ -76,7 +78,7 @@ export function GraphScene({ data, currentIndex, onNodeClick }: GraphSceneProps)
 
   return (
     <>
-      <ambientLight intensity={0.4} />
+      <ambientLight intensity={dark ? 0.4 : 0.85} />
       <pointLight position={[10, 10, 10]} intensity={0.7} />
       <pointLight position={[-8, -5, 5]} intensity={0.3} color="#a855f7" />
 
@@ -86,6 +88,7 @@ export function GraphScene({ data, currentIndex, onNodeClick }: GraphSceneProps)
           node={node}
           onClick={onNodeClick}
           visible={visibleNodeIds.has(node.id)}
+          dark={dark}
         />
       ))}
 
@@ -93,13 +96,17 @@ export function GraphScene({ data, currentIndex, onNodeClick }: GraphSceneProps)
         const from = nodeMap.get(edge.from);
         const to = nodeMap.get(edge.to);
         if (!from || !to) return null;
-        return <EdgeLine key={`${edge.from}-${edge.to}-${i}`} from={from} to={to} visible />;
+        return <EdgeLine key={`${edge.from}-${edge.to}-${i}`} from={from} to={to} visible dark={dark} />;
       })}
 
       <OrbitControls
         enablePan
         enableZoom
         enableRotate
+        autoRotate
+        autoRotateSpeed={0.6}
+        enableDamping
+        dampingFactor={0.05}
         maxDistance={20}
         minDistance={5}
       />

@@ -10,7 +10,7 @@ const { limit = 8 } = Astro.props;
 // Merge three streams: posts, ADRs, commit digests → one shipping log
 type Entry = {
   date: Date;
-  kind: "post" | "essay" | "adr" | "commit" | "incident";
+  kind: "post" | "article" | "adr" | "commit" | "incident";
   tag: string;
   title: string;
   meta?: string;
@@ -26,7 +26,7 @@ for (const post of writing) {
   const chip = episodeChip(post.id);
   entries.push({
     date: post.data.pubDatetime,
-    kind: chip === "ESSAY" ? "essay" : "post",
+    kind: chip === "ARTICLE" ? "article" : "post",
     tag: chip,
     title: post.data.title,
     meta: post.data.reading_time,
@@ -65,7 +65,7 @@ const fmt = (d: Date) => d.toISOString().slice(0, 10);
     return (
       <Row
         href={e.href}
-        data-kind={e.kind === "essay" ? "essay" : e.kind}
+        data-kind={e.kind}
         class:list={[
           "grid grid-cols-[5.25rem_5.5rem_1fr] items-baseline gap-3 px-4 py-3 md:grid-cols-[5.75rem_5.5rem_1fr_auto] md:gap-4",
           i < visible.length - 1 && "border-b border-[--color-border]",

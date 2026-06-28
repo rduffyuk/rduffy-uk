@@ -2,7 +2,7 @@
 export function episodeChip(id: string): string {
   const m = id.match(/season-(\d+)-episode-(\d+)/);
   if (m) return `S${m[1]}·E${String(m[2]).padStart(2, "0")}`;
-  return "ESSAY";
+  return "ARTICLE";
 }
 
 export function seasonOf(id: string): number | null {

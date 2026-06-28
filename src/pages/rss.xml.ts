@@ -27,7 +27,7 @@ export const GET: APIRoute = async (context) => {
   <channel>
     <title>rduffy.uk — writing</title>
     <link>${site}writing/</link>
-    <description>Building AI infrastructure in public — episodes, essays, and decisions.</description>
+    <description>Building AI infrastructure in public — episodes, articles, and decisions.</description>
     <language>en</language>
 ${items}
   </channel>
