@@ -23,6 +23,8 @@ interface NodeMeshProps {
   visible: boolean;
   labelPlacement?: LabelPlacement;
   dark?: boolean;
+  /** Solar-system orbit: when set, the node revolves around the centre each frame. */
+  orbit?: { radius: number; baseAngle: number; z: number; speed: number };
 }
 
 export interface LabelPlacement {
@@ -537,16 +539,6 @@ function drawCanvasPictogram(
   ctx.restore();
 }
 
-const groupLabels: Record<string, string> = {
-  core: "●",
-  infra: "■",
-  database: "◆",
-  decision: "◇",
-  gpu: "▣",
-  monitoring: "▲",
-  workflow: "⬟",
-};
-
 function compactLabel(label: string) {
   if (label.length <= 14) return label;
   return `${label.slice(0, 13).trimEnd()}...`;
@@ -563,6 +555,7 @@ export function NodeMesh({
     maxWidth: 1.35,
   },
   dark = true,
+  orbit,
 }: NodeMeshProps) {
   const groupRef = useRef<THREE.Group>(null);
   const spinRef = useRef<THREE.Group>(null);
@@ -573,7 +566,7 @@ export function NodeMesh({
   const targetScale = visible ? (hovered ? 1.25 : 1) : 0;
   const iconSpec = getNodeIconSpec(node);
 
-  useFrame((_, delta) => {
+  useFrame((state, delta) => {
     scaleRef.current = THREE.MathUtils.lerp(
       scaleRef.current,
       targetScale,
@@ -582,6 +575,17 @@ export function NodeMesh({
     if (groupRef.current) {
       const s = scaleRef.current;
       groupRef.current.scale.set(s, s, s);
+      // Solar mode: revolve around the centre. Angle is derived from absolute
+      // clock time (not delta-accumulated) so it never drifts. The group is only
+      // translated, never rotated, so labels stay upright while the node orbits.
+      if (orbit) {
+        const a = orbit.baseAngle + state.clock.elapsedTime * orbit.speed;
+        groupRef.current.position.set(
+          Math.cos(a) * orbit.radius,
+          Math.sin(a) * orbit.radius,
+          orbit.z,
+        );
+      }
     }
     if (spinRef.current && visible) {
       spinRef.current.rotation.y += delta * spinSeed.current;
@@ -616,35 +620,28 @@ export function NodeMesh({
           opacity={Math.min(scaleRef.current, 1)}
         />
       </group>
-      {/* Label */}
-      <Text
-        position={labelPlacement.position}
-        fontSize={0.15}
-        maxWidth={labelPlacement.maxWidth}
-        color={dark ? "#f1f5f9" : "#21262e"}
-        anchorX={labelPlacement.anchorX}
-        anchorY={labelPlacement.anchorY}
-        textAlign={
-          labelPlacement.anchorX === "center" ? "center" : labelPlacement.anchorX
-        }
-        lineHeight={0.95}
-        outlineWidth={0.008}
-        outlineColor={dark ? "#09090b" : "#f7f6f2"}
-        fillOpacity={Math.min(scaleRef.current, 1)}
-      >
-        {compactLabel(node.label)}
-      </Text>
-      {/* Group indicator */}
-      <Text
-        position={[0, -0.45, 0]}
-        fontSize={0.1}
-        color={node.color}
-        anchorX="center"
-        anchorY="top"
-        fillOpacity={Math.min(scaleRef.current * 0.6, 0.6)}
-      >
-        {groupLabels[node.group] ?? "●"} {node.group}
-      </Text>
+      {/* Label — billboarded so it stays upright + readable through the solar
+          disc tilt and the camera orbit. */}
+      <Billboard position={labelPlacement.position}>
+        <Text
+          fontSize={0.15}
+          maxWidth={labelPlacement.maxWidth}
+          color={dark ? "#f1f5f9" : "#21262e"}
+          anchorX={labelPlacement.anchorX}
+          anchorY={labelPlacement.anchorY}
+          textAlign={
+            labelPlacement.anchorX === "center" ? "center" : labelPlacement.anchorX
+          }
+          lineHeight={0.95}
+          outlineWidth={0.008}
+          outlineColor={dark ? "#09090b" : "#f7f6f2"}
+          fillOpacity={Math.min(scaleRef.current, 1)}
+        >
+          {compactLabel(node.label)}
+        </Text>
+      </Billboard>
+      {/* Group sublabel removed — the icon badge already conveys the node type,
+         so the "● core / ◆ database" text was redundant visual noise. */}
     </group>
   );
 }
