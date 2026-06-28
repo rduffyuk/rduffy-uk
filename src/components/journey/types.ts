@@ -3,6 +3,9 @@ export interface JourneyNode {
   label: string;
   group: string;
   color: string;
+  /** Decommissioned / superseded component — rendered as a dark husk, not lit.
+   * Liveness, not timeline: only things still running in the cluster glow. */
+  retired?: boolean;
 }
 
 export interface JourneyEdge {

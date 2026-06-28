@@ -15,7 +15,8 @@
           "id": "chromadb",
           "label": "ChromaDB",
           "group": "database",
-          "color": "#f97316"
+          "color": "#f97316",
+          "retired": true
         }
       ],
       "edges": [
@@ -114,13 +115,14 @@
     {
       "date": "2025-10-12",
       "title": "ADR-019 · K3s over managed Kubernetes for the home platform",
-      "description": "The platform needed orchestration for GPU inference, streaming consumers, and observability — on a single GPU node and a MacBook, with no cloud budget.",
+      "description": "The platform needed real orchestration — GPU inference serving, Kafka streaming consumers, a full observability stack, and scheduled jobs — running on a single GPU node plus a MacBook, with no cloud budget.",
       "nodes": [
         {
           "id": "adr-019",
           "label": "ADR-019",
           "group": "decision",
-          "color": "#22c55e"
+          "color": "#22c55e",
+          "retired": false
         }
       ],
       "edges": [],
@@ -333,7 +335,8 @@
           "id": "confluence",
           "label": "Confluence",
           "group": "workflow",
-          "color": "#ec4899"
+          "color": "#ec4899",
+          "retired": true
         }
       ],
       "edges": [
@@ -663,7 +666,8 @@
           "id": "adr-029",
           "label": "ADR-029",
           "group": "decision",
-          "color": "#22c55e"
+          "color": "#22c55e",
+          "retired": false
         }
       ],
       "edges": [
@@ -738,13 +742,14 @@
     {
       "date": "2026-05-08",
       "title": "ADR-044 · Refusal gate: answer 'I don't know' below confidence threshold",
-      "description": "The RAG pipeline answered every query, including ones where retrieved context was irrelevant — confident hallucinations were the platform's worst failure mode.",
+      "description": "The RAG pipeline answered every query, including ones where the retrieved context was irrelevant to the question. A confident, fluent, wrong answer is the worst possible failure mode for a knowledge system: it is…",
       "nodes": [
         {
           "id": "adr-044",
           "label": "ADR-044",
           "group": "decision",
-          "color": "#22c55e"
+          "color": "#22c55e",
+          "retired": false
         }
       ],
       "edges": [
@@ -832,13 +837,14 @@
     {
       "date": "2026-05-18",
       "title": "ADR-045 · Search-quality benchmark suite: HELM scenario grid + RAGAS metrics, Claude Code as LLM judge",
-      "description": "Search \"worked,\" but there was no data on whether a result was faithful, whether the right document ranked first, or whether last week's change quietly made things worse.",
+      "description": "Search \"worked\" — but that was a vibe, not a measurement. There was no answer to three questions that actually matter:",
       "nodes": [
         {
           "id": "adr-045",
           "label": "ADR-045",
           "group": "decision",
-          "color": "#22c55e"
+          "color": "#22c55e",
+          "retired": false
         }
       ],
       "edges": [
@@ -953,13 +959,14 @@
     {
       "date": "2026-05-28",
       "title": "ADR-046 · MCP transport: migrate SSE → streamable HTTP",
-      "description": "The MCP bridge served 29 tools over SSE. Cold starts took up to 40 s when KEDA scaled the bridge from zero — every first tool call of a session paid the price, and SSE held a connection per session that complicated the…",
+      "description": "The MCP bridge exposes 29 tools to Claude Code and was served over SSE (Server-Sent Events). Two problems compounded each other:",
       "nodes": [
         {
           "id": "adr-046",
           "label": "ADR-046",
           "group": "decision",
-          "color": "#22c55e"
+          "color": "#22c55e",
+          "retired": false
         }
       ],
       "edges": [
@@ -1000,7 +1007,8 @@
           "id": "adr-053",
           "label": "ADR-053",
           "group": "decision",
-          "color": "#22c55e"
+          "color": "#22c55e",
+          "retired": false
         }
       ],
       "edges": [
@@ -1056,7 +1064,8 @@
           "id": "adr-060",
           "label": "ADR-060",
           "group": "decision",
-          "color": "#22c55e"
+          "color": "#22c55e",
+          "retired": false
         }
       ],
       "edges": [
@@ -1112,7 +1121,8 @@
           "id": "adr-065",
           "label": "ADR-065",
           "group": "decision",
-          "color": "#22c55e"
+          "color": "#22c55e",
+          "retired": false
         }
       ],
       "edges": [

@@ -21,10 +21,29 @@ interface NodeMeshProps {
   node: PositionedNode;
   onClick: (node: PositionedNode) => void;
   visible: boolean;
+  /** Recency-based glow target: 1 = current milestone, → 0 = long past. */
+  lifeTarget?: number;
   labelPlacement?: LabelPlacement;
   dark?: boolean;
   /** Solar-system orbit: when set, the node revolves around the centre each frame. */
   orbit?: { radius: number; baseAngle: number; z: number; speed: number };
+}
+
+// Floor a dead node settles at — a faint dark husk rather than a full extinguish,
+// so the trail of past worlds stays visible as structure.
+const DEAD_LIFE = 0.12;
+
+// Reusable scratch colours so the per-frame husk tint allocates nothing.
+const _huskFrom = new THREE.Color();
+const _huskTo = new THREE.Color();
+
+// Blend a node's colour toward near-black as it dies, so the central sun has
+// nothing bright left to illuminate — emissive death alone isn't enough because
+// the ring's lit base colour keeps it visible.
+function huskColor(base: string, life: number, dark: boolean): string {
+  _huskFrom.set(base);
+  _huskTo.set(dark ? "#0b0b12" : "#16140e");
+  return _huskFrom.lerp(_huskTo, 1 - life).getStyle();
 }
 
 export interface LabelPlacement {
@@ -57,9 +76,11 @@ interface NodeIconProps {
   dark: boolean;
   hovered: boolean;
   opacity: number;
+  /** 1 = fully alive (bright glow); → DEAD_LIFE = cooled, burnt-out husk. */
+  life: number;
 }
 
-function NodeIcon({ node, spec, dark, hovered, opacity }: NodeIconProps) {
+function NodeIcon({ node, spec, dark, hovered, opacity, life }: NodeIconProps) {
   switch (NODE_ICON_STYLE) {
     case 1:
       return (
@@ -69,6 +90,7 @@ function NodeIcon({ node, spec, dark, hovered, opacity }: NodeIconProps) {
           dark={dark}
           hovered={hovered}
           opacity={opacity}
+          life={life}
         />
       );
     case 2:
@@ -79,6 +101,7 @@ function NodeIcon({ node, spec, dark, hovered, opacity }: NodeIconProps) {
           dark={dark}
           hovered={hovered}
           opacity={opacity}
+          life={life}
         />
       );
     case 3:
@@ -89,6 +112,7 @@ function NodeIcon({ node, spec, dark, hovered, opacity }: NodeIconProps) {
           dark={dark}
           hovered={hovered}
           opacity={opacity}
+          life={life}
         />
       );
   }
@@ -96,7 +120,7 @@ function NodeIcon({ node, spec, dark, hovered, opacity }: NodeIconProps) {
   return null;
 }
 
-function CanvasBadgeIcon({ node, spec, dark, hovered, opacity }: NodeIconProps) {
+function CanvasBadgeIcon({ node, spec, dark, hovered, opacity, life }: NodeIconProps) {
   const texture = useMemo(
     () => createCanvasIconTexture(spec, node.color, dark),
     [dark, node.color, spec],
@@ -104,16 +128,22 @@ function CanvasBadgeIcon({ node, spec, dark, hovered, opacity }: NodeIconProps) 
 
   useEffect(() => () => texture?.dispose(), [texture]);
 
+  // Sharper falloff (life²) so "going dark" reads decisively. The torus tints
+  // toward black (sun can't relight it), the badge sprite fades nearly out, and
+  // a faint dark ring is left as the husk.
+  const lit = life * life;
+  const tint = huskColor(node.color, life, dark);
+
   return (
     <>
       <mesh scale={hovered ? 1.1 : 1}>
         <torusGeometry args={[0.43, 0.02, 8, 56]} />
         <meshStandardMaterial
-          color={node.color}
-          emissive={node.color}
-          emissiveIntensity={hovered ? 0.9 : 0.45}
+          color={tint}
+          emissive={tint}
+          emissiveIntensity={(hovered ? 0.9 : 0.45) * lit}
           transparent
-          opacity={opacity * 0.82}
+          opacity={opacity * 0.82 * (0.22 + 0.78 * lit)}
           roughness={0.25}
           metalness={0.25}
         />
@@ -123,7 +153,7 @@ function CanvasBadgeIcon({ node, spec, dark, hovered, opacity }: NodeIconProps) 
           <spriteMaterial
             map={texture}
             transparent
-            opacity={opacity}
+            opacity={opacity * (0.06 + 0.94 * lit)}
             depthWrite={false}
             toneMapped={false}
           />
@@ -548,6 +578,7 @@ export function NodeMesh({
   node,
   onClick,
   visible,
+  lifeTarget = 1,
   labelPlacement = {
     position: [0, 0.55, 0],
     anchorX: "center",
@@ -561,9 +592,20 @@ export function NodeMesh({
   const spinRef = useRef<THREE.Group>(null);
   const [hovered, setHovered] = useState(false);
   const scaleRef = useRef(0);
+  // Appear/opacity is state-backed (not just the ref) so a node re-renders while
+  // it fades in and then settles bright — refs alone never trigger React updates,
+  // so a stable (non-animating) node would otherwise freeze at opacity 0.
+  const [appear, setAppear] = useState(0);
+  // "life" runs 1 (alive, glowing) → DEAD_LIFE (cooled husk). It eases each frame
+  // so a node visibly dies out as the journey scrolls past it; hovering relights
+  // a burnt-out node so the trail stays explorable.
+  const lifeRef = useRef(1);
+  const [life, setLife] = useState(1);
   // Per-node spin speed so the constellation tumbles organically, not in lockstep.
   const spinSeed = useRef(0.3 + Math.random() * 0.55);
   const targetScale = visible ? (hovered ? 1.25 : 1) : 0;
+  // Hover re-ignites a burnt-out node so the past trail stays explorable.
+  const targetLife = hovered ? 1 : Math.max(DEAD_LIFE, lifeTarget);
   const iconSpec = getNodeIconSpec(node);
 
   useFrame((state, delta) => {
@@ -572,6 +614,16 @@ export function NodeMesh({
       targetScale,
       1 - Math.exp(-3 * delta),
     );
+    const nextAppear = Math.min(scaleRef.current, 1);
+    if (Math.abs(nextAppear - appear) > 0.004) setAppear(nextAppear);
+    const nextLife = THREE.MathUtils.lerp(
+      lifeRef.current,
+      targetLife,
+      1 - Math.exp(-2.4 * delta),
+    );
+    // Only re-render when the change is perceptible, to avoid per-frame churn.
+    if (Math.abs(nextLife - lifeRef.current) > 0.002) setLife(nextLife);
+    lifeRef.current = nextLife;
     if (groupRef.current) {
       const s = scaleRef.current;
       groupRef.current.scale.set(s, s, s);
@@ -617,7 +669,8 @@ export function NodeMesh({
           spec={iconSpec}
           dark={dark}
           hovered={hovered}
-          opacity={Math.min(scaleRef.current, 1)}
+          opacity={appear}
+          life={life}
         />
       </group>
       {/* Label — billboarded so it stays upright + readable through the solar
@@ -635,7 +688,7 @@ export function NodeMesh({
           lineHeight={0.95}
           outlineWidth={0.008}
           outlineColor={dark ? "#09090b" : "#f7f6f2"}
-          fillOpacity={Math.min(scaleRef.current, 1)}
+          fillOpacity={appear * (0.15 + 0.85 * life * life)}
         >
           {compactLabel(node.label)}
         </Text>

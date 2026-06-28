@@ -206,6 +206,10 @@ export function GraphScene({ data, currentIndex, onNodeClick, dark = true }: Gra
     return ids;
   }, [data, currentIndex]);
 
+  // Liveness, not timeline: a node glows if it's still running in the cluster,
+  // and goes dark if it's been retired/superseded (e.g. ChromaDB → Qdrant). This
+  // is a property of the component, independent of where you are in the scroll.
+
   const visibleEdges = useMemo(() => {
     const edges: JourneyEdge[] = [];
     for (let i = 0; i <= currentIndex; i++) {
@@ -237,6 +241,7 @@ export function GraphScene({ data, currentIndex, onNodeClick, dark = true }: Gra
             node={node}
             onClick={onNodeClick}
             visible={visibleNodeIds.has(node.id)}
+            lifeTarget={node.retired ? 0 : 1}
             labelPlacement={labelPlacements.get(node.id)}
             dark={dark}
             orbit={orbits?.get(node.id)}

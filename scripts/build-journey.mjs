@@ -62,7 +62,8 @@ function adrToMilestone(adr, prevHubId) {
   // ONE node per ADR in the 3D graph (the decision), chained to the previous
   // decision so they form a clean timeline thread — not a burst of tag nodes
   // (that piled up and made labels collide). Tags live on the card as chips.
-  const hub = { id: `adr-${padded}`, label: `ADR-${padded}`, group: "decision", color: STATUS_COLOR[adr.status] ?? "#a855f7" };
+  const retired = adr.status === "superseded" || adr.status === "deprecated";
+  const hub = { id: `adr-${padded}`, label: `ADR-${padded}`, group: "decision", color: STATUS_COLOR[adr.status] ?? "#a855f7", retired };
   const tags = adr.tags.slice(0, 6).map((t) => ({
     id: t.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
     label: t,

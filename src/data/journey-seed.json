@@ -15,7 +15,8 @@
           "id": "chromadb",
           "label": "ChromaDB",
           "group": "database",
-          "color": "#f97316"
+          "color": "#f97316",
+          "retired": true
         }
       ],
       "edges": [
@@ -93,7 +94,7 @@
     {
       "date": "2025-10-12",
       "title": "54 Minutes to Production",
-      "description": "Six systems deployed in one day \u2014 GPU monitor, Perplexity gateway, agent router, MCP bridge, Prometheus exporter, and vault indexer.",
+      "description": "Six systems deployed in one day — GPU monitor, Perplexity gateway, agent router, MCP bridge, Prometheus exporter, and vault indexer.",
       "nodes": [
         {
           "id": "gpu-monitor",
@@ -159,7 +160,7 @@
     },
     {
       "date": "2026-01-04",
-      "title": "K3s Production \u2014 26 Commits in One Day",
+      "title": "K3s Production — 26 Commits in One Day",
       "description": "RAG Gateway, Retriever, MCP Bridge, Ollama, and ChromaDB all deployed to K3s. Prefect work queues wired. CrashLoopBackOff fixed (K8s env var parsing). Platform is cloud-native.",
       "nodes": [
         {
@@ -302,7 +303,8 @@
           "id": "confluence",
           "label": "Confluence",
           "group": "workflow",
-          "color": "#ec4899"
+          "color": "#ec4899",
+          "retired": true
         }
       ],
       "edges": [
@@ -349,7 +351,7 @@
     },
     {
       "date": "2026-02-11",
-      "title": "Gateway Memory Leak \u2014 7.5GB to 532MB",
+      "title": "Gateway Memory Leak — 7.5GB to 532MB",
       "description": "VW-51/52: Dead ChromaDB import causing 7.5GB per replica. 93% memory reduction. Kafka consumer crash-loop fixed (VW-62, 837 restarts).",
       "nodes": [],
       "edges": [],
@@ -397,8 +399,8 @@
     },
     {
       "date": "2026-02-17",
-      "title": "Shared Embedding Service \u2014 2560d Vectors",
-      "description": "Qwen3-Embedding-4B at 2560 dimensions. Graph ingestion bug fixes (VW-85/86/90 \u2014 asyncio event loop scoping). HLD/LLD modularised (ADR-016).",
+      "title": "Shared Embedding Service — 2560d Vectors",
+      "description": "Qwen3-Embedding-4B at 2560 dimensions. Graph ingestion bug fixes (VW-85/86/90 — asyncio event loop scoping). HLD/LLD modularised (ADR-016).",
       "nodes": [
         {
           "id": "embedding",
@@ -490,7 +492,7 @@
     {
       "date": "2026-03-08",
       "title": "Event-Driven NER Pipeline",
-      "description": "Kafka event bus activated. File watcher (inotify) \u2192 Kafka \u2192 NER consumer (spaCy + YAKE) \u2192 auto-tagging \u2192 Qdrant indexing. KEDA scales consumers 0\u2192N.",
+      "description": "Kafka event bus activated. File watcher (inotify) → Kafka → NER consumer (spaCy + YAKE) → auto-tagging → Qdrant indexing. KEDA scales consumers 0→N.",
       "nodes": [
         {
           "id": "kafka",
@@ -523,7 +525,7 @@
     },
     {
       "date": "2026-03-10",
-      "title": "PDG Activation \u2014 Code Intelligence",
+      "title": "PDG Activation — Code Intelligence",
       "description": "FalkorDB code_knowledge graph live: 7,768 nodes. Community detection (Leiden clustering), impact radius queries, tree-sitter AST parsing.",
       "nodes": [],
       "edges": [
@@ -536,7 +538,7 @@
     },
     {
       "date": "2026-03-15",
-      "title": "Platform Hardening \u2014 52 Commits",
+      "title": "Platform Hardening — 52 Commits",
       "description": "Biggest single-day push. Leiden clustering, TreeSitter, local model optimisations, Scout fleet deployment, shared_constants.py for exclusion lists, benchmark suite designed.",
       "nodes": [
         {
@@ -596,7 +598,7 @@
     {
       "date": "2026-04-29",
       "title": "KEDA GPU Swap Controller",
-      "description": "ADR-029: KEDA scales TEI embedding service 0\u21921 on demand, swapping GPU between vLLM and TEI. Desktop + MacBook multi-device setup via Tailscale.",
+      "description": "ADR-029: KEDA scales TEI embedding service 0→1 on demand, swapping GPU between vLLM and TEI. Desktop + MacBook multi-device setup via Tailscale.",
       "nodes": [
         {
           "id": "keda",
@@ -625,7 +627,7 @@
     },
     {
       "date": "2026-05-01",
-      "title": "Kafka Streaming Pipeline \u2014 Flink",
+      "title": "Kafka Streaming Pipeline — Flink",
       "description": "Apache Flink deployed for real-time conversation processing. Journal session parser, synthesizer, and DLQ reprocessor. Claim-check pattern for large payloads.",
       "nodes": [
         {
@@ -714,7 +716,7 @@
     {
       "date": "2026-05-19",
       "title": "Engineering Memory Benchmark",
-      "description": "Empirical study: layered retrieval (typed\u2192semantic\u2192grep) scores 0.954. 5 conditions, 3 model tiers, 36 generated ADRs. Published as open-source on GitHub.",
+      "description": "Empirical study: layered retrieval (typed→semantic→grep) scores 0.954. 5 conditions, 3 model tiers, 36 generated ADRs. Published as open-source on GitHub.",
       "nodes": [
         {
           "id": "benchmark",
@@ -729,7 +731,7 @@
     {
       "date": "2026-05-21",
       "title": "SRE Agent + Security ADRs",
-      "description": "Autonomous SRE triage: Alertmanager webhook \u2192 event collector \u2192 LLM-powered brain \u2192 Jira issue creation. ADR-047 (LLM Content Trust Boundary), ADR-048 (Egress Control with Squid proxy).",
+      "description": "Autonomous SRE triage: Alertmanager webhook → event collector → LLM-powered brain → Jira issue creation. ADR-047 (LLM Content Trust Boundary), ADR-048 (Egress Control with Squid proxy).",
       "nodes": [
         {
           "id": "sre-agent",
@@ -759,7 +761,7 @@
     {
       "date": "2026-05-26",
       "title": "Score Decomposition + DAT",
-      "description": "Per-result vector_score, bm25_score, rerank_score. Dynamic Alpha Tuning (arXiv:2503.23013) \u2014 LLM-as-judge per-query weighting. Temporal edge timestamps on FalkorDB PDG. Competitive analysis: 5 research repos evaluated.",
+      "description": "Per-result vector_score, bm25_score, rerank_score. Dynamic Alpha Tuning (arXiv:2503.23013) — LLM-as-judge per-query weighting. Temporal edge timestamps on FalkorDB PDG. Competitive analysis: 5 research repos evaluated.",
       "nodes": [
         {
           "id": "dat",
