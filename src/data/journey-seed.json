@@ -106,7 +106,8 @@
           "id": "perplexity",
           "label": "Perplexity GW",
           "group": "infra",
-          "color": "#3b82f6"
+          "color": "#3b82f6",
+          "retired": true
         }
       ],
       "edges": [],
@@ -179,7 +180,8 @@
           "id": "ollama",
           "label": "Ollama",
           "group": "gpu",
-          "color": "#ef4444"
+          "color": "#ef4444",
+          "retired": true
         },
         {
           "id": "prefect",
