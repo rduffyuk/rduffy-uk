@@ -6,9 +6,13 @@ Wants=network-online.target
 
 [Service]
 Type=oneshot
-# Run as the user that owns the repo checkout AND has both a working kubeconfig
-# and a GitHub push credential (SSH key / token) for this repo. Adjust to taste.
-User=rduffy
+# IMPORTANT: leave User= UNSET for the recommended `systemctl --user` install
+# (the process already runs as you; setting User= makes a user-manager attempt a
+# setgroups it can't do -> "216/GROUP: Failed to determine supplementary groups").
+# ONLY uncomment + set User= if you install this as a SYSTEM unit in
+# /etc/systemd/system/ (then also replace every %h below with an absolute path).
+# That user needs a working kubeconfig AND a GitHub push credential for this repo.
+#User=rduffy
 
 # systemd does not load your login shell profile, so point kubectl at the
 # kubeconfig explicitly. K3s' own config is /etc/rancher/k3s/k3s.yaml (root); a
