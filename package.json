@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "astro dev",
     "postinstall": "playwright install chromium",
-    "prebuild": "node scripts/fetch-contributions.mjs && node scripts/build-shipping-log.mjs && node scripts/build-journey.mjs",
+    "prebuild": "node scripts/build-info.mjs && node scripts/fetch-contributions.mjs && node scripts/build-shipping-log.mjs && node scripts/build-journey.mjs",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
