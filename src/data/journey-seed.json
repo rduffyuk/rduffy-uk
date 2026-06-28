@@ -15,8 +15,7 @@
           "id": "chromadb",
           "label": "ChromaDB",
           "group": "database",
-          "color": "#f97316",
-          "retired": true
+          "color": "#f97316"
         }
       ],
       "edges": [
@@ -106,8 +105,7 @@
           "id": "perplexity",
           "label": "Perplexity GW",
           "group": "infra",
-          "color": "#3b82f6",
-          "retired": true
+          "color": "#3b82f6"
         }
       ],
       "edges": [],
@@ -180,8 +178,7 @@
           "id": "ollama",
           "label": "Ollama",
           "group": "gpu",
-          "color": "#ef4444",
-          "retired": true
+          "color": "#ef4444"
         },
         {
           "id": "prefect",
@@ -305,8 +302,7 @@
           "id": "confluence",
           "label": "Confluence",
           "group": "workflow",
-          "color": "#ec4899",
-          "retired": true
+          "color": "#ec4899"
         }
       ],
       "edges": [

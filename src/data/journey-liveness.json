@@ -1,0 +1,9 @@
+{
+  "generatedAt": "2026-06-28",
+  "source": "k3s-live-read",
+  "retired": [
+    "chromadb",
+    "confluence",
+    "perplexity"
+  ]
+}

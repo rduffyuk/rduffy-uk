@@ -12,6 +12,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "sync-adrs": "node scripts/sync-adrs.mjs",
+    "refresh:liveness": "node scripts/refresh-cluster-liveness.mjs",
     "deploy:dev": "astro build && wrangler deploy --env dev"
   },
   "dependencies": {

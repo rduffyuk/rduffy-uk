@@ -212,8 +212,7 @@
           "id": "ollama",
           "label": "Ollama",
           "group": "gpu",
-          "color": "#ef4444",
-          "retired": true
+          "color": "#ef4444"
         },
         {
           "id": "prefect",

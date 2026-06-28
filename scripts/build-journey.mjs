@@ -13,12 +13,19 @@
  * Runs in `prebuild`, so every deploy refreshes the timeline. Publish a new
  * public ADR → it appears as a milestone automatically.
  */
-import { readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 const SEED = "src/data/journey-seed.json";
 const ADR_DIR = "src/content/adrs";
+const LIVENESS = "src/data/journey-liveness.json";
 const OUT = "src/data/journey-data.json";
+
+// Retired node ids come from the live cluster read (refresh-cluster-liveness.mjs),
+// not hand-maintained flags. Missing file → nothing retired (graceful in CI/forks).
+const retiredIds = new Set(
+  existsSync(LIVENESS) ? (JSON.parse(readFileSync(LIVENESS, "utf8")).retired ?? []) : [],
+);
 
 // Palette shared with the site/journey visuals.
 const PALETTE = ["#a855f7", "#22c55e", "#ec4899", "#f97316", "#3b82f6", "#00d4ff", "#ef4444", "#eab308"];
@@ -84,7 +91,11 @@ function adrToMilestone(adr, prevHubId) {
 
 // ---- build ----
 const seed = JSON.parse(readFileSync(SEED, "utf8"));
-const seedMilestones = seed.milestones ?? [];
+// Apply cluster-derived liveness: tag seed nodes whose component is retired.
+const seedMilestones = (seed.milestones ?? []).map((m) => ({
+  ...m,
+  nodes: (m.nodes ?? []).map((n) => (retiredIds.has(n.id) ? { ...n, retired: true } : n)),
+}));
 
 // Map ADR id → real filename slug so the link href is correct.
 const files = readdirSync(ADR_DIR).filter((f) => f.endsWith(".md"));
