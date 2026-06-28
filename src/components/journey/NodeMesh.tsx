@@ -8,7 +8,15 @@ interface NodeMeshProps {
   node: PositionedNode;
   onClick: (node: PositionedNode) => void;
   visible: boolean;
+  labelPlacement?: LabelPlacement;
   dark?: boolean;
+}
+
+export interface LabelPlacement {
+  position: [number, number, number];
+  anchorX: "left" | "center" | "right";
+  anchorY: "top" | "bottom";
+  maxWidth: number;
 }
 
 function NodeGeometry({ group }: { group: string }) {
@@ -36,7 +44,23 @@ const groupLabels: Record<string, string> = {
   workflow: "⬟",
 };
 
-export function NodeMesh({ node, onClick, visible, dark = true }: NodeMeshProps) {
+function compactLabel(label: string) {
+  if (label.length <= 14) return label;
+  return `${label.slice(0, 13).trimEnd()}...`;
+}
+
+export function NodeMesh({
+  node,
+  onClick,
+  visible,
+  labelPlacement = {
+    position: [0, 0.55, 0],
+    anchorX: "center",
+    anchorY: "bottom",
+    maxWidth: 1.35,
+  },
+  dark = true,
+}: NodeMeshProps) {
   const groupRef = useRef<THREE.Group>(null);
   const meshRef = useRef<THREE.Mesh>(null);
   const [hovered, setHovered] = useState(false);
@@ -80,14 +104,21 @@ export function NodeMesh({ node, onClick, visible, dark = true }: NodeMeshProps)
       </mesh>
       {/* Label */}
       <Text
-        position={[0, 0.55, 0]}
-        fontSize={0.16}
+        position={labelPlacement.position}
+        fontSize={0.15}
+        maxWidth={labelPlacement.maxWidth}
         color={dark ? "#f1f5f9" : "#21262e"}
-        anchorX="center"
-        anchorY="bottom"
+        anchorX={labelPlacement.anchorX}
+        anchorY={labelPlacement.anchorY}
+        textAlign={
+          labelPlacement.anchorX === "center" ? "center" : labelPlacement.anchorX
+        }
+        lineHeight={0.95}
+        outlineWidth={0.008}
+        outlineColor={dark ? "#09090b" : "#f7f6f2"}
         fillOpacity={Math.min(scaleRef.current, 1)}
       >
-        {node.label}
+        {compactLabel(node.label)}
       </Text>
       {/* Group indicator */}
       <Text
