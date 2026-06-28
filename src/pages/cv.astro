@@ -6,7 +6,7 @@ import rw from "@data/rootweaver-stats.json";
 const qdrantK = `~${Math.round(rw.qdrantPoints / 1000)}K`;
 ---
 
-<BaseLayout title="CV" description="Ryan Duffy — SRE Specialist, AI Platform Builder. 14+ years at BT, Rootweaver AI platform.">
+<BaseLayout title="CV" description="Ryan Duffy — infrastructure engineer building AI systems. Creator of the Rootweaver AI platform; 14 years of reliability engineering at BT.">
   <article class="mx-auto max-w-3xl px-4 py-12 md:px-6 md:py-20">
     <!-- Header -->
     <div class="mb-10">
@@ -25,7 +25,7 @@ const qdrantK = `~${Math.round(rw.qdrantPoints / 1000)}K`;
         </button>
       </div>
       <p class="mt-2 font-mono text-xs text-[--color-text-subtle] md:text-sm">
-        Site Reliability Engineering · AI Infrastructure · Observability
+        AI Infrastructure · Site Reliability Engineering · Observability
       </p>
       <p class="mt-1 font-mono text-xs text-[--color-text-muted]">
         Ipswich, UK · rduffy.uk · blog.rduffy.uk · linkedin.com/in/rduffyuk
@@ -35,13 +35,50 @@ const qdrantK = `~${Math.round(rw.qdrantPoints / 1000)}K`;
     <!-- Profile -->
     <section class="card mb-8 p-4 md:p-6">
       <p class="text-sm leading-relaxed text-[--color-text-muted]">
-        SRE Specialist with 14+ years at BT, currently embedded within the product engineering team on
+        I build and operate AI systems end-to-end. I designed and run
+        <strong class="text-[--color-accent]">Rootweaver</strong> — a production-grade AI platform on Kubernetes:
+        GPU model serving with vLLM, hybrid graph + vector retrieval, structured long-term memory, and a full LGTM
+        observability stack, all GitOps-managed and built solo. That engineering sits on 14 years of reliability work
+        at <strong class="text-[--color-text]">BT</strong>, currently as an SRE Specialist on
         <strong class="text-[--color-text]">Global Fabric</strong> — BT International's next-generation NaaS platform
-        serving enterprise customers across 140 PoPs in 40 countries. Championed the adoption of Google SRE practice
-        inside BT. In parallel, designed and operate <strong class="text-[--color-accent]">Rootweaver</strong> — a personal
-        AI infrastructure platform running GPU-accelerated model serving, hybrid graph + vector retrieval, and a full LGTM
-        observability stack on Kubernetes.
+        across 140 PoPs in 40 countries — where I'm embedding Google SRE practice (SLOs, error budgets) into a telco
+        operating at global scale.
       </p>
+    </section>
+
+    <!-- Rootweaver (foregrounded — the work that's most inspectable) -->
+    <section class="mb-8">
+      <h2 class="cv-section-title">Rootweaver — Self-Built AI Platform</h2>
+
+      <div class="card p-4 md:p-6">
+        <div class="cv-meta mb-3">2025 – Present · Self-built · Private repo — walkthrough on request</div>
+        <p class="mb-3 text-sm leading-relaxed text-[--color-text-muted]">
+          AI engineering platform on K3s (RTX 4080, 64GB DDR5) across {rw.namespaces} namespaces. {rw.hldModules} HLD modules, {rw.lldModules} LLD modules, {rw.adrs} ADRs. {rw.workspacePackages}-package uv workspace.
+        </p>
+        <p class="mb-4 font-mono text-xs text-[--color-text-subtle]">
+          Explore the live system:
+          <a href="/adrs" class="text-[--color-accent] underline-offset-2 hover:underline">architecture decisions</a> ·
+          <a href="/journey" class="text-[--color-accent] underline-offset-2 hover:underline">platform evolution</a> ·
+          <a href="/writing" class="text-[--color-accent] underline-offset-2 hover:underline">engineering write-ups</a>
+        </p>
+        <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-3">
+          {[
+            { label: "Model Serving", detail: `vLLM (${rw.vllmModel}, ${rw.vllmContextK}K ctx) + Ollama CPU fallback` },
+            { label: "Hybrid Retrieval", detail: `Qdrant ${qdrantK} vectors at ${rw.embeddingDim}d, BM25 + vector fusion, cross-encoder reranking, 3-tier agent routing` },
+            { label: "Code Intelligence", detail: "FalkorDB graph + PDG pipeline, OPA policy enforcement, DORA metrics" },
+            { label: "Long-Term Memory", detail: `Postgres-backed, GDPR tombstoning, ${rw.recallMcpTools} recall MCP tools` },
+            { label: "Streaming", detail: "Kafka → Flink → vLLM workers, claim-check, DLQ replay" },
+            { label: "Observability", detail: "Prometheus, Grafana, OTel, Tempo, Loki, Beyla eBPF" },
+            { label: "Security", detail: `${rw.sealedSecrets} Sealed Secrets, ${rw.networkPolicies} NetworkPolicies, audit logging` },
+            { label: "GitOps", detail: "FluxCD, Prefect, KEDA, Harbor registry, Unleash flags" },
+          ].map((item) => (
+            <div class="rounded-lg border border-[--color-border] px-3 py-2">
+              <span class="font-mono text-[10px] font-semibold uppercase tracking-wide text-[--color-accent]">{item.label}</span>
+              <p class="mt-0.5 text-xs leading-relaxed text-[--color-text-muted]">{item.detail}</p>
+            </div>
+          ))}
+        </div>
+      </div>
     </section>
 
     <!-- Experience -->
@@ -101,35 +138,6 @@ const qdrantK = `~${Math.round(rw.qdrantPoints / 1000)}K`;
       </div>
     </section>
 
-    <!-- Rootweaver -->
-    <section class="mb-8">
-      <h2 class="cv-section-title">Personal Project — Rootweaver AI Platform</h2>
-
-      <div class="card p-4 md:p-6">
-        <div class="cv-meta mb-3">2025 – Present · Private repository (walkthrough available) · blog.rduffy.uk</div>
-        <p class="mb-4 text-sm leading-relaxed text-[--color-text-muted]">
-          AI engineering platform on K3s (RTX 4080, 64GB DDR5) across {rw.namespaces} namespaces. {rw.hldModules} HLD modules, {rw.lldModules} LLD modules, {rw.adrs} ADRs. {rw.workspacePackages}-package uv workspace.
-        </p>
-        <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-3">
-          {[
-            { label: "Model Serving", detail: `vLLM (${rw.vllmModel}, ${rw.vllmContextK}K ctx) + Ollama CPU fallback` },
-            { label: "Hybrid Retrieval", detail: `Qdrant ${qdrantK} vectors at ${rw.embeddingDim}d, BM25 + vector fusion, cross-encoder reranking, 3-tier agent routing` },
-            { label: "Code Intelligence", detail: "FalkorDB graph + PDG pipeline, OPA policy enforcement, DORA metrics" },
-            { label: "Long-Term Memory", detail: `Postgres-backed, GDPR tombstoning, ${rw.recallMcpTools} recall MCP tools` },
-            { label: "Streaming", detail: "Kafka → Flink → vLLM workers, claim-check, DLQ replay" },
-            { label: "Observability", detail: "Prometheus, Grafana, OTel, Tempo, Loki, Beyla eBPF" },
-            { label: "Security", detail: `${rw.sealedSecrets} Sealed Secrets, ${rw.networkPolicies} NetworkPolicies, audit logging` },
-            { label: "GitOps", detail: "FluxCD, Prefect, KEDA, Harbor registry, Unleash flags" },
-          ].map((item) => (
-            <div class="rounded-lg border border-[--color-border] px-3 py-2">
-              <span class="font-mono text-[10px] font-semibold uppercase tracking-wide text-[--color-accent]">{item.label}</span>
-              <p class="mt-0.5 text-xs leading-relaxed text-[--color-text-muted]">{item.detail}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-
     <!-- Skills -->
     <section class="mb-8">
       <h2 class="cv-section-title">Technical Skills</h2>
@@ -137,10 +145,10 @@ const qdrantK = `~${Math.round(rw.qdrantPoints / 1000)}K`;
       <div class="card p-4 md:p-6">
         <div class="space-y-3">
           {[
-            { cat: "Reliability & SRE", skills: "SLO/SLI/SLA frameworks · Error budgets · Burn-rate alerting · DORA metrics · OPA · Incident management · ITIL · PI Planning" },
-            { cat: "Observability", skills: "Prometheus · Grafana · OpenTelemetry · Tempo · Loki · Jaeger · Beyla eBPF · Blackbox Exporter · ELK · ServiceNow ITOM" },
             { cat: "AI/ML Infrastructure", skills: "vLLM · Ollama · Qdrant · FalkorDB · RAG pipelines · Hybrid retrieval · Embeddings · KEDA · MCP" },
             { cat: "Containers & GitOps", skills: "Kubernetes (K3s) · Docker · FluxCD · Helm · HAMi GPU · Harbor · Sealed Secrets" },
+            { cat: "Reliability & SRE", skills: "SLO/SLI/SLA frameworks · Error budgets · Burn-rate alerting · DORA metrics · OPA · Incident management · ITIL · PI Planning" },
+            { cat: "Observability", skills: "Prometheus · Grafana · OpenTelemetry · Tempo · Loki · Jaeger · Beyla eBPF · Blackbox Exporter · ELK · ServiceNow ITOM" },
             { cat: "Automation & Code", skills: "Python (uv-workspace) · Ansible · Prefect · Pydantic · FastAPI · Bash · Git" },
             { cat: "Networking", skills: "MPLS · BGP · OSPF · IS-IS · Segment Routing · PCE/PCEP · YANG/OpenConfig · SD-WAN · IPSec" },
             { cat: "Vendors", skills: "Cisco · Juniper · Nokia · Itential · AWS · Cloudflare · Linux · Jira · Confluence" },
