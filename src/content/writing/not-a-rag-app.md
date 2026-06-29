@@ -1,114 +1,92 @@
 ---
-title: "Not a RAG App: Rootweaver Finally Has a Thesis"
+title: "Not a RAG App: a Site Rebuild and a Public Decision Log"
 author: Ryan Duffy
 categories:
 - Architecture
 - AI Agents
 - Building in Public
-description: "For three seasons I described my platform as a parts list — multi-agent RAG, graphs, GPU, Kafka, 29 tools. This is the week it got a one-line thesis instead, opened its decision log to the public, and got a front door to match. Plus the Cloudflare bug that silently emptied every page."
+description: "I rebuilt rduffy.uk into one design system and published 20 of my 77 architecture decision records — a sortable, filterable decision log with the context, the call, and what each cost. Here's what's actually new, plus the one idea that ties it together."
 draft: false
 featured: true
 pubDatetime: 2026-06-28 18:30:00+00:00
-reading_time: 11 minutes
+reading_time: 9 minutes
 series: 'Building in Public'
 slug: not-a-rag-app
 tags:
 - rootweaver
 - architecture
 - adr
-- positioning
 - redesign
+- decision-log
 - claude-code
 ---
 
-For three seasons I have been describing Rootweaver the same way: as a list.
+This week I shipped two things to rduffy.uk: a full rebuild of the site, and something I'd been sitting on for months — a public decision log. **Twenty of the seventy-seven architecture decisions** behind my platform are now readable, with the alternatives I rejected and what each call cost.
 
-> Multi-agent RAG, knowledge graphs, GPU inference, Kafka event streaming, SRE automation, and 29 MCP tools — running on K3s across a single GPU node and a MacBook.
+This post is about both — what actually changed, what's now there to click on, and the one idea that made publishing it make sense. The narrative is at the bottom; the concrete stuff is first.
 
-It is all true. It is also the description of a parts bin. If you handed that sentence to someone who had never seen the platform, they would learn what is *in* it and nothing about what it is *for*. Every line is a noun. None of them is a claim.
+## What changed on the site
 
-This week I finally fixed that — not by building anything new, but by being willing to say, in one sentence, what the thing actually is. And then doing two things to back the sentence up: opening the decision log that justifies it, and rebuilding the site that presents it. This is the meta-episode about all three.
+For three seasons the site had grown the way side-project sites do: a page bolted on whenever I needed one, each with its own spacing, its own colours, its own idea of what a heading looked like. The rebuild collapses all of that into **one design system** across every page — the home page, the Rootweaver overview, the CV, the writing archive, the journey graph, projects, and the new ADRs page.
 
-## The problem with a parts list
+Concretely, here's what's new or rebuilt:
 
-A parts list is the safe way to describe a system you built solo. It is unfalsifiable. Nobody can argue that you *don't* have a knowledge graph — there it is. The trouble is that a parts list doesn't commit to anything. It doesn't tell you what you optimised for, what you traded away, or what you'd defend in a design review.
+- **One visual language, light and dark.** An editorial, paper-toned palette — warm off-white in light mode, a restrained purple accent, monospace labels, status pills and chips — with a real dark mode rather than an inverted afterthought. It's meant to read like a well-kept engineering doc, not a SaaS landing page.
+- **A `/adrs` decision log** (the big one — its own section below).
+- **A `/journey` graph** that now builds *itself* from the ADRs: every published decision becomes a node, so the timeline of how the platform was built is generated from the same source as the decision log, not hand-maintained.
+- **An interactive architecture diagram** on the [Rootweaver page](/rootweaver), and technical diagrams throughout the ADRs and writing — all rendered in the browser (which, it turns out, is load-bearing; see the last section).
+- **A rewritten Rootweaver overview and CV** that describe the platform by what it *does*, not just what it's made of.
 
-Worse, "multi-agent RAG platform" is now a category with a thousand entrants. Every weekend project that wires an embedding model to a vector store and a chat model gets to use the same three words. Leading with them puts you in a crowd and then asks the reader to do the work of figuring out whether you're at the front of it.
+If you've seen the old site, the fastest way to feel the difference is the [ADRs page](/adrs) — it didn't exist before.
 
-I'd been hiding behind the list because committing to a thesis means committing to a claim that could be wrong. So I went and got the claim pressure-tested — a competitive-positioning review against the current landscape of self-hosted AI systems — and then wrote the sentence I'd been avoiding.
+## The decision log is public now
 
-## The thesis: different stores for different kinds of truth
+This is the part I'm actually pleased about. There's now an [**ADRs page**](/adrs): a browsable index of Architecture Decision Records — the short documents engineers write to capture *why* a choice was made, in a fixed shape: the context, the decision, the alternatives considered, and the consequences.
 
-Here is the new opening line on the Rootweaver page:
+**Twenty of my seventy-seven ADRs are published.** The operational ones — and anything that would leak a secret or an attack surface — stay private in the platform repo; the rest are now public, each one a real write-up with a diagram, not a one-line summary.
 
-> Not a RAG app — an operator-owned agent platform: different stores for different kinds of truth (vector recall, relational authority, graph reasoning), with self-curating memory and signed provenance.
+The index itself is a small tool, not a static list:
 
-Every clause in that sentence is load-bearing, so let me defend each one.
+- **Sort any column** — id, decision, status, or date — ascending or descending. Want the newest decisions first? Click *date*. Want them alphabetical? Click *decision*.
+- **Filter by status** — accepted, superseded, proposed. Two of the twenty are published as `proposed` because that's their honest state; I didn't promote them to make the page look tidier.
+- Each row links to the full record. Where a decision played out in this blog series, the entry links back to the episode.
 
-**Different stores for different kinds of truth.** This is the spine. A RAG app has one move: embed everything, retrieve by similarity, stuff it in a prompt. But similarity is the wrong tool for most of what an operator actually asks. "What's *similar* to this incident?" is a vector question. "Which ticket is *authoritative* for this change?" is a relational question — it has a correct answer, not a nearest neighbour. "What *breaks* if I change this module?" is a graph question — it's about edges, not content. Rootweaver routes each kind of question to the store that can actually answer it: Qdrant for recall, Postgres for authority, FalkorDB for structure. Collapsing all three into "RAG" is how you get a system that's confidently approximate about things that have exact answers.
+What's in the twenty? They span the whole platform, deliberately:
 
-**Operator-owned.** It runs on my hardware, under my keys, with my data never leaving the cluster. That's not a privacy slogan; it's an architectural constraint that shapes every decision — GitOps over click-ops, signed commits over trust, K3s over a managed control plane I don't own. (That last one is [ADR-019](/adrs/019-k3s-over-managed/), and it's one of the eight I just published — more on that below.)
+- **How data is stored and retrieved** — [a relational-authority index in Postgres](/adrs/036-vault-structured-index-postgres/) beside the vector store, [lane-aware retrieval](/adrs/082-lane-aware-retrieval/) over typed ingest lanes, and a [self-hosted code-knowledge graph](/adrs/020-codegraph-platform/).
+- **Provenance** — [cryptographic attribution](/adrs/061-developer-agent-provenance/) so every AI-authored commit is signed by the specific model that wrote it.
+- **Agent autonomy** — [Claude handing heavy coding off to Codex](/adrs/079-claude-drives-codex/), and a [six-rung autonomy ladder](/adrs/088-self-healing-sre-autonomy-ladder/) for self-healing SRE.
+- **Quality** — a [refusal gate](/adrs/044-refusal-gate/) that answers "I don't know" below a confidence threshold, a [benchmark suite](/adrs/045-benchmark-suite/) that made search quality measurable, and [why my entity tagging deliberately isn't an LLM](/adrs/040-ner-not-llm/).
+- **Infrastructure** — [K3s over managed Kubernetes](/adrs/019-k3s-over-managed/), a [GPU swap controller](/adrs/029-keda-gpu-swap-controller/), [multi-node with separated backup](/adrs/060-heterogeneous-multi-node-cluster/), and a [Kafka durability contract](/adrs/065-kafka-consumer-durability/).
 
-**Self-curating memory.** The typed memory layer doesn't just accumulate; a dreaming loop prunes and promotes it, so the platform's recall gets *more* useful over time instead of noisier. Memory that only grows is a landfill. Memory that curates itself is an asset.
+They're curated, not dumped: each public ADR is a deliberately written public version of a decision whose full operational record lives in the platform repo. The site is a view onto the decisions, not the decisions themselves.
 
-**Structural code intelligence.** A Program Dependency Graph means "what depends on this?" is answered from the actual call graph, not from a text search that happens to match a function name. The agents that work on the platform query structure before they edit it.
+Publishing them is a different kind of exposure than publishing code. Code can be admired in isolation; a decision invites you to ask "would I have made the same call?" That's the point.
 
-**Signed provenance.** Every change an agent makes is signed with a non-exportable key in the Mac's Secure Enclave, hook-enforced, with a verifier that flags forgery. I wrote a whole article about why `co-authored-by` is a lie — [this](/writing/co-authored-by-is-a-lie/) is the part of the thesis I'm proudest of, because almost nobody else in the self-hosted space is doing it.
+## The one idea that ties it together
 
-**Multi-agent verification.** Work gets done by one agent and checked by another with fresh context — the creator and the verifier are deliberately separated so they don't share a blind spot.
+I could have published the ADRs without changing a word of how I describe the platform. But the reason I bothered is that the platform finally has a one-line thesis worth backing up — and the public ADRs are what make it auditable instead of just a claim.
 
-What I'm *not* claiming is hyperscaler parity. I don't have a thousand-GPU fleet or a global control plane, and the thesis doesn't pretend otherwise. The honest framing the review landed on is "frontier-tier among self-hosted systems" — which is a real position, defensible, and far more useful than "AI platform."
+For three seasons I introduced Rootweaver with a parts list: multi-agent RAG, knowledge graphs, GPU inference, 29 tools. Every word true, and none of it said what the thing was *for*. The new one-liner is:
 
-## Making the thesis legible: the decision log goes public
+> An operator-owned agent platform — **different stores for different kinds of truth**.
 
-A thesis you can't audit is marketing. So the same week I wrote the sentence, I opened the decision log behind it.
+A plain RAG app has one move: embed everything, retrieve by similarity. But most of what an operator asks isn't a similarity question. "What's *similar* to this incident?" is a vector question. "Which ticket is *authoritative* for this change?" is relational — it has a correct answer, not a nearest neighbour. "What *breaks* if I change this module?" is a graph question. Rootweaver routes each to the store that can actually answer it — Qdrant for recall, Postgres for authority, FalkorDB for structure — rather than flattening all three into one similarity search that's confidently approximate about things with exact answers.
 
-There's now an [ADRs page](/adrs) on the site. **Twenty of seventy-seven** Architecture Decision Records are published — the operational ones, and anything that would expose a secret or an attack surface, stay in the platform repo; the rest are public, each in the classic shape: context, the call that was made, and what it cost.
+That's the thread running through the ADRs above: provenance, lane-aware retrieval, the relational index, the autonomy ladder — each is one clause of that sentence made real. The decision log is how you check that the sentence is true, not marketing.
 
-I chose the public set to do exactly one job: put a decision behind every clause of the thesis, so the sentence is auditable rather than asserted.
+## The bug that shipped every page empty
 
-- **Different stores for different kinds of truth** — a [relational-authority index in Postgres](/adrs/036-vault-structured-index-postgres/) sitting beside vector recall, [lane-aware retrieval](/adrs/082-lane-aware-retrieval/) over typed ingest lanes, and a [self-hosted code-knowledge graph](/adrs/020-codegraph-platform/) for the structural questions.
-- **Self-curating memory** — the [dreaming loop](/adrs/063-dreaming-loop/) that prunes and enriches typed memory off the hot path.
-- **Signed provenance** — [cryptographic attribution](/adrs/061-developer-agent-provenance/) for AI-authored commits.
-- **Multi-agent autonomy** — [Claude handing heavy coding to Codex](/adrs/079-claude-drives-codex/), and a [six-rung autonomy ladder](/adrs/088-self-healing-sre-autonomy-ladder/) for self-healing SRE.
-- **Quality over confidence** — the [refusal gate](/adrs/044-refusal-gate/), the [benchmark suite](/adrs/045-benchmark-suite/) that made search quality measurable, and [why entity tagging deliberately isn't an LLM](/adrs/040-ner-not-llm/).
+No honest build post skips the part that broke, and this rebuild had a good one.
 
-That sits alongside the infrastructure decisions that make it operator-owned — [K3s over managed Kubernetes](/adrs/019-k3s-over-managed/), a [GPU swap controller](/adrs/029-keda-gpu-swap-controller/), and a [Kafka durability contract](/adrs/065-kafka-consumer-durability/) among them.
+The site builds on Cloudflare Pages on every push. My ADR and writing pages carry diagrams, and I was rendering them to inline SVG *at build time* — which works perfectly on my machine, where there's a headless Chromium to do the rendering.
 
-The set is curated, not dumped: each public ADR is a deliberately written public version of a decision whose full operational record stays in the platform repo. The website is a view onto the decisions, not the decisions themselves — and where a decision played out in this series, the entry links back to the episode, so the narrative and the record point at each other.
+There is no headless Chromium in the Cloudflare build container. And the failure wasn't loud: the diagram renderer failed silently and took the **entire page body** down with it. Every ADR and every writing page deployed with its content gone. The build went green and shipped empty.
 
-Publishing decisions is a different kind of exposure than publishing code. Code can be admired in isolation; a decision invites the reader to ask "would I have made the same call?" That's exactly why it's worth doing. A thesis backed by an auditable trail of trade-offs is a claim. A thesis backed by nothing is a tagline.
+I lost real time because the symptom pointed everywhere except the cause — my first guess was a Node version mismatch (it wasn't). What nailed it was shipping a tiny diagnostic endpoint that reported the build environment and ran an explicit Chromium launch test: it failed in the cloud, passed locally, and there was the answer. The fix was to stop pretending the build box is my laptop and render diagrams **client-side** instead.
 
-## The redesign: a front door that matches
-
-You can't put a serious positioning claim on a site that looks like a weekend template. So the third piece was a ground-up redesign — a single unified design system across every page, replacing the patchwork that had accreted over three seasons of bolting pages on.
-
-The new look is deliberately editorial rather than "tech demo": a warm, paper-toned light mode, a restrained purple accent, monospace labels, status pills, and chips that read like a well-kept engineering doc rather than a SaaS landing page. The platform describes itself as decisions and consequences, so the site should feel like decisions and consequences — not gradients and hero animations.
-
-There's a quiet argument in that choice. If the thesis is "operator-owned, auditable, frontier-tier among self-hosted systems," the presentation has to carry the same restraint. Overclaiming in the visual design would undercut the *not*-overclaiming I'd just done in the copy.
-
-## The bug that emptied every page
-
-No building-in-public post is honest without the part that went wrong, and this one had a good one.
-
-The site builds on Cloudflare Pages from source on every push to `main`. My ADR and writing pages render Mermaid diagrams, and I'd been rendering them to inline SVG *at build time* — which works beautifully on my machine, where there's a headless Chromium to do the rendering.
-
-There is no headless Chromium in the Cloudflare build container. It's non-root and missing the libraries Chromium needs to launch. And here's the cruel part: the failure wasn't loud. The build didn't error. Instead, the diagram renderer failed silently and took the *entire page body* down with it — every ADR and every writing page deployed with its content gone. The site built green and shipped empty.
-
-I lost real time to this because the symptom pointed everywhere except the cause. My first instinct was a Node version mismatch, so I pinned Node 22 — Cloudflare was *already* on Node 22. Red herring. What actually nailed it was refusing to keep guessing: I shipped a `/build-info.json` diagnostic that reported the build node, platform, commit SHA, and — critically — the result of an explicit Chromium launch test. The launch test failed in the cloud and passed locally. There was the answer, in one JSON file.
-
-The fix was to stop pretending the build environment is my laptop: render Mermaid **client-side** instead of at build time. The diagram code ships to the browser and renders there, where there's always a real one. Pages have bodies again.
-
-The lesson is older than this bug: *a build that succeeds is not a build that's correct.* "Green" only means the steps you wrote didn't throw. It says nothing about whether the output is what you wanted. The only thing that caught this was a probe that asserted on the actual environment instead of trusting it.
-
-## What actually changed
-
-Nothing in the platform. The graphs, the GPU node, the 29 tools, the memory loop — all of it was already running before this week. What changed is that I can now say what it is in one sentence, point at eight decisions that prove the sentence, and present all of it on a site that doesn't undercut the claim.
-
-For three seasons I led with the parts because the parts were unarguable. This week I led with the thesis, because a thesis is the only thing a parts list can't give you: a position someone could disagree with — and that you'd be willing to defend.
-
-It's not a RAG app. It never was. It just took me three seasons to write the sentence that says so.
+The lesson is older than the bug: *a build that succeeds is not a build that's correct.* "Green" only means the steps you wrote didn't throw — it says nothing about whether the output is what you wanted. The only thing that caught this was a probe that asserted on the real environment instead of trusting it.
 
 ---
 
-*Rootweaver is a self-hosted agent platform I design and operate solo, built with Claude Code, alongside my day job as an SRE on BT's Global Fabric. The decision log is [here](/adrs); the rest of this series is [here](/writing).*
+*Rootweaver is the self-hosted agent platform I design and operate solo, built with Claude Code, alongside my day job as an SRE. The decision log is [here](/adrs); the rest of this series is [here](/writing).*
