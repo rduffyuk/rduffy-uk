@@ -1,14 +1,43 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
-import JourneyScrollytelling from "@components/journey/JourneyScrollytelling";
+import JourneyView from "@components/journey/JourneyView";
 import journeyData from "@data/journey-data.json";
 ---
 
 <BaseLayout title="Journey" description="Watch Rootweaver grow — an interactive map of the platform's evolution.">
-  <JourneyScrollytelling client:idle data={journeyData} />
+  <JourneyView client:idle data={journeyData} />
 </BaseLayout>
 
 <style is:global>
+  /* ===== 2D/3D mode toggle ===== */
+  .journey-mode-toggle {
+    position: fixed;
+    top: 68px;
+    right: 16px;
+    z-index: 50;
+    display: flex;
+    gap: 2px;
+    padding: 2px;
+    border-radius: 999px;
+    background: var(--color-chip, #f1eee6);
+    border: 1px solid var(--color-rule, #c9c4b6);
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    font-size: 0.6875rem;
+  }
+  .journey-mode-toggle button {
+    padding: 3px 11px;
+    border-radius: 999px;
+    border: none;
+    background: transparent;
+    color: var(--color-text-subtle, #787e8c);
+    cursor: pointer;
+    line-height: 1.4;
+  }
+  .journey-mode-toggle button[data-active="true"] {
+    background: var(--color-accent, #6d3df0);
+    color: #fff;
+  }
+
   /* ===== Lazy-load skeleton for the 3D graph ===== */
   .journey-graph-skeleton {
     width: 100%;
