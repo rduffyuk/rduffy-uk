@@ -11,7 +11,7 @@ featured: true
 pubDatetime: 2026-06-28 18:30:00+00:00
 reading_time: 9 minutes
 series: 'Building in Public'
-slug: not-a-rag-app
+slug: site-rebuild-decision-log
 tags:
 - rootweaver
 - architecture
