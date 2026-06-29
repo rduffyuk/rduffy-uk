@@ -1,8 +1,9 @@
-import { useState, useEffect, useCallback, useRef } from "react";
-import { Canvas } from "@react-three/fiber";
-import { GraphScene } from "./GraphScene";
+import { useState, useEffect, useCallback, useRef, lazy, Suspense } from "react";
 import { DetailCard } from "./DetailCard";
 import type { JourneyData, PositionedNode } from "./types";
+
+// Three.js graph is lazy-loaded so its ~1MB chunk doesn't block first paint.
+const GraphCanvas = lazy(() => import("./GraphCanvas"));
 
 interface Props {
   data: JourneyData;
@@ -70,17 +71,23 @@ export default function JourneyScrollytelling({ data }: Props) {
       {/* Sticky graph */}
       <div className="journey-canvas">
         <div className="journey-canvas-inner">
-          <Canvas
-            camera={{ position: [0, 0, 14], fov: 45 }}
-            style={{ background: dark ? "#09090b" : "#f7f6f2" }}
+          <Suspense
+            fallback={
+              <div
+                className="journey-graph-skeleton"
+                style={{ background: dark ? "#09090b" : "#f7f6f2" }}
+              >
+                <span className="journey-graph-skeleton-text">Loading the map…</span>
+              </div>
+            }
           >
-            <GraphScene
+            <GraphCanvas
               data={data}
               currentIndex={currentIndex}
               onNodeClick={handleNodeClick}
               dark={dark}
             />
-          </Canvas>
+          </Suspense>
 
           <div className="journey-overlay">
             <span className="journey-overlay-date">{milestone?.date}</span>

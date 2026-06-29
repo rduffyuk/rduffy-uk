@@ -5,10 +5,30 @@ import journeyData from "@data/journey-data.json";
 ---
 
 <BaseLayout title="Journey" description="Watch Rootweaver grow — an interactive map of the platform's evolution.">
-  <JourneyScrollytelling client:load data={journeyData} />
+  <JourneyScrollytelling client:idle data={journeyData} />
 </BaseLayout>
 
 <style is:global>
+  /* ===== Lazy-load skeleton for the 3D graph ===== */
+  .journey-graph-skeleton {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .journey-graph-skeleton-text {
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    color: var(--color-text-subtle, #787e8c);
+    animation: journey-skeleton-pulse 1.4s ease-in-out infinite;
+  }
+  @keyframes journey-skeleton-pulse {
+    0%, 100% { opacity: 0.35; }
+    50% { opacity: 1; }
+  }
+
   /* ===== MOBILE: stacked, smaller canvas ===== */
   .journey-layout {
     display: flex;
