@@ -1,5 +1,5 @@
 ---
-title: "Not a RAG App: a Site Rebuild and a Public Decision Log"
+title: "I Rebuilt My Site and Opened My Decision Log"
 author: Ryan Duffy
 categories:
 - Architecture
