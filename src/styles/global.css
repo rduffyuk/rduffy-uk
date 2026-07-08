@@ -329,7 +329,75 @@
    useMaxWidth:false in the client init (BaseLayout.astro). */
 .mermaid { overflow-x: auto; }
 .prose.prose-rd pre.mermaid { line-height: normal; }
-.mermaid svg { max-width: none !important; height: auto; }
+.mermaid svg { max-width: 100% !important; height: auto; }
+/* Click-to-zoom overlay: restores native diagram size on demand (see BaseLayout.astro). */
+.mermaid-zoom-overlay {
+  position: fixed; inset: 0; z-index: 9999;
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: 2rem; overflow: auto; cursor: zoom-out;
+  background: rgba(15, 17, 22, 0.95);
+}
+.mermaid-zoom-overlay svg { max-width: none !important; height: auto; }
+
+/* Theme-aware Mermaid node palette (token-based: light pastels + dark text in
+   light mode; dark fills + light text in dark mode). Overrides the classDef
+   fills so diagrams read well on both the cream and the slate backgrounds. */
+.mermaid g.proc rect, .mermaid g.proc polygon { fill: var(--nd-proc-bg) !important; stroke: var(--nd-proc-bd) !important; }
+.mermaid g.proc .nodeLabel { color: var(--nd-proc-fg) !important; }
+.mermaid g.gate rect, .mermaid g.gate polygon { fill: var(--nd-gate-bg) !important; stroke: var(--nd-gate-bd) !important; }
+.mermaid g.gate .nodeLabel { color: var(--nd-gate-fg) !important; }
+.mermaid g.store rect, .mermaid g.store polygon { fill: var(--nd-store-bg) !important; stroke: var(--nd-store-bd) !important; }
+.mermaid g.store .nodeLabel { color: var(--nd-store-fg) !important; }
+.mermaid g.ext rect, .mermaid g.ext polygon { fill: var(--nd-ext-bg) !important; stroke: var(--nd-ext-bd) !important; }
+.mermaid g.ext .nodeLabel { color: var(--nd-ext-fg) !important; }
+.mermaid g.fail rect, .mermaid g.fail polygon { fill: var(--nd-fail-bg) !important; stroke: var(--nd-fail-bd) !important; }
+.mermaid g.fail .nodeLabel { color: var(--nd-fail-fg) !important; }
+.mermaid g.ok rect, .mermaid g.ok polygon { fill: var(--nd-ok-bg) !important; stroke: var(--nd-ok-bd) !important; }
+.mermaid g.ok .nodeLabel { color: var(--nd-ok-fg) !important; }
+.mermaid g.client rect, .mermaid g.client polygon { fill: var(--nd-client-bg) !important; stroke: var(--nd-client-bd) !important; }
+.mermaid g.client .nodeLabel { color: var(--nd-client-fg) !important; }
+
+/* Edge labels (yes / no / HTTP / etc.) — theme the text AND the backing rect so
+   they stay readable on both backgrounds (Mermaid's default backing washed them out). */
+.mermaid .edgeLabel, .mermaid .edgeLabel p, .mermaid .edgeLabel span, .mermaid .edgeLabel div {
+  color: var(--nd-edge-fg) !important;
+  background-color: var(--nd-edge-bg) !important;
+}
+.mermaid .edgeLabel foreignObject, .mermaid .edgeLabels foreignObject { overflow: visible; }
+.mermaid .edgeLabel .labelBkg, .mermaid .edgeLabels .labelBkg, .mermaid .edgePaths + g .labelBkg { fill: var(--nd-edge-bg) !important; }
+
+:root {
+  --nd-proc-bg: #dbeafe; --nd-proc-bd: #3b82f6; --nd-proc-fg: #1e3a5f;
+  --nd-gate-bg: #ede9fe; --nd-gate-bd: #8b5cf6; --nd-gate-fg: #5b21b6;
+  --nd-store-bg: #dcfce7; --nd-store-bd: #16a34a; --nd-store-fg: #14532d;
+  --nd-ext-bg: #cffafe; --nd-ext-bd: #0891b2; --nd-ext-fg: #155e63;
+  --nd-fail-bg: #ffe4e6; --nd-fail-bd: #f43f5e; --nd-fail-fg: #9f1239;
+  --nd-ok-bg: #dcfce7; --nd-ok-bd: #16a34a; --nd-ok-fg: #14532d;
+  --nd-client-bg: #e2e8f0; --nd-client-bd: #64748b; --nd-client-fg: #334155;
+  --nd-edge-fg: #334155; --nd-edge-bg: #f7f6f2;
+}
+:root[data-theme="dark"] {
+  --nd-proc-bg: #1e3a5f; --nd-proc-bd: #3b82f6; --nd-proc-fg: #dbeafe;
+  --nd-gate-bg: #3b2f5e; --nd-gate-bd: #a78bfa; --nd-gate-fg: #ede9fe;
+  --nd-store-bg: #14342b; --nd-store-bd: #34d399; --nd-store-fg: #d1fae5;
+  --nd-ext-bg: #0e3a45; --nd-ext-bd: #22d3ee; --nd-ext-fg: #cffafe;
+  --nd-fail-bg: #4a1220; --nd-fail-bd: #fb7185; --nd-fail-fg: #fecdd3;
+  --nd-ok-bg: #14342b; --nd-ok-bd: #34d399; --nd-ok-fg: #d1fae5;
+  --nd-client-bg: #2a2f3a; --nd-client-bd: #94a3b8; --nd-client-fg: #e2e8f0;
+  --nd-edge-fg: #e2e8f0; --nd-edge-bg: #15171c;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --nd-proc-bg: #1e3a5f; --nd-proc-bd: #3b82f6; --nd-proc-fg: #dbeafe;
+    --nd-gate-bg: #3b2f5e; --nd-gate-bd: #a78bfa; --nd-gate-fg: #ede9fe;
+    --nd-store-bg: #14342b; --nd-store-bd: #34d399; --nd-store-fg: #d1fae5;
+    --nd-ext-bg: #0e3a45; --nd-ext-bd: #22d3ee; --nd-ext-fg: #cffafe;
+    --nd-fail-bg: #4a1220; --nd-fail-bd: #fb7185; --nd-fail-fg: #fecdd3;
+    --nd-ok-bg: #14342b; --nd-ok-bd: #34d399; --nd-ok-fg: #d1fae5;
+    --nd-client-bg: #2a2f3a; --nd-client-bd: #94a3b8; --nd-client-fg: #e2e8f0;
+    --nd-edge-fg: #e2e8f0; --nd-edge-bg: #15171c;
+  }
+}
 .prose.prose-rd hr { border: 0; border-top: 1px solid var(--color-border); margin-block: 2em; }
 .prose.prose-rd table { font-size: 0.875rem; border-collapse: collapse; margin-block: 1.3em; }
 .prose.prose-rd th,
