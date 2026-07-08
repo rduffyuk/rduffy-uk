@@ -73,6 +73,34 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
           },
         });
         await mermaid.run({ nodes: blocks });
+
+        // Click any diagram to zoom: open a full-size copy in an overlay.
+        // Diagrams render fitted to the column (max-width:100%); this restores
+        // native size on demand so dense diagrams stay legible.
+        blocks.forEach((el) => {
+          const svg = el.querySelector("svg");
+          if (!svg) return;
+          el.style.cursor = "zoom-in";
+          el.setAttribute("title", "Click to zoom");
+          el.addEventListener("click", () => {
+            const overlay = document.createElement("div");
+            overlay.className = "mermaid-zoom-overlay";
+            const clone = svg.cloneNode(true) as SVGElement;
+            clone.removeAttribute("style");
+            clone.style.maxWidth = "none";
+            clone.style.height = "auto";
+            overlay.appendChild(clone);
+            overlay.addEventListener("click", () => overlay.remove());
+            document.addEventListener(
+              "keydown",
+              (ev) => {
+                if (ev.key === "Escape") overlay.remove();
+              },
+              { once: true },
+            );
+            document.body.appendChild(overlay);
+          });
+        });
       }
     </script>
   </body>
