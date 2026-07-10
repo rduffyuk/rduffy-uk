@@ -329,7 +329,7 @@
    useMaxWidth:false in the client init (BaseLayout.astro). */
 .mermaid { overflow-x: auto; }
 .prose.prose-rd pre.mermaid { line-height: normal; }
-.mermaid svg { max-width: 100% !important; height: auto; }
+.mermaid svg { max-width: 100% !important; height: auto; display: block; margin-inline: auto; }
 /* Click-to-zoom overlay: restores native diagram size on demand (see BaseLayout.astro). */
 .mermaid-zoom-overlay {
   position: fixed; inset: 0; z-index: 9999;
