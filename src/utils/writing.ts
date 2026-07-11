@@ -13,5 +13,6 @@ export function seasonOf(id: string): number | null {
 export const SEASONS: Record<number, { name: string; meta: string }> = {
   1: { name: "Season 1 — ConvoCanvas", meta: "Oct 2025 · complete" },
   2: { name: "Season 2 — Validation", meta: "Oct 2025 · complete" },
-  3: { name: "Season 3 — Building in Public", meta: "Feb 2026 → · in progress" },
+  3: { name: "Season 3 — Building in Public", meta: "Feb–Jun 2026 · complete" },
+  4: { name: "Season 4 — The Agent Era", meta: "Jun 2026 → · in progress" },
 };
