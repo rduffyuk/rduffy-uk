@@ -25,6 +25,8 @@ Most demos answer the first question and ignore the other two. They stuff the wh
 
 I wanted to treat memory as something you can *measure*, not assert. So I built [qwen-memory-agent](https://github.com/rduffyuk/qwen-memory-agent): a persistent-memory agent on [Qwen Cloud](https://www.alibabacloud.com/en/product/modelstudio), deployed on an Alibaba Cloud ECS box, with two benchmarks attached to it. This is what the numbers say — including the parts that aren't flattering.
 
+If you'd rather watch it than read it, there's a [three-minute demo](https://youtu.be/TOMjFJ4ayYg) where a contradicted fact strikes through to `superseded` live on screen. The full submission is on [Devpost](https://devpost.com/software/qwen-memory-agent), and the code is [MIT-licensed on GitHub](https://github.com/rduffyuk/qwen-memory-agent).
+
 ## How it fits together
 
 ```mermaid
