@@ -25,10 +25,10 @@ const qdrantK = `~${Math.round(rw.qdrantPoints / 1000)}K`;
         </button>
       </div>
       <p class="mt-2 font-mono text-xs text-[--color-text-subtle] md:text-sm">
-        AI Infrastructure · Site Reliability Engineering · Observability
+        AI Infrastructure · Site Reliability Engineering · Applied AI Research
       </p>
       <p class="mt-1 font-mono text-xs text-[--color-text-muted]">
-        Ipswich, UK · rduffy.uk · blog.rduffy.uk · linkedin.com/in/rduffyuk
+        Ipswich, UK · rduffy.uk · blog.rduffy.uk · linkedin.com/in/rduffy-uk
       </p>
     </div>
 
@@ -36,15 +36,28 @@ const qdrantK = `~${Math.round(rw.qdrantPoints / 1000)}K`;
     <section class="card mb-8 p-4 md:p-6">
       <p class="text-sm leading-relaxed text-[--color-text-muted]">
         I build and operate AI systems end-to-end. I designed and run
-        <strong class="text-[--color-accent]">Rootweaver</strong> — an operator-owned AI platform on K3s that fuses
-        self-curating typed memory, structural (PDG) code intelligence, signed provenance, and multi-agent verification
-        over an authority-aware vector + SQL + graph retrieval plane, with GPU serving (vLLM) and a full LGTM
-        observability stack — frontier-tier among self-hosted systems, built solo with Claude Code. That engineering sits on 14 years of reliability work
+        <strong class="text-[--color-accent]">Rootweaver</strong> — an operator-owned AI platform on K3s that combines
+        typed memory, structural (PDG) code intelligence, signed provenance, and multi-agent verification
+        over an authority-aware vector + SQL + graph retrieval plane, with GPU serving (vLLM) and full-stack
+        observability. AI agents perform substantial implementation work; I own the problem selection, architecture,
+        controls, acceptance criteria, verification and operational outcome. That engineering sits on 14 years of reliability work
         at <strong class="text-[--color-text]">BT</strong>, currently as an SRE Specialist on
-        <strong class="text-[--color-text]">Global Fabric</strong> — BT International's next-generation NaaS platform
-        across 140 PoPs in 40 countries — where I'm embedding Google SRE practice (SLOs, error budgets) into a telco
-        operating at global scale.
+        <strong class="text-[--color-text]">Global Fabric</strong> — BT International's next-generation global NaaS platform
+        — where I'm embedding Google SRE practice (SLIs, SLOs and error budgets) into a telco operating at global scale.
       </p>
+    </section>
+
+    <!-- Research engineering -->
+    <section class="mb-8">
+      <h2 class="cv-section-title">Selected Research Engineering</h2>
+
+      <div class="card p-4 md:p-6">
+        <ul class="cv-list">
+          <li><strong>Memory and retrieval evaluation</strong> — designed a five-condition pilot across real engineering-decision tasks, locking the rubric before scoring and measuring quality, latency and token cost; results remain preliminary (N=5, one run per cell)</li>
+          <li><strong>Faithfulness evaluation</strong> — tested an LLM judge across 100 documents and 400 evaluation rows; traced a failed AUC gate to the corruption treatment, redesigned it and reached AUC 0.938 on rerun</li>
+          <li><strong>Governed self-improvement</strong> — designed offline skill-routing experiments with frozen validation and holdout sets, adversarial cases, matched budgets and independent admission; candidates remain propose-only</li>
+        </ul>
+      </div>
     </section>
 
     <!-- Rootweaver (foregrounded — the work that's most inspectable) -->
@@ -93,10 +106,12 @@ const qdrantK = `~${Math.round(rw.qdrantPoints / 1000)}K`;
         </div>
         <div class="cv-meta">BT Group — Global Fabric Programme · Ipswich · Mar 2026 – Present</div>
         <ul class="cv-list">
-          <li><strong>Driving adoption of Google SRE practice</strong> — championed SLIs, SLOs, and error budgets (from <em>The Site Reliability Workbook</em>) into Global Fabric</li>
-          <li><strong>Observability platform design</strong> — crafted scope and acceptance criteria for end-to-end monitoring overlay with full service journey traceability</li>
+          <li><strong>Driving adoption of Google SRE practice</strong> — leading SLI/SLO discovery and defining the evidence required before formal targets and error-budget governance</li>
+          <li><strong>Observability platform design</strong> — crafted architecture, scope and acceptance criteria for AWS-to-on-premise service journeys, including synthetic tests that expose failures earlier</li>
+          <li><strong>AI-assisted engineering adoption</strong> — championed BT-approved Kiro across an SRE team of approximately 15; more than half now use it daily, with adoption extending to second-line teams and developers</li>
+          <li><strong>Production change review</strong> — review developer-owned Ansible, YAML, FluxCD and Terraform changes for failure modes, blast radius, observability gaps and rollback requirements</li>
           <li><strong>Alarm correlation</strong> — drafted correlation logic across multiple scenarios (PoP isolation, orbiting IS-IS/OSPF links); first scenario now operational</li>
-          <li><strong>PI Planning</strong> — leading prioritisation of product engineering work across multiple SME stakeholders</li>
+          <li><strong>Recovery and incident engineering</strong> — isolated an InfluxDB OOM loop during a 17-hour telemetry incident and validated PostgreSQL WAL/PITR recovery for a 28GB NetBox database, improving tested RPO to approximately one minute and achieving a 26-minute RTO</li>
           <li><strong>BT Tech Fellowship</strong> — AI Squad member, contributing to on-premise private cloud AI data centre initiative with NVIDIA advisory</li>
         </ul>
         <div class="cv-tech">Multi-vendor (Cisco, Juniper, Nokia, Itential) · BGP · IS-IS · OSPF · Segment Routing · YANG/OpenConfig · Linux · K8s · Prometheus · Elastic · Kafka · Python · Ansible</div>
@@ -106,9 +121,10 @@ const qdrantK = `~${Math.round(rw.qdrantPoints / 1000)}K`;
         <div class="cv-role-header">
           <h3 class="text-base font-semibold text-[--color-text]">Senior Delivery, Operations & Support Engineer</h3>
         </div>
-        <div class="cv-meta">BT Group · Ipswich · Nov 2016 – Mar 2026 (9 yrs 5 mos)</div>
+        <div class="cv-meta">BT Group · Ipswich · Nov 2016 – Feb 2026 (9 yrs 4 mos)</div>
         <ul class="cv-list">
-          <li>Led P1/major incident management and RCA for critical infrastructure serving Fortune 500 customers across financial services, automotive, and logistics</li>
+          <li>Provided second-line engineering across BT's global IP/MPLS and Internet backbone networks, resolving BGP, QoS, bandwidth and customer edge-to-core faults</li>
+          <li>Led P1/major incident restoration and RCA for critical infrastructure serving multinational financial services, automotive and logistics customers</li>
           <li>End-to-end support: Cloud Connect (MPLS-to-AWS/Azure), Agile Connect SD-WAN, MPLS core, NFVi, BT Connect</li>
           <li>Multi-vendor fault coordination across international service paths, SLA management and contractual compliance</li>
         </ul>
@@ -146,9 +162,10 @@ const qdrantK = `~${Math.round(rw.qdrantPoints / 1000)}K`;
       <div class="card p-4 md:p-6">
         <div class="space-y-3">
           {[
-            { cat: "AI/ML Infrastructure", skills: "vLLM · Ollama · Qdrant · FalkorDB · RAG pipelines · Hybrid retrieval · Embeddings · KEDA · MCP" },
+            { cat: "Research Engineering", skills: "Hypothesis and baseline design · Evaluation rubrics · Failure analysis · Reproducibility · LLM-as-judge calibration · Cost/latency measurement" },
+            { cat: "AI/ML Infrastructure", skills: "vLLM · Ollama · Qdrant · FalkorDB · RAG pipelines · Hybrid retrieval · Embeddings · KEDA · MCP · Agent verification" },
             { cat: "Containers & GitOps", skills: "Kubernetes (K3s) · Docker · FluxCD · Helm · HAMi GPU · Harbor · Sealed Secrets" },
-            { cat: "Reliability & SRE", skills: "SLO/SLI/SLA frameworks · Error budgets · Burn-rate alerting · DORA metrics · OPA · Incident management · ITIL · PI Planning" },
+            { cat: "Reliability & SRE", skills: "SLO/SLI/SLA frameworks · Error budgets · Burn-rate alerting · RPO/RTO · PostgreSQL WAL/PITR · OPA · Incident management · ITIL" },
             { cat: "Observability", skills: "Prometheus · Grafana · OpenTelemetry · Tempo · Loki · Jaeger · Beyla eBPF · Blackbox Exporter · ELK · ServiceNow ITOM" },
             { cat: "Automation & Code", skills: "Python (uv-workspace) · Ansible · Prefect · Pydantic · FastAPI · Bash · Git" },
             { cat: "Networking", skills: "MPLS · BGP · OSPF · IS-IS · Segment Routing · PCE/PCEP · YANG/OpenConfig · SD-WAN · IPSec" },
