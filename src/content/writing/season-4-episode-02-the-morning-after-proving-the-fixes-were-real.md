@@ -11,7 +11,7 @@ description: After the overnight audit found 173 de-duplicated bugs, the next jo
   down what changed.
 draft: false
 episode: 2
-featured: true
+featured: false
 pubDatetime: 2026-07-28 19:49:44+00:00
 reading_time: 13 minutes
 word_count: 2793
