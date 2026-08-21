@@ -11,7 +11,7 @@ description:
   and the memory graph the same custody I expect from production code.
 draft: false
 episode: 3
-featured: true
+featured: false
 pubDatetime: 2026-08-06T12:00:00Z
 reading_time: 19 minutes
 series: "Season 4: Building in Public — The Agent Era"
