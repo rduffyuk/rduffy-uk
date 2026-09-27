@@ -382,7 +382,8 @@
           "id": "jira",
           "label": "Jira",
           "group": "workflow",
-          "color": "#ec4899"
+          "color": "#ec4899",
+          "retired": true
         },
         {
           "id": "confluence",
