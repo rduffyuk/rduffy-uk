@@ -11,7 +11,7 @@ description: The first half of the budget saga, where the Claude proxy undercoun
   repeated JSONL usage entries.
 draft: false
 episode: 7
-featured: true
+featured: false
 pubDatetime: 2026-09-25T21:19:48Z
 reading_time: 13 minutes
 series: 'Season 4: Building in Public — The Agent Era'
