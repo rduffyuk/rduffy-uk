@@ -458,7 +458,8 @@
           "id": "falkordb",
           "label": "FalkorDB",
           "group": "database",
-          "color": "#f97316"
+          "color": "#f97316",
+          "retired": true
         },
         {
           "id": "reranker",
