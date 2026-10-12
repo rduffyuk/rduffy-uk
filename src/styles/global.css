@@ -479,3 +479,50 @@
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0s !important; animation-duration: 0s !important; }
 }
+
+/* Optional episode vocabulary, with complete native HTML fallback. */
+.prose.prose-rd details.glossary {
+  margin-block: 1.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: var(--color-card);
+}
+.prose.prose-rd details.glossary > summary {
+  padding: 1rem 1.1rem;
+  color: var(--color-accent);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+}
+.prose.prose-rd .glossary-count {
+  margin-left: .6rem;
+  font: 11px/1.5 var(--font-mono);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+.prose.prose-rd details.glossary[open] > summary { border-bottom: 1px solid var(--color-border); }
+.prose.prose-rd .glossary-body { padding: .25rem 1.1rem 1rem; }
+.prose.prose-rd .glossary-body > p { font-size: 13px; color: var(--color-text-muted); }
+.prose.prose-rd .glossary-tools { margin-block: 1.25rem; }
+.prose.prose-rd .glossary-tools > label { display: block; margin-bottom: .45rem; font-size: 12px; color: var(--color-text-muted); }
+.prose.prose-rd .glossary-search-row { display: flex; gap: .5rem; }
+.prose.prose-rd .glossary-search-row input {
+  width: 100%; min-width: 0; border: 1px solid var(--color-rule); border-radius: 6px;
+  padding: .6rem .75rem; background: var(--color-bg); color: var(--color-text); font: inherit;
+}
+.prose.prose-rd .glossary-search-row input::placeholder { color: var(--color-text-muted); }
+.prose.prose-rd .glossary-search-row button {
+  flex: none; border: 1px solid var(--color-rule); border-radius: 6px; padding: .6rem .75rem;
+  background: var(--color-chip); color: var(--color-text); font-size: 12px; cursor: pointer;
+}
+.prose.prose-rd .glossary-status { font-size: 12px; color: var(--color-text-muted); margin: .5rem 0; }
+.prose.prose-rd .glossary-term { padding-block: .85rem; border-top: 1px solid var(--color-border); scroll-margin-top: 6rem; }
+.prose.prose-rd .glossary-term dt { font-size: 14px; font-weight: 600; }
+.prose.prose-rd .glossary-term dd { margin-top: .35rem; font-size: 13px; line-height: 1.7; }
+.prose.prose-rd .glossary [hidden] { display: none !important; }
+details.glossary { scroll-margin-top: 6rem; }
+@media (max-width: 600px) {
+  .prose.prose-rd details.glossary > summary { padding: .8rem .9rem; }
+  .prose.prose-rd .glossary-body { padding-inline: .9rem; }
+  .prose.prose-rd .glossary-search-row input { font-size: 16px; }
+}

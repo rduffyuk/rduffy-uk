@@ -45,6 +45,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     </main>
     <Footer />
     <script>
+      import "@/scripts/glossary";
+    </script>
+    <script>
       // Render Mermaid diagrams client-side (rehype-mermaid strategy: pre-mermaid).
       // Only pull in the ~heavy mermaid bundle on pages that actually have a diagram.
       const blocks = document.querySelectorAll<HTMLElement>("pre.mermaid, .mermaid");
