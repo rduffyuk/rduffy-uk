@@ -50,7 +50,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       const blocks = document.querySelectorAll<HTMLElement>("pre.mermaid, .mermaid");
       if (blocks.length) {
         const { default: mermaid } = await import("mermaid");
-        const dark = document.documentElement.getAttribute("data-theme") === "dark";
+        const selectedTheme = document.documentElement.getAttribute("data-theme");
+        const dark = selectedTheme === "dark" ||
+          (selectedTheme !== "light" && window.matchMedia("(prefers-color-scheme: dark)").matches);
         mermaid.initialize({
           startOnLoad: false,
           theme: "base",
