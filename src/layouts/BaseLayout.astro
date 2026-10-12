@@ -38,9 +38,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       })();
     </script>
   </head>
-  <body class="min-h-screen flex flex-col">
+  <body class="notebook-site min-h-screen flex flex-col">
     <Nav />
-    <main id="main-content" class="flex-1">
+    <main id="main-content" class="notebook-page flex-1" data-page={Astro.url.pathname.split("/")[1] || "home"}>
       <slot />
     </main>
     <Footer />

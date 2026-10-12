@@ -420,3 +420,62 @@
 .prose.prose-rd img { border: 1px solid var(--color-border); border-radius: 8px; margin-inline: auto; }
 
 :target { scroll-margin-block: 1rem; }
+
+/* Engineering Notebook v1 — shared screen presentation. Historical content,
+   clocks, routing and CV print rules are independent of these tokens. */
+@media screen {
+  .notebook-site { font-size: 15px; line-height: 1.75; }
+  .notebook-page { min-width: 0; }
+  .notebook-page > section, .notebook-page > article { padding-top: 3rem; }
+  .notebook-page h1 { font-weight: 600; letter-spacing: -.035em; line-height: 1.15; }
+  .notebook-title { border-left: 3px solid var(--color-accent); padding-left: 1.25rem; }
+  .notebook-page .u-label { text-transform: none; letter-spacing: .025em; color: var(--color-text-muted); }
+  .notebook-page .card, .notebook-page .u-panel { border-radius: 10px; box-shadow: none; }
+  .notebook-page .card:hover { box-shadow: none; }
+  .notebook-page[data-page="cv"] .cv-section-title { text-align: left; font: 600 15px/1.5 var(--font-sans); letter-spacing: -.01em; text-transform: none; }
+  .notebook-page[data-page="cv"] h1 { border-left: 3px solid var(--color-accent); padding-left: 1.25rem; }
+  .notebook-page[data-page="cv"] > article { padding-top: 3rem; padding-bottom: 3rem; }
+  .notebook-reading-layout { max-width: 1160px; margin-inline: auto; padding: 3rem 1.75rem 4.5rem; display: grid; grid-template-columns: minmax(0,740px) 210px; gap: 4rem; }
+  .notebook-article { min-width: 0; }
+  .notebook-article > h1 { font-size: clamp(2rem, 4vw, 2.875rem); }
+  .notebook-contents { align-self: start; position: sticky; top: 6rem; margin-top: 10rem; font-size: 12px; }
+  .notebook-contents p { font-family: var(--font-mono); color: var(--color-text-muted); margin-bottom: .75rem; }
+  .notebook-contents a { display: block; padding: .65rem 0; border-bottom: 1px solid var(--color-border); color: var(--color-text-muted); line-height: 1.5; text-decoration: none; }
+  .notebook-contents a:hover, .notebook-contents a:focus-visible { color: var(--color-accent); }
+  .prose.prose-rd { font-size: 15px; line-height: 1.75; }
+  .prose.prose-rd h2 { font-size: 21px; margin-top: 2.4em; border: 0; padding: 0; }
+  .prose.prose-rd h3 { font-size: 17px; }
+  .prose.prose-rd p, .prose.prose-rd li { overflow-wrap: anywhere; }
+  .prose.prose-rd pre { font-size: 12px; line-height: 1.8; border-radius: 10px; }
+  .prose.prose-rd pre code { white-space: pre; overflow-wrap: normal; }
+  .prose.prose-rd table { display: block; width: 100%; overflow-x: auto; font-size: 12px; line-height: 1.6; }
+  .prose.prose-rd th { background: var(--color-chip); }
+  .prose.prose-rd th, .prose.prose-rd td { padding: .7rem .85rem; vertical-align: top; }
+  .prose.prose-rd img { max-width: 100%; height: auto; border-radius: 10px; }
+  .prose.prose-rd .code-box { margin-top: 1.75rem; border: 1px solid var(--color-border); border-radius: 10px 10px 0 0; overflow: hidden; }
+  .prose.prose-rd .code-source { padding: .75rem 1rem; background: var(--color-chip); color: var(--color-text-muted); font: 11px/1.65 var(--font-mono); overflow-wrap: anywhere; }
+  .prose.prose-rd .code-box pre { border: 0; border-radius: 0; margin: 0; }
+  .prose.prose-rd details.walkthrough { background: var(--color-card); border: 1px solid var(--color-border); border-radius: 0 0 10px 10px; margin: 0 0 1.75rem; font-size: 13px; }
+  .prose.prose-rd details.walkthrough summary { padding: .8rem 1.1rem; color: var(--color-accent); cursor: pointer; font-size: 12px; }
+  .prose.prose-rd details.walkthrough[open] summary { border-bottom: 1px solid var(--color-border); }
+  .prose.prose-rd details.walkthrough > :not(summary) { margin-inline: 1.1rem; }
+  .notebook-page .react-flow { background: var(--color-bg); }
+  .notebook-page .react-flow__controls button { background: var(--color-card); color: var(--color-text); border-color: var(--color-border); fill: currentColor; }
+  .notebook-page .react-flow__edge-text { fill: var(--color-text-muted); }
+  .notebook-page .react-flow__edge-textbg { fill: var(--color-card); }
+}
+@media screen and (max-width: 980px) {
+  .notebook-reading-layout { display: block; max-width: 820px; }
+  .notebook-contents { display: none; }
+}
+@media screen and (max-width: 600px) {
+  .notebook-site, .prose.prose-rd { font-size: 14px; }
+  .notebook-reading-layout { padding: 1.75rem 1.125rem 3rem; }
+  .notebook-title { padding-left: .9rem; }
+  .notebook-page > section, .notebook-page > article { padding-top: 2rem; }
+  .prose.prose-rd h2 { font-size: 20px; }
+  .prose.prose-rd details.walkthrough { font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0s !important; animation-duration: 0s !important; }
+}
