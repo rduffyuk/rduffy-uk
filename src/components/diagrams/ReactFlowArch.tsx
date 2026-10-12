@@ -161,6 +161,7 @@ const indexEdges: Edge[] = [
 
 function DiagramPanel({ nodes, edges, title, accent, height }: { nodes: Node[]; edges: Edge[]; title: string; accent: string; height: number }) {
   const layouted = useMemo(() => layoutDagre(nodes, edges), []);
+  const dark = useIsDark();
   return (
     <div style={{ marginBottom: 24 }}>
       <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
