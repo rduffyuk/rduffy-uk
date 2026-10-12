@@ -35,18 +35,17 @@ function useIsDark() {
 }
 
 function ArchNode({ data }: { data: { label: string; sublabel?: string; color: string; icon?: string } }) {
-  const dark = useIsDark();
   return (
     <div style={{
-      background: dark ? "#0f0f13" : "#ffffff", border: `1px solid ${data.color}44`, borderTop: `3px solid ${data.color}`,
+      background: "var(--color-card)", border: `1px solid ${data.color}44`, borderTop: `3px solid ${data.color}`,
       borderRadius: 10, padding: "8px 12px", width: NODE_W, textAlign: "center",
-      boxShadow: `0 0 16px ${data.color}${dark ? "12" : "20"}`,
+      boxShadow: "none",
     }}>
       <Handle type="target" position={Position.Top} style={{ background: data.color, width: 5, height: 5 }} />
       {data.icon && <div style={{ fontSize: 15, marginBottom: 2 }}>{data.icon}</div>}
-      <div style={{ fontSize: 11, fontWeight: 600, color: data.color }}>{data.label}</div>
+      <div style={{ fontSize: 11, fontWeight: 600, color: "var(--color-text)" }}>{data.label}</div>
       {data.sublabel && (
-        <div style={{ fontSize: 8, color: "#94a3b8", fontFamily: "JetBrains Mono, monospace", marginTop: 1 }}>{data.sublabel}</div>
+        <div style={{ fontSize: 10, color: "var(--color-text-muted)", fontFamily: "JetBrains Mono, monospace", marginTop: 1 }}>{data.sublabel}</div>
       )}
       <Handle type="source" position={Position.Bottom} style={{ background: data.color, width: 5, height: 5 }} />
     </div>
@@ -54,19 +53,18 @@ function ArchNode({ data }: { data: { label: string; sublabel?: string; color: s
 }
 
 function KafkaBus({ data }: { data: { label: string; topics: string[]; color: string } }) {
-  const dark = useIsDark();
   return (
     <div style={{
-      background: dark ? "#0f0f13" : "#ffffff", border: `2px solid ${data.color}66`, borderRadius: 12,
+      background: "var(--color-card)", border: `2px solid ${data.color}66`, borderRadius: 12,
       padding: "10px 20px", minWidth: 280, textAlign: "center",
     }}>
       <Handle type="target" position={Position.Top} style={{ background: data.color, width: 5, height: 5 }} />
-      <div style={{ fontSize: 12, fontWeight: 700, color: data.color, marginBottom: 6 }}>📬 {data.label}</div>
+      <div style={{ fontSize: 12, fontWeight: 700, color: "var(--color-text)", marginBottom: 6 }}>📬 {data.label}</div>
       <div style={{ display: "flex", gap: 6, flexWrap: "wrap", justifyContent: "center" }}>
         {data.topics.map((t) => (
           <span key={t} style={{
             fontSize: 8, fontFamily: "JetBrains Mono, monospace", padding: "2px 6px",
-            borderRadius: 4, border: `1px solid ${data.color}44`, color: data.color, background: `${data.color}10`,
+            borderRadius: 4, border: `1px solid ${data.color}44`, color: "var(--color-text)", background: "var(--color-chip)",
           }}>{t}</span>
         ))}
       </div>
@@ -95,7 +93,7 @@ function layoutDagre(nodes: Node[], edges: Edge[]): Node[] {
   });
 }
 
-const lbl = (fill: string) => ({ fill, fontSize: 8 });
+const lbl = (fill: string) => ({ fill, fontSize: 10 });
 
 // ==========================================
 // DIAGRAM 1: SEARCH FLOW
@@ -168,9 +166,9 @@ function DiagramPanel({ nodes, edges, title, accent, height }: { nodes: Node[]; 
     <div style={{ marginBottom: 24 }}>
       <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
         <div style={{ width: 20, height: 3, background: accent, borderRadius: 2 }} />
-        <span style={{ fontSize: 12, fontWeight: 600, color: accent, fontFamily: "JetBrains Mono, monospace", letterSpacing: "0.1em", textTransform: "uppercase" }}>{title}</span>
+        <span style={{ fontSize: 12, fontWeight: 600, color: "var(--color-text)", fontFamily: "JetBrains Mono, monospace", letterSpacing: "0.1em", textTransform: "uppercase" }}>{title}</span>
       </div>
-      <div style={{ width: "100%", height, borderRadius: 12, overflow: "hidden", border: `1px solid ${dark ? "#1e293b" : "#e2e8f0"}` }}>
+      <div style={{ width: "100%", height, borderRadius: 12, overflow: "hidden", border: "1px solid var(--color-border)" }}>
         <ReactFlow
           nodes={layouted}
           edges={edges}
@@ -186,7 +184,7 @@ function DiagramPanel({ nodes, edges, title, accent, height }: { nodes: Node[]; 
           preventScrolling={false}
         >
           <Background color={dark ? "#1e293b" : "#e2e8f0"} gap={24} size={1} />
-          <Controls showInteractive={false} style={{ background: dark ? "#0f0f13" : "#fff", border: `1px solid ${dark ? "#1e293b" : "#e2e8f0"}`, borderRadius: 8 }} />
+          <Controls showInteractive={false} style={{ background: "var(--color-card)", border: "1px solid var(--color-border)", borderRadius: 8 }} />
         </ReactFlow>
       </div>
     </div>

@@ -30,7 +30,7 @@ const epChip = epChipM ? `S${epChipM[1]}·E${String(epChipM[2]).padStart(2, "0")
         <span> / </span>
         <span class="u-chip u-chip--adr">{pad}</span>
       </nav>
-      <h1 class="text-[1.625rem] font-semibold leading-snug tracking-tight md:text-[1.75rem]">
+      <h1 class="notebook-title text-[1.625rem] font-semibold leading-snug tracking-tight md:text-[1.75rem]">
         {adr.data.title}
       </h1>
       <div class="prose prose-rd mt-6 max-w-none">
@@ -69,8 +69,3 @@ const epChip = epChipM ? `S${epChipM[1]}·E${String(epChipM[2]).padStart(2, "0")
     </aside>
   </section>
 </BaseLayout>
-
-<style is:global>
-  .prose-rd h2 { font-size: 1.1875rem; margin-top: 1.9em; }
-  .prose-rd h2 .adr-num { font-family: var(--font-mono); font-size: 0.8125rem; color: var(--color-text-subtle); margin-right: 0.625rem; }
-</style>
