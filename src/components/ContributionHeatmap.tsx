@@ -103,8 +103,8 @@ export default function ContributionHeatmap({ variant, data }: Props) {
   }
 
   return (
-    <div className="relative flex flex-col items-center">
-      <div className="flex gap-0">
+    <div className="relative w-full overflow-x-auto">
+      <div className="mx-auto flex w-max gap-0">
         {variant === "full" && (
           <div className="mr-1 flex flex-col gap-[2px]">
             {dayLabels.map((label, i) => (
@@ -116,7 +116,7 @@ export default function ContributionHeatmap({ variant, data }: Props) {
                   width: 28,
                   fontSize: 9,
                   fontFamily: "monospace",
-                  color: "#64748b",
+                  color: "var(--color-text-muted)",
                 }}
               >
                 {label}
@@ -136,7 +136,7 @@ export default function ContributionHeatmap({ variant, data }: Props) {
                     left: m.col * 14,
                     fontSize: 9,
                     fontFamily: "monospace",
-                    color: "#64748b",
+                    color: "var(--color-text-muted)",
                   }}
                 >
                   {m.label}
@@ -169,16 +169,16 @@ export default function ContributionHeatmap({ variant, data }: Props) {
       </div>
 
       <div
-        className="mt-2 flex w-full items-center"
+        className="mt-2 flex w-full flex-wrap items-center gap-2"
         style={{
           justifyContent: variant === "full" ? "space-between" : "center",
           paddingLeft: variant === "full" ? 30 : 0,
         }}
       >
         <span
-          style={{ fontFamily: "monospace", fontSize: 11, color: "#94a3b8" }}
+          style={{ fontFamily: "monospace", fontSize: 11, color: "var(--color-text-muted)" }}
         >
-          <span style={{ color: "#4ade80", fontWeight: 600 }}>
+          <span style={{ color: "var(--color-ok)", fontWeight: 600 }}>
             {compactTotal.toLocaleString()}
           </span>{" "}
           contributions in the last{" "}
@@ -188,7 +188,7 @@ export default function ContributionHeatmap({ variant, data }: Props) {
         {variant === "full" && (
           <div className="flex items-center gap-1">
             <span
-              style={{ fontFamily: "monospace", fontSize: 9, color: "#64748b" }}
+              style={{ fontFamily: "monospace", fontSize: 9, color: "var(--color-text-muted)" }}
             >
               Less
             </span>
@@ -204,7 +204,7 @@ export default function ContributionHeatmap({ variant, data }: Props) {
               />
             ))}
             <span
-              style={{ fontFamily: "monospace", fontSize: 9, color: "#64748b" }}
+              style={{ fontFamily: "monospace", fontSize: 9, color: "var(--color-text-muted)" }}
             >
               More
             </span>
