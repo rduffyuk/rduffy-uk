@@ -64,7 +64,7 @@ Season 2 ended on a high. 100/100 Anthropic alignment. The neural vault humming 
 
 The interview went well on networking and Linux — 7 years of BT ISP experience showing up when it mattered. But it exposed K8s gaps I didn't know I had. Architecture questions where I had the concepts but not the depth. I self-assessed 3.5 out of 5. Gave myself 60% odds of advancing.
 
-The next week, I was still hopeful. Oct 20-24 was a research burst — Kafka architecture, K8s patterns, NER systems, all the things I wanted to go deeper on. 1,614 messages with Claude in a single day. Zero commits. Pure learning. Energy was high.
+The next week, I was still hopeful. Oct 20-24 was a research burst — [Kafka](#glossary-kafka) architecture, K8s patterns, NER systems, all the things I wanted to go deeper on. 1,614 messages with Claude in a single day. Zero commits. Pure learning. Energy was high.
 
 Then around November 4th, the feedback came. I didn't get the role.
 
@@ -88,7 +88,7 @@ Then I didn't write a single blog post for three and a half months.
 
 Here's what happened.
 
-**The honest version?** The rejection landed harder than the interview itself. The research burst in late October? That was adrenaline — I was still waiting for the result, still hopeful. The real demotivation came after the feedback. Not the dramatic kind — I didn't quit or spiral. But the motivation to write publicly about the platform took a quiet hit. Why blog about building something when you just got told you're not ready? Day job at BT continued. Holidays happened. The Christmas period is basically a black hole for side projects. I had a Multi-Agent RAG blog post drafted on January 5th — 530 lines, performance benchmarks, the works — and never published it. A blog automation pipeline sitting idle.
+**The honest version?** The rejection landed harder than the interview itself. The research burst in late October? That was adrenaline — I was still waiting for the result, still hopeful. The real demotivation came after the feedback. Not the dramatic kind — I didn't quit or spiral. But the motivation to write publicly about the platform took a quiet hit. Why blog about building something when you just got told you're not ready? Day job at BT continued. Holidays happened. The Christmas period is basically a black hole for side projects. I had a Multi-Agent [RAG](#glossary-rag) blog post drafted on January 5th — 530 lines, performance benchmarks, the works — and never published it. A blog automation pipeline sitting idle.
 
 It took some proper self-reflection to work through it. A week or so of thinking while doing other things. And the conclusion I came to was simple: the interview pointed to exactly what I needed to build.
 
@@ -100,7 +100,7 @@ It started small. Just listening. Then I started contributing — asking questio
 
 The system kept running. And growing. And eventually — running out of space.
 
-**A quick note on how I work**, because this comes up a lot: I'm not a traditional programmer. I don't sit down and write Python functions line by line. What I do is orchestrate AI — multiple Claude Code sessions running in parallel, Perplexity for deep research, Claude for explaining concepts back to me until I actually understand them. When I say "I built X" in this post, what I mean is: I had a vision for X, researched it until I understood the architecture, and then directed a team of AI sessions to make it real. Think technical architect with an AI engineering team, not solo developer writing code. The 450 commits in this post? Every one of them was generated through AI sessions that I directed, reviewed, and steered toward my architectural goals.
+**A quick note on how I work**, because this comes up a lot: I'm not a traditional programmer. I don't sit down and write Python functions line by line. What I do is orchestrate AI — multiple [Claude Code](#glossary-claude-code) sessions running in parallel, Perplexity for deep research, Claude for explaining concepts back to me until I actually understand them. When I say "I built X" in this post, what I mean is: I had a vision for X, researched it until I understood the architecture, and then directed a team of AI sessions to make it real. Think technical architect with an AI engineering team, not solo developer writing code. The 450 commits in this post? Every one of them was generated through AI sessions that I directed, reviewed, and steered toward my architectural goals.
 
 ---
 
@@ -128,19 +128,19 @@ December 28th. Three days before the year ends. Something clicked.
 
 I'd been thinking about the platform during the holidays — not building, just thinking. The kind of background processing your brain does when you're eating Christmas dinner but part of you is thinking about what the system could become — architectural improvements, what innovation looks like for a one-person platform, what to build next. (Just me? Probably just me.)
 
-**December 29th** was not the warm-up I thought it was. Repository consolidation onto GitLab, token integration for automated access, FluxCD GitOps reconciliation — that was the infrastructure. But the real work was vault standardization: 2,044 markdown files processed, NER tag extraction using qwen2.5:14b running for 90 minutes, 18,400 tags generated, then a full ChromaDB reindex — 60,022 chunks at 3 files per second. Not fixing a broken pipeline — building one for the first time, and giving it something to index.
+**December 29th** was not the warm-up I thought it was. Repository consolidation onto GitLab, token integration for automated access, [FluxCD](#glossary-fluxcd) [GitOps](#glossary-gitops) reconciliation — that was the infrastructure. But the real work was vault standardization: 2,044 markdown files processed, NER tag extraction using qwen2.5:14b running for 90 minutes, 18,400 tags generated, then a full [ChromaDB](#glossary-chromadb) reindex — 60,022 chunks at 3 files per second. Not fixing a broken pipeline — building one for the first time, and giving it something to index.
 
 **December 30th** was the day everything changed.
 
-In roughly four hours, I deployed the full platform MVP. Not a proof of concept — a complete K3s deployment with:
+In roughly four hours, I deployed the full platform MVP. Not a proof of concept — a complete [K3s](#glossary-k3s) deployment with:
 
-- RAG Platform: rag-gateway (2 replicas), rag-retriever, ChromaDB, MCP bridge, Ollama, vault-indexer
+- RAG Platform: rag-gateway (2 replicas), rag-retriever, ChromaDB, [MCP](#glossary-mcp) bridge, [Ollama](#glossary-ollama), vault-indexer
 - 20+ innovations module features: temporal RAG, multi-hop reasoning, confidence scoring, semantic diff, knowledge gap detection, A/B testing, prefetch caching, federation
-- 5 namespaces rebuilt from scratch: rag-platform, prefect, monitoring, ai-analytics, elastic-system
+- 5 [namespaces](#glossary-namespace) rebuilt from scratch: rag-platform, prefect, monitoring, ai-analytics, elastic-system
 
 **2,057 files modified in one day.**
 
-Was it clean? Absolutely not. The Claude Code session log reads like a war diary — me describing what's broken, Claude diagnosing and fixing, me validating, repeat. CrashLoopBackOff on the analysis engine — relative imports breaking inside Docker containers. K3s containerd caching old images. A Weaviate StatefulSet conflict. A 3.1GB VRAM leak from duplicate FastMCP processes. Twelve distinct deployment issues, each one debugged and fixed in sequence through that back-and-forth.
+Was it clean? Absolutely not. The Claude Code session log reads like a war diary — me describing what's broken, Claude diagnosing and fixing, me validating, repeat. CrashLoopBackOff on the analysis engine — relative imports breaking inside Docker containers. K3s containerd caching old images. A Weaviate [StatefulSet](#glossary-statefulset) conflict. A 3.1GB [VRAM](#glossary-vram) leak from duplicate FastMCP processes. Twelve distinct deployment issues, each one debugged and fixed in sequence through that back-and-forth.
 
 ```
   Deployment Issue Log (Dec 30, 2025)
@@ -155,9 +155,9 @@ Was it clean? Absolutely not. The Claude Code session log reads like a war diary
    8-12. Various namespace/DNS fixes      → One by one by one
 ```
 
-**December 31st** brought two milestones. First: all local systemd services migrated into K3s — 6 Prefect deployments (journal automation, vault indexing, NER tagging, conversation compression, capture renaming, vault standardization) now running as K3s CronJobs instead of local services. Prefect UI on NodePort 30420, Unleash on 30424, accessible from both devices via Tailscale.
+**December 31st** brought two milestones. First: all local systemd services migrated into K3s — 6 [Prefect](#glossary-prefect) deployments (journal automation, vault indexing, NER tagging, conversation compression, capture renaming, vault standardization) now running as K3s [CronJobs](#glossary-cronjob) instead of local services. Prefect UI on [NodePort](#glossary-nodeport) 30420, Unleash on 30424, accessible from both devices via [Tailscale](#glossary-tailscale).
 
-Second, and more quietly: **Qdrant went live.** This wasn't just swapping one database for another — it was a deliberate choice after researching what would actually scale. ChromaDB had served Season 2 well, but the question was: if this platform grew to enterprise scale, is this the right tool? The research said no. Qdrant's Rust-based async engine, binary quantization for ~96% RAM reduction, and payload indexing for temporal queries — that's what scales. This was the vector database that would eventually hold 148K+ documents and 328K vectors. ChromaDB's 38,380 documents from Season 2 were being superseded by something built for the next order of magnitude.
+Second, and more quietly: **[Qdrant](#glossary-qdrant) went live.** This wasn't just swapping one database for another — it was a deliberate choice after researching what would actually scale. ChromaDB had served Season 2 well, but the question was: if this platform grew to enterprise scale, is this the right tool? The research said no. Qdrant's Rust-based async engine, binary quantization for ~96% RAM reduction, and payload indexing for temporal queries — that's what scales. This was the vector database that would eventually hold 148K+ documents and 328K vectors. ChromaDB's 38,380 documents from Season 2 were being superseded by something built for the next order of magnitude.
 
 Full infrastructure validation. Year-end review. Everything green. I wrote a review document at 2am.
 
@@ -179,7 +179,7 @@ The plan came first: I asked Claude for an ULTRATHINK deep analysis of the platf
 
 But January 2nd wasn't just planning — it was a full infrastructure cleanup:
 
-- **327GB of disk freed** (694G → 367G, 47% reduction). K3s PVC migration, Ollama model consolidation, Python environment cleanup, Docker/containerd cache purge, the ai-lab directory finally deleted. Not the 2TB NVMe install — that was the hardware fix. This was the software housekeeping that hardware alone can't solve.
+- **327GB of disk freed** (694G → 367G, 47% reduction). K3s PVC migration, Ollama model consolidation, Python environment cleanup, Docker/containerd cache purge, the ai-lab directory finally deleted. Not the 2TB [NVMe](#glossary-nvme) install — that was the hardware fix. This was the software housekeeping that hardware alone can't solve.
 - **RAM optimization**: Elasticsearch dropped from 16Gi to 6Gi, Ollama from 16Gi to 8Gi. 18GB of headroom recovered.
 - **ChromaDB verified in K3s**: 960MB of data (388MB database + 141MB BM25 cache) confirmed safe after the Jan 1 corruption scare.
 - **LibreChat namespace shut down**: Scaled to zero, PVCs retained. Resources freed for things that actually needed them.
@@ -195,7 +195,7 @@ That last bullet — Phase 5 — was supposed to be a future initiative. It ship
 
 The catalyst behind all of this: the original drive was at 98% capacity.
 
-K3s persistent volumes, Docker images, ML models, vector databases, embedding models — all fighting for space on a drive that was never meant to hold a production platform. I was deleting Docker build caches between deployments just to buy another 500MB.
+K3s persistent volumes, Docker images, ML models, vector databases, [embedding](#glossary-embedding) models — all fighting for space on a drive that was never meant to hold a production platform. I was deleting Docker build caches between deployments just to buy another 500MB.
 
 The fix: a 2TB NVMe. But hardware is the easy part. The migration meant updating every hostPath PV, relocating git repos, updating all path references across the GitOps manifests, fixing K3s CNI plugin symlinks that broke during the move. The 327GB freed on January 2nd? That was the cleanup *after* the hardware was in. Turns out migrating to a bigger drive also means confronting every piece of technical debt you've been hoarding.
 
@@ -253,9 +253,9 @@ The key insight, and this is a callback to Episode 5: **configuration is product
 
 The next ten days were pure infrastructure work. The kind of work that's boring to describe but essential to everything that follows.
 
-**January 5: vLLM Migration kicked off.** This was a 22-day project that ran in the background through most of January. The goal: replace Ollama as the GPU inference engine with vLLM. The result, when it completed on January 27th: 3.2x throughput improvement (5-10 concurrent requests → 20-25), 40-50 tokens per second per request, P95 latency under 2 seconds (down from 5-10s with Ollama), and 85-90% GPU utilization. Zero pod restarts over 27 consecutive days. Ollama moved to CPU-only for auxiliary tasks. The GPU was finally doing one thing well instead of two things poorly.
+**January 5: [vLLM](#glossary-vllm) Migration kicked off.** This was a 22-day project that ran in the background through most of January. The goal: replace Ollama as the GPU inference engine with vLLM. The result, when it completed on January 27th: 3.2x throughput improvement (5-10 concurrent requests → 20-25), 40-50 tokens per second per request, P95 latency under 2 seconds (down from 5-10s with Ollama), and 85-90% GPU utilization. Zero [pod](#glossary-pod) restarts over 27 consecutive days. Ollama moved to CPU-only for auxiliary tasks. The GPU was finally doing one thing well instead of two things poorly.
 
-**January 5-9: Observability stack.** Prometheus Phase 4 delivered 20 new metrics for the AgentRouter, bringing the total to 36 system metrics on a dedicated service (port 9402, <1ms overhead per query). OpenLIT added LLM-specific observability — token counts, latency distributions, model performance. Grafana dashboards. For the first time, I could actually *see* what the platform was doing instead of guessing from `kubectl logs`.
+**January 5-9: Observability stack.** [Prometheus](#glossary-prometheus) Phase 4 delivered 20 new metrics for the AgentRouter, bringing the total to 36 system metrics on a dedicated service (port 9402, <1ms overhead per query). OpenLIT added LLM-specific observability — token counts, latency distributions, model performance. [Grafana](#glossary-grafana) dashboards. For the first time, I could actually *see* what the platform was doing instead of guessing from `kubectl logs`.
 
 **January 6-7: Qwen3-Embedding-0.6B.** Moved from larger embedding models to Qwen3-0.6B running on CPU. Why? Because the RTX 4080 only has 16GB of VRAM, and vLLM was already claiming most of it. CPU embeddings freed the GPU for what matters — inference — while model pre-loading and fallback chains kept latency acceptable.
 
@@ -294,13 +294,13 @@ Second, the multi-device mesh:
   └───────────────────────────────────────────────────────┘
 ```
 
-MacBook M4 Pro for development. Desktop RTX 4080 for compute. Connected via Tailscale WireGuard mesh with ~25ms latency. Syncthing keeps ~2-3GB of code in sync while excluding ~470GB of models, databases, and K3s storage.
+MacBook M4 Pro for development. Desktop RTX 4080 for compute. Connected via Tailscale [WireGuard](#glossary-wireguard) mesh with ~25ms latency. [Syncthing](#glossary-syncthing) keeps ~2-3GB of code in sync while excluding ~470GB of models, databases, and K3s storage.
 
 The killer feature: MCP tools over Tailscale. 15 AI tools running on the Desktop, accessible from the MacBook at ~100-200ms per call. Vault search from the couch. `kubectl` from the couch. GPU inference from the couch.
 
 **January 14-15: Qdrant scaled up.** The migration had completed on December 31st, but now the index was growing — 148K+ documents, 328K vectors, Qwen3-Embedding-0.6B at 1024 dimensions. The collection name is still `leveling_life_qwen3`. Renaming it would mean reindexing 328K vectors. Pragmatism beats perfection.
 
-**January 15: Harbor Container Registry** — planned and deployed in a single day. Pull-through cache proxying five upstream registries (Docker Hub, GHCR, Quay, K8s, NVIDIA), NodePort 30500. No more rate-limited pulls from Docker Hub during deployments. Nine pods running by end of day.
+**January 15: [Harbor](#glossary-harbor) Container Registry** — planned and deployed in a single day. Pull-through cache proxying five upstream registries (Docker Hub, GHCR, Quay, K8s, NVIDIA), NodePort 30500. No more rate-limited pulls from Docker Hub during deployments. Nine pods running by end of day.
 
 ---
 
@@ -335,7 +335,7 @@ I wrote my first Architecture Decision Records. Five of them. In one day.
 
 ADR-001: Capability-Based Architecture. ADR-002: Kong API Gateway. ADR-003: Feature Flags with Unleash. ADR-004: Event Streaming with Kafka. ADR-005: Observability Stack.
 
-Five foundational decisions, formally documented — context, consequences, alternatives considered. Not scribbled in a journal. Not buried in a Claude Code session transcript. Proper ADRs, the way production engineering teams govern architecture.
+Five foundational decisions, formally documented — context, consequences, alternatives considered. Not scribbled in a journal. Not buried in a Claude Code session transcript. Proper [ADRs](#glossary-adr), the way production engineering teams govern architecture.
 
 Before January 13th, I was making decisions and just... building. After January 13th, every significant architectural choice got documented. Why we chose Kong over Traefik. Why Kafka over RabbitMQ. Why capability-based architecture instead of monolithic endpoints. The kind of engineering rigour I'd been absorbing from shadowing the SRE team — now showing up in my own platform.
 
@@ -462,7 +462,7 @@ It's three layers deep:
 
 ![Code Knowledge Graph - detail view](../../assets/images/s3e1/code-graph-detail.png)
 
-The frontend is a D3.js force-directed graph with semantic zoom — zoom out to see the system level, zoom in to see individual functions. Impact heatmaps light up when you hover over a node, showing the blast radius of a change. Natural language queries ("what depends on the router?") go through FalkorDB, the graph database running on K3s at NodePort 30637. The whole thing is served by an nginx pod at NodePort 30650 and also deployed to GitLab Pages for CI/CD integration.
+The frontend is a [D3.js](#glossary-d3-js) force-directed graph with semantic zoom — zoom out to see the system level, zoom in to see individual functions. Impact heatmaps light up when you hover over a node, showing the blast radius of a change. Natural language queries ("what depends on the router?") go through [FalkorDB](#glossary-falkordb), the graph database running on K3s at NodePort 30637. The whole thing is served by an nginx pod at NodePort 30650 and also deployed to GitLab Pages for CI/CD integration.
 
 <video controls width="100%" preload="metadata">
   <source src="/videos/code-graph-demo.mp4" type="video/mp4" />
@@ -610,7 +610,7 @@ If you're reading this and thinking "I could never build something like that" �
 
 ## What's Next
 
-But the platform transformation was just the foundation. What I built *on* that foundation — a streaming journal pipeline that turns every Claude Code session into a daily reflection, powered by Kafka, vLLM, and KEDA — that's the next story.
+But the platform transformation was just the foundation. What I built *on* that foundation — a streaming journal pipeline that turns every Claude Code session into a daily reflection, powered by Kafka, vLLM, and [KEDA](#glossary-keda) — that's the next story.
 
 **Episode 2: "Streaming Journals: Kafka Meets LLMs"**
 
@@ -626,7 +626,7 @@ Fair warning: that system still has bugs. Episode 2 is honest about them.
 
 This episode wouldn't exist without:
 
-**[K3s](https://k3s.io/)** — Lightweight Kubernetes that makes single-node clusters actually usable. The backbone of everything.
+**[K3s](https://k3s.io/)** — Lightweight [Kubernetes](#glossary-kubernetes) that makes single-node clusters actually usable. The backbone of everything.
 
 **[FluxCD](https://fluxcd.io/)** — GitOps controller that turns git commits into deployed infrastructure. 362 of those 450 commits went through Flux.
 
@@ -652,39 +652,147 @@ Massive thanks to all maintainers. Your work enables platforms like Rootweaver.
 
 ## Glossary
 
-New to some of these terms? Here's a quick reference for everything mentioned in this post, with links to learn more.
-
-| Term | What It Is |
-|------|-----------|
-| **[K3s](https://k3s.io/)** | Lightweight Kubernetes distribution. Think of it as a way to run containerised applications on a single machine with the same tools used by large companies. |
-| **[Kubernetes (K8s)](https://kubernetes.io/)** | Container orchestration platform. Manages how applications are deployed, scaled, and kept running. K3s is the lightweight version. |
-| **[FluxCD](https://fluxcd.io/)** | GitOps controller. Watches a git repository for changes and automatically applies them to your cluster. Push code → infrastructure updates itself. |
-| **[GitOps](https://opengitops.dev/)** | Managing infrastructure through git commits instead of manual commands. The git repo is the source of truth. |
-| **[Qdrant](https://qdrant.tech/)** | Vector database. Stores documents as mathematical embeddings so you can search by meaning, not just keywords. |
-| **[ChromaDB](https://www.trychroma.com/)** | Another vector database — simpler, great for getting started. Rootweaver used it in Season 2 before migrating to Qdrant. |
-| **[Tailscale](https://tailscale.com/)** | Mesh VPN built on WireGuard. Connects devices securely as if they're on the same local network, wherever they are. |
-| **[Syncthing](https://syncthing.net/)** | Peer-to-peer file synchronisation. Keeps folders in sync across devices without a cloud service. |
-| **[vLLM](https://vllm.ai/)** | High-performance LLM serving engine. Runs large language models on your GPU with optimised throughput. |
-| **[Ollama](https://ollama.com/)** | Easy-to-use LLM runner. Download and run AI models locally with one command. |
-| **[Claude Code](https://docs.anthropic.com/en/docs/claude-code)** | Anthropic's CLI tool for coding with Claude. The AI assistant used to build most of this platform. |
-| **[MCP](https://modelcontextprotocol.io/)** | Model Context Protocol. A standard for connecting AI assistants to external tools and data sources. |
-| **[Prefect](https://www.prefect.io/)** | Workflow orchestration platform. Schedules and manages automated tasks (like journal generation, vault indexing). |
-| **[KEDA](https://keda.sh/)** | Kubernetes Event-Driven Autoscaling. Automatically spins up pods in response to events (like new messages in a queue). |
-| **[Kafka](https://kafka.apache.org/)** | Distributed event streaming platform. Handles high-throughput message passing between services. |
-| **[Prometheus](https://prometheus.io/)** | Monitoring and alerting toolkit. Collects metrics from your services so you can see what's happening. |
-| **[Grafana](https://grafana.com/)** | Visualisation platform. Turns Prometheus metrics into dashboards and graphs. |
-| **[Harbor](https://goharbor.io/)** | Container registry with pull-through cache. Stores Docker images locally so you don't hit rate limits. |
-| **[D3.js](https://d3js.org/)** | JavaScript library for data visualisation. Powers the Code Knowledge Graph's interactive force-directed graphs. |
-| **[FalkorDB](https://www.falkordb.com/)** | Graph database. Stores relationships between code components for natural language queries. |
-| **ADR** | Architecture Decision Record. A document that captures why a technical decision was made, what alternatives were considered, and what the consequences are. |
-| **NodePort** | A Kubernetes service type that exposes a port on the host machine (range 30000-32767), making it accessible from outside the cluster. |
-| **Pod** | The smallest deployable unit in Kubernetes. Usually runs one container (one application or service). |
-| **Namespace** | A way to organise resources in Kubernetes. Like folders for your cluster — keeps different projects separated. |
-| **StatefulSet** | A Kubernetes resource for applications that need persistent storage (databases, queues). Unlike Deployments, pods keep their identity and data across restarts. |
-| **CronJob** | A Kubernetes resource that runs a task on a schedule (like cron on Linux). Used for batch processing and maintenance tasks. |
-| **RAG** | Retrieval-Augmented Generation. A pattern where an AI searches a knowledge base before generating a response, grounding it in real data. |
-| **Embedding** | A mathematical representation of text as a vector (list of numbers). Similar texts have similar vectors, enabling semantic search. |
-| **VRAM** | Video RAM. Memory on a GPU. LLMs need significant VRAM to run — the RTX 4080 has 16GB. |
-| **NVMe** | Fast solid-state storage that connects directly to the motherboard. The 2TB drive that solved the disk space crisis. |
-| **SSE** | Server-Sent Events. A protocol for streaming data from server to client. How the MCP bridge communicates with Claude Code. |
-| **WireGuard** | Modern VPN protocol. Fast, simple, and secure. Tailscale is built on top of it. |
+<details class="glossary" data-glossary>
+<summary>Technical terms and abbreviations <span class="glossary-count">32 terms</span></summary>
+<div class="glossary-body">
+<p>New to some of these terms? Here&#x27;s a quick reference for everything mentioned in this post, with links to learn more.</p>
+<div class="glossary-tools" hidden>
+<label for="glossary-search">Find a term or a word in its definition</label>
+<div class="glossary-search-row">
+<input id="glossary-search" type="search" placeholder="For example: MCP, storage, Kubernetes" autocomplete="off" aria-controls="glossary-definitions" />
+<button type="button" data-glossary-clear>Clear</button>
+</div>
+<p class="glossary-status" role="status" aria-live="polite" aria-atomic="true"></p>
+</div>
+<dl id="glossary-definitions">
+<div class="glossary-term" id="glossary-k3s" tabindex="-1">
+<dt><a href="https://docs.k3s.io/">K3s</a></dt>
+<dd>Lightweight Kubernetes distribution. Think of it as a way to run containerised applications on a single machine with the same tools used by large companies.</dd>
+</div>
+<div class="glossary-term" id="glossary-kubernetes" tabindex="-1">
+<dt><a href="https://kubernetes.io/docs/concepts/overview/">Kubernetes (K8s)</a></dt>
+<dd>Container orchestration platform. Manages how applications are deployed, scaled, and kept running. K3s is the lightweight version.</dd>
+</div>
+<div class="glossary-term" id="glossary-fluxcd" tabindex="-1">
+<dt><a href="https://fluxcd.io/flux/">FluxCD</a></dt>
+<dd>GitOps controller. Watches a git repository for changes and automatically applies them to your cluster. Push code → infrastructure updates itself.</dd>
+</div>
+<div class="glossary-term" id="glossary-gitops" tabindex="-1">
+<dt><a href="https://opengitops.dev/">GitOps</a></dt>
+<dd>Managing infrastructure through git commits instead of manual commands. The git repo is the source of truth.</dd>
+</div>
+<div class="glossary-term" id="glossary-qdrant" tabindex="-1">
+<dt><a href="https://qdrant.tech/documentation/">Qdrant</a></dt>
+<dd>Vector database. Stores documents as mathematical embeddings so you can search by meaning, not just keywords.</dd>
+</div>
+<div class="glossary-term" id="glossary-chromadb" tabindex="-1">
+<dt><a href="https://docs.trychroma.com/">ChromaDB</a></dt>
+<dd>Another vector database — simpler, great for getting started. Rootweaver used it in Season 2 before migrating to Qdrant.</dd>
+</div>
+<div class="glossary-term" id="glossary-tailscale" tabindex="-1">
+<dt><a href="https://tailscale.com/kb">Tailscale</a></dt>
+<dd>Mesh VPN built on WireGuard. Connects devices securely as if they&#x27;re on the same local network, wherever they are.</dd>
+</div>
+<div class="glossary-term" id="glossary-syncthing" tabindex="-1">
+<dt><a href="https://docs.syncthing.net/">Syncthing</a></dt>
+<dd>Peer-to-peer file synchronisation. Keeps folders in sync across devices without a cloud service.</dd>
+</div>
+<div class="glossary-term" id="glossary-vllm" tabindex="-1">
+<dt><a href="https://docs.vllm.ai/en/latest/">vLLM</a></dt>
+<dd>High-performance LLM serving engine. Runs large language models on your GPU with optimised throughput.</dd>
+</div>
+<div class="glossary-term" id="glossary-ollama" tabindex="-1">
+<dt><a href="https://docs.ollama.com/">Ollama</a></dt>
+<dd>Easy-to-use LLM runner. Download and run AI models locally with one command.</dd>
+</div>
+<div class="glossary-term" id="glossary-claude-code" tabindex="-1">
+<dt><a href="https://code.claude.com/docs/en/overview">Claude Code</a></dt>
+<dd>Anthropic&#x27;s CLI tool for coding with Claude. The AI assistant used to build most of this platform.</dd>
+</div>
+<div class="glossary-term" id="glossary-mcp" tabindex="-1">
+<dt><a href="https://modelcontextprotocol.io/docs/getting-started/intro">MCP</a></dt>
+<dd>Model Context Protocol. A standard for connecting AI assistants to external tools and data sources.</dd>
+</div>
+<div class="glossary-term" id="glossary-prefect" tabindex="-1">
+<dt><a href="https://docs.prefect.io/">Prefect</a></dt>
+<dd>Workflow orchestration platform. Schedules and manages automated tasks (like journal generation, vault indexing).</dd>
+</div>
+<div class="glossary-term" id="glossary-keda" tabindex="-1">
+<dt><a href="https://keda.sh/docs/">KEDA</a></dt>
+<dd>Kubernetes Event-Driven Autoscaling. Automatically spins up pods in response to events (like new messages in a queue).</dd>
+</div>
+<div class="glossary-term" id="glossary-kafka" tabindex="-1">
+<dt><a href="https://kafka.apache.org/documentation/">Kafka</a></dt>
+<dd>Distributed event streaming platform. Handles high-throughput message passing between services.</dd>
+</div>
+<div class="glossary-term" id="glossary-prometheus" tabindex="-1">
+<dt><a href="https://prometheus.io/docs/introduction/overview/">Prometheus</a></dt>
+<dd>Monitoring and alerting toolkit. Collects metrics from your services so you can see what&#x27;s happening.</dd>
+</div>
+<div class="glossary-term" id="glossary-grafana" tabindex="-1">
+<dt><a href="https://grafana.com/docs/grafana/latest/">Grafana</a></dt>
+<dd>Visualisation platform. Turns Prometheus metrics into dashboards and graphs.</dd>
+</div>
+<div class="glossary-term" id="glossary-harbor" tabindex="-1">
+<dt><a href="https://goharbor.io/docs/">Harbor</a></dt>
+<dd>Container registry with pull-through cache. Stores Docker images locally so you don&#x27;t hit rate limits.</dd>
+</div>
+<div class="glossary-term" id="glossary-d3-js" tabindex="-1">
+<dt><a href="https://d3js.org/getting-started">D3.js</a></dt>
+<dd>JavaScript library for data visualisation. Powers the Code Knowledge Graph&#x27;s interactive force-directed graphs.</dd>
+</div>
+<div class="glossary-term" id="glossary-falkordb" tabindex="-1">
+<dt><a href="https://docs.falkordb.com/">FalkorDB</a></dt>
+<dd>Graph database. Stores relationships between code components for natural language queries.</dd>
+</div>
+<div class="glossary-term" id="glossary-adr" tabindex="-1">
+<dt><a href="https://adr.github.io/">ADR</a></dt>
+<dd>Architecture Decision Record. A document that captures why a technical decision was made, what alternatives were considered, and what the consequences are.</dd>
+</div>
+<div class="glossary-term" id="glossary-nodeport" tabindex="-1">
+<dt><a href="https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport">NodePort</a></dt>
+<dd>A Kubernetes service type that exposes a port on the host machine (range 30000-32767), making it accessible from outside the cluster.</dd>
+</div>
+<div class="glossary-term" id="glossary-pod" tabindex="-1">
+<dt><a href="https://kubernetes.io/docs/concepts/workloads/pods/">Pod</a></dt>
+<dd>The smallest deployable unit in Kubernetes. Usually runs one container (one application or service).</dd>
+</div>
+<div class="glossary-term" id="glossary-namespace" tabindex="-1">
+<dt><a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/">Namespace</a></dt>
+<dd>A way to organise resources in Kubernetes. Like folders for your cluster — keeps different projects separated.</dd>
+</div>
+<div class="glossary-term" id="glossary-statefulset" tabindex="-1">
+<dt><a href="https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/">StatefulSet</a></dt>
+<dd>A Kubernetes resource for applications that need persistent storage (databases, queues). Unlike Deployments, pods keep their identity and data across restarts.</dd>
+</div>
+<div class="glossary-term" id="glossary-cronjob" tabindex="-1">
+<dt><a href="https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/">CronJob</a></dt>
+<dd>A Kubernetes resource that runs a task on a schedule (like cron on Linux). Used for batch processing and maintenance tasks.</dd>
+</div>
+<div class="glossary-term" id="glossary-rag" tabindex="-1">
+<dt><a href="https://docs.aws.amazon.com/prescriptive-guidance/latest/retrieval-augmented-generation-options/what-is-rag.html">RAG</a></dt>
+<dd>Retrieval-Augmented Generation. A pattern where an AI searches a knowledge base before generating a response, grounding it in real data.</dd>
+</div>
+<div class="glossary-term" id="glossary-embedding" tabindex="-1">
+<dt><a href="https://docs.ollama.com/capabilities/embeddings">Embedding</a></dt>
+<dd>A mathematical representation of text as a vector (list of numbers). Similar texts have similar vectors, enabling semantic search.</dd>
+</div>
+<div class="glossary-term" id="glossary-vram" tabindex="-1">
+<dt><a href="https://www.nvidia.com/en-us/geforce/graphics-cards/40-series/rtx-4080/">VRAM</a></dt>
+<dd>Video RAM. Memory on a GPU. LLMs need significant VRAM to run — the RTX 4080 has 16GB.</dd>
+</div>
+<div class="glossary-term" id="glossary-nvme" tabindex="-1">
+<dt><a href="https://nvmexpress.org/">NVMe</a></dt>
+<dd>Fast solid-state storage that connects directly to the motherboard. The 2TB drive that solved the disk space crisis.</dd>
+</div>
+<div class="glossary-term" id="glossary-sse" tabindex="-1">
+<dt><a href="https://html.spec.whatwg.org/multipage/server-sent-events.html">SSE</a></dt>
+<dd>Server-Sent Events. A protocol for streaming data from server to client. How the MCP bridge communicates with Claude Code.</dd>
+</div>
+<div class="glossary-term" id="glossary-wireguard" tabindex="-1">
+<dt><a href="https://www.wireguard.com/">WireGuard</a></dt>
+<dd>Modern VPN protocol. Fast, simple, and secure. Tailscale is built on top of it.</dd>
+</div>
+</dl>
+</div>
+</details>
