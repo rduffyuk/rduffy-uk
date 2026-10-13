@@ -2,6 +2,7 @@
 title: The Night the Mac Died
 author: Ryan Duffy
 pubDatetime: 2026-07-01T12:09:00Z
+shippingDatetime: 2026-10-13T19:46:46Z
 description: After a 24 GB MacBook crash, I wanted agent sessions to stop launching more workers than the machine could handle—and a blocked request to warn me to reduce the workload or move it elsewhere.
 episode: 9
 series: 'Season 4: Building in Public — The Agent Era'
