@@ -25,7 +25,7 @@ const entries: Entry[] = [];
 for (const post of writing) {
   const chip = episodeChip(post.id);
   entries.push({
-    date: post.data.pubDatetime,
+    date: post.data.shippingDatetime ?? post.data.pubDatetime,
     kind: chip === "ARTICLE" ? "article" : "post",
     tag: chip,
     title: post.data.title,
