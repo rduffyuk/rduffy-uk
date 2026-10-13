@@ -4,7 +4,11 @@ import BaseLayout from "@layouts/BaseLayout.astro";
 import { episodeChip, seasonOf, SEASONS } from "@/utils/writing";
 
 const posts = await getCollection("writing", ({ data }) => !data.draft);
-posts.sort((a, b) => b.data.pubDatetime.getTime() - a.data.pubDatetime.getTime());
+// Release order may differ from the preserved historical article date.
+posts.sort((a, b) =>
+  (b.data.shippingDatetime ?? b.data.pubDatetime).getTime() -
+  (a.data.shippingDatetime ?? a.data.pubDatetime).getTime()
+);
 
 const articles = posts.filter((p) => seasonOf(p.id) === null);
 const seasonNumbers = [...new Set(posts.map((p) => seasonOf(p.id)).filter((s): s is number => s !== null))].sort((a, b) => b - a);
