@@ -1,101 +1,108 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "@layouts/BaseLayout.astro";
-import { episodeChip, seasonOf, SEASONS } from "@/utils/writing";
+import WritingList from "@components/WritingList.astro";
+import { seasonOf, SEASONS } from "@/utils/writing";
+import "@/styles/writing.css";
 
 const posts = await getCollection("writing", ({ data }) => !data.draft);
 // Release order may differ from the preserved historical article date.
-posts.sort((a, b) =>
-  (b.data.shippingDatetime ?? b.data.pubDatetime).getTime() -
-  (a.data.shippingDatetime ?? a.data.pubDatetime).getTime()
+posts.sort(
+  (a, b) =>
+    (b.data.shippingDatetime ?? b.data.pubDatetime).getTime() -
+    (a.data.shippingDatetime ?? a.data.pubDatetime).getTime(),
 );
-
 const articles = posts.filter((p) => seasonOf(p.id) === null);
-const seasonNumbers = [...new Set(posts.map((p) => seasonOf(p.id)).filter((s): s is number => s !== null))].sort((a, b) => b - a);
+const seasonNumbers = [
+  ...new Set(
+    posts.map((p) => seasonOf(p.id)).filter((s): s is number => s !== null),
+  ),
+].sort((a, b) => b - a);
 const currentSeason = seasonNumbers[0];
 const bySeason = (n: number) => posts.filter((p) => seasonOf(p.id) === n);
-
-const fmt = (d: Date) => d.toISOString().slice(0, 10);
+const seasonMeta = (n: number) =>
+  SEASONS[n]?.meta
+    .replace("→", "onwards")
+    .replace("in progress", "In progress")
+    .replace("complete", "Complete");
 ---
 
-<BaseLayout title="Writing" description="Building AI infrastructure in public — seasons of episodes plus standalone articles. Every episode links the ADRs it discusses.">
-  <section class="mx-auto max-w-5xl px-6 py-12">
-    <div class="flex items-baseline justify-between">
-      <h1 class="text-3xl font-semibold tracking-tight md:text-[2.125rem]">Writing</h1>
-      <a href="/rss.xml" class="font-mono text-xs text-[--color-accent] hover:underline">rss.xml ↗</a>
-    </div>
-    <p class="mt-3 max-w-xl text-[0.9375rem] leading-relaxed text-[--color-text-muted]">
-      Building AI infrastructure in public — documented as seasons of episodes, plus standalone
-      articles. Every episode links the ADRs it discusses.
-    </p>
-
+<BaseLayout
+  title="Writing"
+  description="Building AI infrastructure in public — seasons of episodes plus standalone articles. Every episode links the ADRs it discusses."
+>
+  <div class="writing-index">
+    <header class="writing-intro">
+      <div class="title-line">
+        <h1>Writing</h1>
+        <a href="/rss.xml">Subscribe via RSS</a>
+      </div>
+      <p>
+        Building AI infrastructure in public — documented as seasons of
+        episodes, plus standalone articles. Every episode links the ADRs it
+        discusses.
+      </p>
+      <p class="writing-counts">
+        {posts.length - articles.length} episodes across {seasonNumbers.length}{" "}
+        seasons <span aria-hidden="true">·</span> {articles.length} standalone
+        articles
+      </p>
+      <nav class="writing-jumps" aria-label="Writing sections">
+        {currentSeason && <a href="#current-season">Current season</a>}
+        {articles.length > 0 && <a href="#articles">Articles</a>}
+        {seasonNumbers.length > 1 && (
+          <a href="#earlier-seasons">Earlier seasons</a>
+        )}
+      </nav>
+    </header>
     {currentSeason && (
-      <div class="mt-10">
-        <div class="flex items-baseline gap-3.5 border-b-2 border-[--color-text] pb-2">
-          <h2 class="text-base font-semibold">{SEASONS[currentSeason]?.name ?? `Season ${currentSeason}`}</h2>
-          <span class="u-label">{SEASONS[currentSeason]?.meta} · {bySeason(currentSeason).length} episodes</span>
+      <section id="current-season" aria-labelledby="current-title">
+        <div class="archive-heading">
+          <h2 id="current-title">
+            {SEASONS[currentSeason]?.name ?? `Season ${currentSeason}`}
+          </h2>
+          <p>
+            {seasonMeta(currentSeason)} · {bySeason(currentSeason).length}{" "}
+            episodes
+          </p>
         </div>
-        <ul>
-          {bySeason(currentSeason).map((post) => (
-            <li class="border-b border-[--color-border]">
-              <a href={`/writing/${post.id}/`} class="grid grid-cols-[4.5rem_1fr] items-baseline gap-3 py-3.5 transition-colors hover:bg-[--color-card-hover] md:grid-cols-[4.5rem_6.25rem_1fr_4rem] md:gap-4">
-                <span class="u-chip u-chip--post">{episodeChip(post.id)}</span>
-                <span class="hidden font-mono text-[0.71875rem] tabular-nums text-[--color-text-subtle] md:inline">{fmt(post.data.pubDatetime)}</span>
-                <span class="text-[0.9375rem] font-medium leading-snug">{post.data.title}</span>
-                <span class="hidden text-right font-mono text-[0.6875rem] text-[--color-text-subtle] md:inline">{post.data.reading_time ?? ""}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
+        <WritingList posts={bySeason(currentSeason)} />
+      </section>
     )}
-
     {articles.length > 0 && (
-      <div class="mt-10">
-        <div class="flex items-baseline gap-3.5 border-b-2 border-[--color-text] pb-2">
-          <h2 class="text-base font-semibold">Articles</h2>
-          <span class="u-label">standalone</span>
+      <section id="articles" aria-labelledby="articles-title">
+        <div class="archive-heading">
+          <h2 id="articles-title">Articles</h2>
+          <p>Standalone writing</p>
         </div>
-        <ul>
-          {articles.map((post) => (
-            <li class="border-b border-[--color-border]">
-              <a href={`/writing/${post.id}/`} class="grid grid-cols-[4.5rem_1fr] items-baseline gap-3 py-3.5 transition-colors hover:bg-[--color-card-hover] md:grid-cols-[4.5rem_6.25rem_1fr_4rem] md:gap-4">
-                <span class="u-chip u-chip--article">ARTICLE</span>
-                <span class="hidden font-mono text-[0.71875rem] tabular-nums text-[--color-text-subtle] md:inline">{fmt(post.data.pubDatetime)}</span>
-                <span class="text-[0.9375rem] font-medium leading-snug">{post.data.title}</span>
-                <span class="hidden text-right font-mono text-[0.6875rem] text-[--color-text-subtle] md:inline">{post.data.reading_time ?? ""}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
+        <WritingList posts={articles} />
+      </section>
     )}
-
     {seasonNumbers.length > 1 && (
-      <div class="mt-10">
-        <div class="u-label mb-2">Earlier seasons</div>
+      <section id="earlier-seasons" aria-labelledby="earlier-title">
+        <div class="archive-heading">
+          <h2 id="earlier-title">Earlier seasons</h2>
+          <p>The story from the beginning</p>
+        </div>
         {seasonNumbers.slice(1).map((n) => (
-          <details class="u-panel mt-3 px-5 py-4">
-            <summary class="flex cursor-pointer list-none items-baseline justify-between">
+          <details class="season">
+            <summary>
               <span>
-                <span class="text-[0.9375rem] font-semibold">{SEASONS[n]?.name ?? `Season ${n}`}</span>
-                <span class="u-label ml-3.5">{SEASONS[n]?.meta} · {bySeason(n).length} episodes</span>
+                <strong>{SEASONS[n]?.name ?? `Season ${n}`}</strong>
+                <small>
+                  {seasonMeta(n)} · {bySeason(n).length} episodes
+                </small>
               </span>
-              <span class="font-mono text-xs text-[--color-accent]">open season →</span>
+              <span class="season-toggle" aria-hidden="true"></span>
             </summary>
-            <ul class="mt-3 border-t border-[--color-border]">
-              {bySeason(n).map((post) => (
-                <li class="border-b border-[--color-border] last:border-b-0">
-                  <a href={`/writing/${post.id}/`} class="grid grid-cols-[4.5rem_1fr] items-baseline gap-3 py-3 transition-colors hover:bg-[--color-card-hover]">
-                    <span class="u-chip u-chip--post">{episodeChip(post.id)}</span>
-                    <span class="text-sm font-medium leading-snug">{post.data.title}</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
+            <WritingList posts={bySeason(n)} />
           </details>
         ))}
-      </div>
+      </section>
     )}
-  </section>
+    <p class="date-note">
+      Dates show when each piece was published. Episodes may describe work from
+      an earlier period.
+    </p>
+  </div>
 </BaseLayout>

@@ -9,6 +9,7 @@ series: 'Season 4: Building in Public — The Agent Era'
 slug: season-4-episode-09-the-night-the-mac-died
 draft: false
 featured: false
+reading_time: 20 minutes
 categories: [Season4, Agents, Reliability, Incidents]
 tags: [agents, macos, ram-guard, reliability, rootweaver, building-in-public, season-4]
 ---
