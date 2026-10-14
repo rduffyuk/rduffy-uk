@@ -14,7 +14,8 @@
     "sync-adrs": "node scripts/sync-adrs.mjs",
     "refresh:liveness": "node scripts/refresh-cluster-liveness.mjs",
     "refresh:stats": "node scripts/refresh-rootweaver-stats.mjs",
-    "deploy:dev": "astro build && wrangler deploy --env dev"
+    "deploy:dev": "astro build && wrangler deploy --env dev",
+    "test:public-notes": "node --test tests/public-build-notes.test.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^5.0.5",
