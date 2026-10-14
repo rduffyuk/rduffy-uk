@@ -1,69 +1,14 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { getEntry, render } from "astro:content";
-import ContributionHeatmap from "@components/ContributionHeatmap";
-import contributions from "@data/contributions.json";
+import "@/styles/about.css";
 
 const entry = await getEntry("pages", "about");
 const { Content } = await render(entry);
-
-const roles = [
-  { label: "SRE Specialist", icon: "⚙️", color: "--color-success" },
-  { label: "AI Orchestrator", icon: "🧠", color: "--color-accent" },
-  { label: "Platform Builder", icon: "🔮", color: "--color-accent-cyan" },
-];
-
-const principles = [
-  { title: "Direct, Don't Type", description: "I architect and orchestrate. Claude Code is my hands on the keyboard." },
-  { title: "Ship Daily", description: "Rootweaver grows every day. Organic, compounding progress." },
-  { title: "Document Everything", description: "43 ADRs and counting. If it's not written down, it didn't happen." },
-];
 ---
 
-<BaseLayout title="About">
-  <article class="mx-auto max-w-3xl px-6 py-12">
-    <div class="mb-10">
-      <p class="mb-2 font-mono text-xs tracking-[0.2em] uppercase text-[--color-accent-cyan]">About</p>
-      <h1 class="notebook-title text-3xl font-semibold md:text-4xl">
-        <span class="gradient-text">Who I Am</span>
-      </h1>
-    </div>
-
-    <!-- Role badges -->
-    <div class="mb-8 flex flex-wrap gap-3">
-      {roles.map((role) => (
-        <span class="card inline-flex items-center gap-2 px-4 py-2 text-sm font-medium">
-          <span>{role.icon}</span>
-          <span style={`color: var(${role.color})`}>{role.label}</span>
-        </span>
-      ))}
-    </div>
-
-    <!-- Main content with accent line -->
-    <div class="card p-8 md:p-10">
-      <div class="accent-line">
-        <div class="prose prose-rd dark:prose-invert max-w-none prose-p:text-[--color-text-muted] prose-p:leading-relaxed prose-strong:text-[--color-text]">
-          <Content />
-        </div>
-      </div>
-    </div>
-
-    <!-- Principles -->
-    <div class="mt-8 grid gap-4 md:grid-cols-3">
-      {principles.map((p) => (
-        <div class="card p-5">
-          <h3 class="mb-2 text-sm font-semibold text-[--color-accent]">{p.title}</h3>
-          <p class="text-sm leading-relaxed text-[--color-text-muted]">{p.description}</p>
-        </div>
-      ))}
-    </div>
-
-    <!-- Contribution activity -->
-    <div class="mt-10">
-      <h3 class="mb-6 text-center font-mono text-xs tracking-[0.2em] uppercase text-[--color-text-subtle]">
-        Contribution Activity
-      </h3>
-      <ContributionHeatmap variant="full" data={contributions} client:load />
-    </div>
+<BaseLayout title="About" description="Ryan Duffy — site reliability at BT, independent applied AI work through Rootweaver, and the interests behind it.">
+  <article class="about-page">
+    <Content />
   </article>
 </BaseLayout>
