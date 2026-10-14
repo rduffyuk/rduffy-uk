@@ -69,7 +69,7 @@
 }
 .writing-index > section {
   margin-bottom: 42px;
-  scroll-margin-top: 24px;
+  scroll-margin-top: 80px;
 }
 .writing-index .archive-heading {
   display: flex;
