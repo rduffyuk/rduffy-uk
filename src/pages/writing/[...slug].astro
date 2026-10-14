@@ -55,7 +55,7 @@ const next = idx < posts.length - 1 ? posts[idx + 1] : null;
       <div class="mt-6 flex flex-col gap-2">
         {linkedAdrs.map((adr) => (
           <a href={`/adrs/${adr.id}/`} class="u-panel flex items-baseline gap-3.5 border-l-[3px] !border-l-[--color-adr] px-4 py-3 transition-colors hover:bg-[--color-card-hover]">
-            <span class="u-chip u-chip--adr flex-none">ADR-{String(adr.data.id).padStart(3, "0")}</span>
+            <span class="u-chip u-chip--adr flex-none">{adr.data.sourceKind === "historical-note" ? "Design note" : `ADR-${String(adr.data.id).padStart(3, "0")}`}</span>
             <span class="text-sm">{adr.data.title}</span>
             <span class="ml-auto flex-none font-mono text-[0.6875rem] text-[--color-accent]">read decision →</span>
           </a>

@@ -3,11 +3,18 @@ import BaseLayout from "@layouts/BaseLayout.astro";
 import ProofStrip from "@components/ProofStrip.astro";
 import ShippingLog from "@components/ShippingLog.astro";
 
+import { getCollection } from "astro:content";
+import { seasonOf } from "@/utils/writing";
+import archive from "@data/adr-archive.json";
+const published = await getCollection("writing", ({ data }) => !data.draft);
+const episodes = published.filter(p => seasonOf(p.id) !== null);
+const seasonCount = new Set(episodes.map(p => seasonOf(p.id))).size;
+const articleCount = published.length - episodes.length;
 const kvRows = [
   { k: "Day job", v: "SRE Specialist · BT Global Fabric — NaaS across 140 PoPs, 40 countries" },
   { k: "Night job", v: "Rootweaver — self-hosted agent platform on K3s: memory, code-intel & signed provenance in one operator-owned stack", accent: true },
-  { k: "Decisions", v: "77 ADRs written · 20 published here" },
-  { k: "Writing", v: "21 episodes · 3 seasons · articles" },
+  { k: "Decisions", v: `${archive.canonicalRecords} ADRs · ${archive.legacyRecords} legacy records · June archive` },
+  { k: "Writing", v: `${episodes.length} episodes · ${seasonCount} seasons · ${articleCount} articles` },
 ];
 ---
 
@@ -73,9 +80,9 @@ const kvRows = [
     <div>
       <div class="u-label mb-3.5">The platform</div>
       <p class="text-[0.9375rem] leading-relaxed text-[--color-text-muted]">
-        <strong class="font-semibold text-[--color-text]">Rootweaver</strong> turns Claude Code into a long-term
-        infrastructure collaborator: hybrid graph + vector retrieval, GPU inference, Kafka streaming, and a
-        full observability stack — on one GPU node and a MacBook.
+        <strong class="font-semibold text-[--color-text]">Rootweaver</strong> connects my coding tools to
+        persistent memory, searchable knowledge and code relationships, with signed provenance.
+        I design and operate it with AI-assisted development across K3s and a native Mac workspace.
       </p>
       <a href="/rootweaver" class="mt-4 inline-block font-mono text-xs text-[--color-accent] hover:underline">architecture deep-dive →</a>
     </div>
@@ -94,12 +101,12 @@ const kvRows = [
         <circle r="3" fill="var(--color-accent)"><animateMotion dur="2.6s" repeatCount="indefinite" path="M310,118 L275,156" begin="0.7s"></animateMotion></circle>
         {[
           { n: "Vault", x: 64, y: 24, w: 92 },
-          { n: "Claude Code", x: 260, y: 24, w: 120 },
+          { n: "Coding tools", x: 260, y: 24, w: 120 },
           { n: "RAG Gateway", x: 260, y: 90, w: 120 },
-          { n: "vLLM · GPU", x: 420, y: 90, w: 100 },
+          { n: "Model routes", x: 420, y: 90, w: 100 },
           { n: "Kafka", x: 64, y: 156, w: 92 },
           { n: "Qdrant", x: 220, y: 156, w: 100 },
-          { n: "FalkorDB", x: 378, y: 156, w: 104 },
+          { n: "PostgreSQL", x: 378, y: 156, w: 104 },
         ].map((node) => (
           <g>
             <rect x={node.x} y={node.y} width={node.w} height="28" rx="4" fill="var(--color-node-bg)" stroke="var(--color-rule)" stroke-width="1"></rect>

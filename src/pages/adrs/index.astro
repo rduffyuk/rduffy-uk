@@ -1,17 +1,27 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "@layouts/BaseLayout.astro";
-import stats from "@data/stats.json";
+import reviews from "@data/adr-reviews.json";
+import journal from "@data/journal-backfill.json";
+import archive from "@data/adr-archive.json";
+import "@/styles/adr-review.css";
 
 const adrs = await getCollection("adrs");
 adrs.sort((a, b) => b.data.id - a.data.id);
 
-const total = stats.adrsTotal ?? 46;
+const reviewEntries = reviews.entries as Record<string, { category: string; label: string }>;
+const reconciliationCount = Object.values(reviewEntries).filter(r => ["reconciled", "historical"].includes(r.category)).length;
+const noteCount = adrs.filter(a => a.data.sourceKind === "historical-note").length;
+const legacyCount = adrs.filter(a => a.data.sourceKind === "legacy-record").length;
 const counts = {
   accepted: adrs.filter((a) => a.data.status === "accepted").length,
   superseded: adrs.filter((a) => a.data.status === "superseded").length,
   proposed: adrs.filter((a) => a.data.status === "proposed").length,
+  withdrawn: adrs.filter((a) => a.data.status === "withdrawn").length,
 };
+const journalLinks = (slug: string) => journal.records.filter(r => r.relatedLinks.some(l => l.href === `/adrs/${slug}/`));
+const archived = new Map(archive.records.map(r => [r.slug, r]));
+const statusLabel = (adr: typeof adrs[number]) => adr.data.recordedStatus === 'accepted-with-caveats' ? 'accepted · caveats' : adr.data.recordedStatus?.startsWith('Superseded-in-part') ? 'superseded · in part' : adr.data.status;
 const fmt = (d: Date) => d.toISOString().slice(0, 10);
 const pad = (n: number) => `ADR-${String(n).padStart(3, "0")}`;
 const chipOf = (ep?: string) => {
@@ -20,21 +30,34 @@ const chipOf = (ep?: string) => {
 };
 ---
 
-<BaseLayout title="ADRs" description="Architecture Decision Records for the Rootweaver platform — context, decision, consequences. Curated subset; operational records stay private.">
+<BaseLayout title="ADRs" description="Rootweaver architecture decision archive through 30 June 2026: proposals, accepted decisions, superseded records and a withdrawn duplicate, with later amendments labelled.">
   <section class="mx-auto max-w-5xl px-6 py-12">
     <h1 class="text-3xl font-semibold tracking-tight md:text-[2.125rem]">Architecture Decision Records</h1>
     <p class="mt-3 max-w-2xl text-[0.9375rem] leading-relaxed text-[--color-text-muted]">
       The decisions behind Rootweaver — context, the call that was made, and what it cost.
-      <strong class="font-semibold text-[--color-text]"> {adrs.length} of {total} published</strong>;
-      operational records stay in the platform repo.
+      <strong class="font-semibold text-[--color-text]"> {archive.canonicalRecords} ADR records · {legacyCount} legacy records · {noteCount} historical design notes</strong>, including proposals, superseded decisions and one withdrawn duplicate.
     </p>
 
+    <div class="adr-journal-coverage"><strong>ADR archive · records through 30 June 2026</strong><p>Full source bodies, with disclosure edits marked. This is a record-date cutoff: the text was retrieved on 14 October and includes labelled later amendments. The journal remains separately backfilled through 14 June.</p><a href="/journey/?at=2026-06-14-the-machine-had-one-memory-budget&view=3d">Explore the dated journey →</a></div>
+    <details class="adr-archive-method"><summary>Source history and reconciliation</summary>
+    <aside class="adr-review-intro" aria-label="ADR review coverage">
+      <div><span class="adr-review-eyebrow">Source edition · 14 October 2026</span><h2>Keep the reasoning, including the changes of mind.</h2><p>Recorded statuses and qualifications stay visible. A proposal is not an implementation claim. Design notes have their own identity; later architecture context is dated separately.</p></div>
+      <div class="adr-review-intro-side"><strong>{reconciliationCount} source relationships reconciled</strong><p>Five ADR identities and dates corrected; four former example records relabelled as design notes. Existing links still work.</p><a href="/rootweaver/">Explore the architecture as checked →</a></div>
+    </aside>
+    </details>
+    <label class="adr-review-filter"><input id="adr-needs-review" type="checkbox"/> Show reconciled records ({reconciliationCount})</label>
+    <label class="adr-search-label" for="adr-search">Find a decision</label>
+    <input id="adr-search" class="adr-search" type="search" placeholder="Search number, title or topic…" autocomplete="off"/>
     <div id="adr-filters" class="mt-6 mb-4 flex gap-1.5 font-mono text-[0.6875rem]">
-      <button data-status="all" class="rounded-full border border-[--color-rule] bg-[--color-chip] px-3 py-1 text-[--color-text]">all · {adrs.length}</button>
-      <button data-status="accepted" class="rounded-full border border-transparent px-3 py-1 text-[--color-text-subtle] hover:text-[--color-text]">accepted · {counts.accepted}</button>
-      <button data-status="superseded" class="rounded-full border border-transparent px-3 py-1 text-[--color-text-subtle] hover:text-[--color-text]">superseded · {counts.superseded}</button>
-      {counts.proposed > 0 && <button data-status="proposed" class="rounded-full border border-transparent px-3 py-1 text-[--color-text-subtle] hover:text-[--color-text]">proposed · {counts.proposed}</button>}
+      <button data-status="all" aria-pressed="true" class="rounded-full border border-[--color-rule] bg-[--color-chip] px-3 py-1 text-[--color-text]">all · {adrs.length}</button>
+      <button data-status="historical" aria-pressed="false" class="rounded-full border border-transparent px-3 py-1 text-[--color-text-subtle] hover:text-[--color-text]">design notes · {noteCount}</button>
+      <button data-status="legacy" aria-pressed="false" class="rounded-full border border-transparent px-3 py-1 text-[--color-text-subtle] hover:text-[--color-text]">legacy records · {legacyCount}</button>
+      <button data-status="accepted" aria-pressed="false" class="rounded-full border border-transparent px-3 py-1 text-[--color-text-subtle] hover:text-[--color-text]">accepted · {counts.accepted}</button>
+      <button data-status="superseded" aria-pressed="false" class="rounded-full border border-transparent px-3 py-1 text-[--color-text-subtle] hover:text-[--color-text]">superseded · {counts.superseded}</button>
+      {counts.proposed > 0 && <button data-status="proposed" aria-pressed="false" class="rounded-full border border-transparent px-3 py-1 text-[--color-text-subtle] hover:text-[--color-text]">proposed · {counts.proposed}</button>}
+      <button data-status="withdrawn" aria-pressed="false" class="rounded-full border border-transparent px-3 py-1 text-[--color-text-subtle] hover:text-[--color-text]">withdrawn · {counts.withdrawn}</button>
     </div>
+    <p id="adr-result-count" class="adr-result-count" role="status" aria-live="polite">{adrs.length} records</p>
 
     <div class="u-panel">
       <div class="u-label grid grid-cols-[5rem_1fr_6rem] gap-3.5 border-b border-[--color-rule] px-4 py-2.5 !text-[0.625rem] md:grid-cols-[5.25rem_1fr_6.5rem_6rem_5.5rem]">
@@ -48,21 +71,25 @@ const chipOf = (ep?: string) => {
         <a
           href={`/adrs/${adr.id}/`}
           data-status={adr.data.status}
+          data-record-kind={adr.data.sourceKind}
+          data-review={reviewEntries[adr.id]?.category}
           data-id={String(adr.data.id)}
           data-title={adr.data.title}
+          data-search={`${adr.data.sourceKind === 'historical-note' ? 'design note' : pad(adr.data.id)} ${adr.data.title} ${adr.data.tags.join(' ')} ${adr.data.recordedStatus ?? ''}`.toLowerCase()}
           data-date={fmt(adr.data.date)}
           class="grid grid-cols-[5rem_1fr_6rem] items-baseline gap-3.5 border-b border-[--color-border] px-4 py-3 transition-colors hover:bg-[--color-card-hover] md:grid-cols-[5.25rem_1fr_6.5rem_6rem_5.5rem]"
         >
-          <span class="u-chip u-chip--adr">{pad(adr.data.id)}</span>
-          <span class="text-sm font-medium leading-snug">{adr.data.title}</span>
-          <span><span class:list={["u-status-pill", `u-status-pill--${adr.data.status}`]}>{adr.data.status}</span></span>
-          <span class="hidden font-mono text-[0.71875rem] tabular-nums text-[--color-text-subtle] md:inline">{fmt(adr.data.date)}</span>
-          <span class="hidden font-mono text-[0.6875rem] md:inline" class:list={[chipOf(adr.data.episode) ? "text-[--color-accent]" : "text-[--color-text-subtle]"]}>{chipOf(adr.data.episode) ?? "—"}</span>
+          <span class="u-chip u-chip--adr">{adr.data.sourceKind === "historical-note" ? "Note" : adr.data.sourceKind === "legacy-record" ? `Legacy${adr.data.id ? ' '+String(adr.data.id).padStart(3,'0') : ''}` : pad(adr.data.id)}</span>
+          <span class="text-sm font-medium leading-snug">{adr.data.title}<span class:list={["adr-review-badge", `adr-review-badge--${reviewEntries[adr.id]?.category}`]}>{adr.data.sourceKind === "legacy-record" ? "Legacy source · identity notes inside" : archived.get(adr.id)?.laterAmendments.length ? "Contains later amendments" : reviewEntries[adr.id]?.label}</span></span>
+          <span><span title={adr.data.recordedStatus} class:list={["u-status-pill", `u-status-pill--${adr.data.status}`]}>{adr.data.sourceKind === "historical-note" ? "design note" : statusLabel(adr)}</span></span>
+          <span class="hidden font-mono text-[0.71875rem] tabular-nums text-[--color-text-subtle] md:inline">{adr.data.datePrecision === "month" ? fmt(adr.data.date).slice(0, 7) : fmt(adr.data.date)}</span>
+          <span class="hidden font-mono text-[0.6875rem] md:inline" class:list={[chipOf(adr.data.episode) ? "text-[--color-accent]" : "text-[--color-text-subtle]"]}>{journalLinks(adr.id).length ? journalLinks(adr.id).map(r=>r.journalLabel.replaceAll(" ","")).join(" · ") : chipOf(adr.data.episode) ?? "—"}</span>
         </a>
       ))}
     </div>
+    <p id="adr-empty" hidden class="adr-empty">No records match. Clear the search or choose “all”.</p>
     <p class="mt-2.5 font-mono text-[0.6875rem] text-[--color-text-subtle]">
-      published from the platform repo at build time · adr/*.md with `public: true` frontmatter
+      81 source documents: 74 ADR records (including the withdrawn duplicate) and seven legacy documents found outside the main ADR directory. Legacy records retain conflicting or unregistered numbers; they are not newly allocated canonical ADRs. The four journal design notes remain separate. Source reproduction does not establish deployment or independently revalidate historical claims.
     </p>
   </section>
 </BaseLayout>
@@ -105,10 +132,15 @@ const chipOf = (ep?: string) => {
     const ordered = Array.from(panel?.querySelectorAll<HTMLAnchorElement>("a[data-status]") ?? []);
     let lastVisible: HTMLElement | null = null;
     ordered.forEach((row) => {
-      const show = state.filter === "all" || row.dataset.status === state.filter;
+      const query = document.querySelector<HTMLInputElement>("#adr-search")?.value.trim().toLowerCase() ?? '';
+      const show = (state.filter === "all" || (state.filter === "legacy" ? row.dataset.recordKind === 'legacy-record' : row.dataset.status === state.filter)) && (!document.querySelector<HTMLInputElement>("#adr-needs-review")?.checked || ["reconciled", "historical"].includes(row.dataset.review ?? "")) && query.split(/\s+/).every(term => row.dataset.search?.includes(term));
       row.style.display = show ? "" : "none";
       if (show) lastVisible = row;
     });
+    const empty = document.querySelector<HTMLElement>("#adr-empty");
+    if (empty) empty.hidden = lastVisible !== null;
+    const count = document.querySelector<HTMLElement>("#adr-result-count");
+    if (count) count.textContent = `${ordered.filter(r => r.style.display !== 'none').length} of ${rows.length} records`;
     ordered.forEach((row) => {
       row.classList.toggle("border-b", row.style.display !== "none" && row !== lastVisible);
     });
@@ -123,11 +155,15 @@ const chipOf = (ep?: string) => {
     });
   }
 
+  document.querySelector("#adr-needs-review")?.addEventListener("change", applyFilterAndBorders);
+  document.querySelector("#adr-search")?.addEventListener("input", applyFilterAndBorders);
+
   filterButtons.forEach((btn) => {
     btn.addEventListener("click", () => {
       state.filter = btn.dataset.status ?? "all";
       filterButtons.forEach((b) => {
         const active = b === btn;
+        b.setAttribute("aria-pressed", String(active));
         b.classList.toggle("bg-[--color-chip]", active);
         b.classList.toggle("border-[--color-rule]", active);
         b.classList.toggle("text-[--color-text]", active);

@@ -1,64 +1,155 @@
 ---
 id: 36
-title: "Vault structured index in Postgres: relational authority beside vector recall"
+title: "Vault Structured Index in Postgres"
 status: accepted
+recordedStatus: "Accepted"
 date: 2026-04-19
-tags: [postgres, vault, mcp, structured-query, retrieval]
+tags: ["architecture", "postgres", "vault-index", "claude-code", "mcp"]
+sourceKind: source-record
 public: true
+journeyId: "2026-04-19-adr-036-vault-structured-index-in-postgres-relational-authority-beside-vector-recall"
+---
+# ADR-036: Vault Structured Index in Postgres
+
+**Status**: Accepted
+**Date**: 2026-04-19
+**Jira Epic**: VW-218 *(internal reference; destination redacted)*
+**Stories**: VW-219 *(internal reference; destination redacted)* (Phase 1) · VW-220 *(internal reference; destination redacted)* (Phase 2) · VW-221 *(internal reference; destination redacted)* (Phase 3) · VW-222 *(internal reference; destination redacted)* (Phase 4) · VW-223 *(internal reference; destination redacted)* (Phase 5, contingent)
+**Implementation Plan**: VW-213 Plan *(internal reference; not included)*
+**Related ADRs**:
+- [ADR-034](/adrs/034-data-source-connectors/) — establishes Postgres-as-SoR pattern for external sources; this extends the same pattern to the local vault
+- [ADR-035](/adrs/035-retrieval-evaluation-programme/) — Track B retrieval-quality work benefits from structured pre-filters this ADR enables
+
 ---
 
 ## Context
 
-The Obsidian vault (~6,000 markdown files) is the institutional memory of the platform. Three query tools already existed for navigating it: Qdrant semantic search, Grep, and file reads. Each does its job well. None of them handles a specific and recurring class of question.
+The Obsidian vault (~6,000 .md files, ~62K chunks in Qdrant) is the institutional memory of the platform. Claude Code — the primary user-facing interface — navigates it through three existing tools: Qdrant semantic search, Grep, and Read.
 
-Three question shapes kept appearing that none of the existing tools could answer efficiently:
+Three classes of question recur in Claude Code usage that none of these tools handle well:
 
-**1. Structured predicates.** "All ADRs with status=Proposed." "Documents tagged architecture created in April." These require exact-match filters over structured fields — Qdrant's payload filters work in theory, but they silently drop results at the edges of filter composition.
+1. **Structured predicates**: "All ADRs with status=Proposed", "docs created in April tagged #architecture"
+2. **Relational joins**: "Which docs reference VW-189?", "what's linked from HLD-06 and when was each last verified?"
+3. **Aggregations and timelines**: "Benchmark scores over time", "tag frequency by namespace"
 
-**2. Relational joins.** "Which docs reference this Jira issue?" "What's linked from the top-level HLD and when was each link last verified?" These require joins across tables: documents, tags, backlinks, cross-references. Qdrant has no join model.
+Workarounds today require multiple Read calls, manual grep + parse, or fuzzy Qdrant searches that may miss matching files. This class of query — relational, filtered, aggregated — is structurally outside Qdrant's design.
 
-**3. Aggregations and timelines.** "Benchmark scores over time." "Tag frequency by namespace." These are pure relational workloads.
+Recent incidents reinforce the gap:
+- **VW-186** (source filter silently dropped) — Qdrant's payload filter failed silently; no Postgres source-of-truth to cross-check.
+- **VW-194** (freshness retrieval broken) — freshness implementation was a bolt-on because Qdrant can't cleanly compose `WHERE date > X` with similarity.
 
-Two incidents made the cost concrete. A Qdrant payload filter silently dropped results when used as a source filter — there was no authoritative source to cross-check. A freshness-filtering feature had to be bolted on as an afterthought because Qdrant couldn't cleanly compose date predicates with similarity scores. Both problems were symptoms of the same structural gap: relational queries belong in a relational database.
+Market research (2026) confirms the emerging pattern: Notion runs their entire block graph on Postgres with JSONB. Supabase/Logseq/LlamaIndex/LangChain all expose Postgres-as-SoR with vector DB as similarity cache.
 
 ## Decision
 
-```mermaid
-flowchart TB
-  OBS["Obsidian .md files<br/>(prose content)"] --> PG["Postgres vault-index<br/>(relational authority)"]
-  OBS --> QD["Qdrant<br/>(embeddings · similarity)"]
-  PG --> VQ["vault_query MCP tool<br/>read-only SQL · 5s timeout"]
-  QD --> SS["Semantic search<br/>auto_search_vault"]
-  PG -.->|"reconcile"| QD
-  classDef good fill:#fffefb,stroke:#1f7a4d,color:#21262e;
-  classDef neutral fill:#f1eee6,stroke:#a36207,color:#21262e;
-  classDef bad fill:#fffefb,stroke:#c5383f,color:#21262e;
-  class OBS neutral;
-  class PG good;
-  class QD good;
-  class VQ good;
-  class SS good;
-```
+Deploy a **Postgres 16 structured index over the Obsidian vault** as a first-class query tier, alongside (not replacing) Qdrant.
 
-Deploy a **Postgres structured index over the vault** as a first-class query tier, running alongside Qdrant, not replacing it. The underlying principle: *different stores for different kinds of truth*.
+### Shape
 
-Authority is divided cleanly:
+1. **Hybrid schema** — typed columns for hot fields (date, type, status) with btree indexes; long-tail frontmatter in a `JSONB` column with GIN on `jsonb_path_ops`.
+2. **Six tables** — `notes`, `tags`, `note_tags`, `note_links`, `blocks`, `note_jira_refs`.
+3. **New MCP tool** `vault_query(sql)` — read-only, SQL-validated, 5s timeout, auto-LIMIT.
+4. **Kafka-integrated indexer** — same pattern as vault-delta-indexer (KEDA ScaledJob), writing to Postgres in parallel with Qdrant.
+5. **Valkey cache tier (Phase 5, contingent)** — BSD 3-Clause, Linux Foundation governed, for exact-query caching with Kafka-driven invalidation. Only landed if Phase 1-3 justify it.
 
-1. **Obsidian (.md files)** — authoritative for prose content.
-2. **Postgres (vault-index)** — authoritative for derived structured metadata: the tag vocabulary, backlink graph, cross-references, status fields. A hybrid schema: typed columns with btree indexes for hot fields (date, type, status), a JSONB column with GIN index for long-tail frontmatter.
-3. **Qdrant** — authoritative for embeddings and similarity scores. Its payload is treated as a cache reconciled via the Postgres `blocks` table.
-4. **FalkorDB** — unchanged, continues to own the code and document knowledge graph.
+### Authority boundaries
 
-A new MCP tool, `vault_query`, exposes read-only SQL to the language model: SQL-validated, 5-second timeout, auto-LIMIT. The indexer runs as a Kafka-triggered incremental job on the same event stream as the vector indexer, so both stores stay in sync from one source.
+- **Obsidian (.md files)**: authoritative for prose content
+- **Postgres (vault-index)**: authoritative for derived/structured metadata (tag vocabulary, backlink graph, Jira cross-references)
+- **Qdrant**: authoritative for embeddings / similarity search; payload is cache, reconciled via `blocks` table
+- **FalkorDB**: unchanged — graph authority for code and document knowledge graphs
 
-## Alternatives considered
+### Enterprise posture
 
-- **Continue with Qdrant + Grep + file reads** — rejected: this approach consumed large amounts of context tokens to answer questions that would be one SQL row. More importantly, fuzzy search *misses* matching documents on structured questions, producing qualitatively wrong answers.
-- **Pure JSONB schema, no typed columns** — rejected: simpler to implement but loses column statistics for the query planner on hot-path fields. The evidence from the Postgres community converges on a hybrid schema for exactly this use case — typed columns where cardinality is known, JSONB for the long tail.
-- **Elasticsearch / MongoDB for the structured layer** — rejected: Elasticsearch is a search engine, not a relational store; joins are awkward and the schema change story is painful. MongoDB's SSPL license blocks an eventual enterprise deployment path. Postgres JSONB covers the schemaless use case and gives the relational joins that are the whole point.
+All components (Postgres, pgvector, Valkey, mistune, python-frontmatter) are permissive OSI-approved licenses suitable for corporate legal review: PostgreSQL License (BSD-derived), BSD 3-Clause, MIT. Intentional avoidance of SSPL/RSALv2/AGPL-only components.
 
 ## Consequences
 
-**Positive**: the language model gains a new query mode for questions Qdrant structurally cannot answer. Postgres becomes the reconciliation point — if the vector index drifts or is rebuilt, the source of truth for metadata stays intact and can be used to re-embed from scratch. Importantly, Postgres exposes the messy reality of vault frontmatter (inconsistent field names, noisy tags) that Qdrant's blob payload hides — making data quality observable and improvable.
+### Positive
 
-**Accepted costs**: a new database pod adds operational overhead — persistent volume claim, network policy, backup, monitoring. Vault changes now fan out to two write paths; drift is mitigated by sharing the Kafka event trigger, but it cannot be eliminated entirely. Schema migrations are required when core typed fields change, though JSONB absorbs unknown frontmatter keys gracefully. Exposing SQL to a language model is a new threat surface even at read-only — mitigated by a read-only Postgres user, statement timeout, and automatic result capping.
+- **Claude Code gets a new query mode** — structured SQL for questions Qdrant can't answer, preserving Qdrant for what it's good at
+- **Postgres becomes the reconciliation point** — if Qdrant corrupts, rebuild from Obsidian → Postgres → re-embed to Qdrant
+- **Observable data quality** — Postgres exposes the messy reality of frontmatter (inconsistent fields, noisy tags) that Qdrant's blob payload hides
+- **Enterprise-deployable stack** — every piece chosen to survive a corporate OSS review (no SSPL, no RSAL, no AGPL-only)
+- **Pattern reusable** — same pattern applies to future sources via ADR-018 connector framework
+
+### Negative
+
+- **New pod to operate** — vault-postgres adds PDB, NetworkPolicy, SealedSecret, backup, monitoring overhead
+- **Second write path** — vault changes now fan out to both Postgres and Qdrant; drift risk (mitigated by sharing Kafka trigger)
+- **Schema migrations required when core fields change** — JSONB absorbs unknown fields but typed columns need ALTER TABLE
+- **Read-only MCP tool surface area** — even with SQL whitelist, exposing arbitrary SELECT to an LLM is a new threat surface (mitigated by read-only user + statement timeout + auto-LIMIT)
+
+### Neutral
+
+- Qdrant remains unchanged. No plan to migrate embeddings to pgvector at current scale (62K at 2560d is comfortable for Qdrant; pgvector adds no capability we lack).
+- FalkorDB remains unchanged. No overlap.
+
+## Alternatives Considered
+
+### A1 — Do nothing; continue with Qdrant + Grep + Read
+
+**Rejected**. Does not address the structured-query gap. Current approach consumes 10-30K tokens per vault-question that a SQL query would answer in 1 row. With 1M Claude context this is a quality problem, not a cost problem — fuzzy search misses matching docs.
+
+### A2 — Pure JSONB schema (no typed columns)
+
+**Rejected**. Simpler to implement but loses column statistics for the query planner. Research (pganalyze, Crunchy, Mirakl 2025-2026) converges on hybrid schema as the 2026 standard. Typed columns for hot-path fields are free — it's not a tradeoff, it's strictly better.
+
+### A3 — MongoDB for the index instead of Postgres
+
+**Rejected**. Mongo was considered for "schemaless storage of frontmatter." Rejected because:
+- Postgres JSONB covers the schemaless use case
+- Postgres gives us relational joins (tags, links, jira refs) which are the whole point
+- MongoDB's SSPL license is not OSI-approved — blocks eventual enterprise production path
+- User's stack would add a new operational dependency for zero incremental capability
+
+### A4 — Elasticsearch / OpenSearch for structured + full-text
+
+**Rejected**. Already running ELK (elastic-system namespace) for log search. Considered reusing for vault. Rejected because:
+- ES is a search engine, not a relational store; joins are awkward
+- Would duplicate Qdrant's role for semantic search without replacing it
+- Schema changes are tedious (index templates, reindexing)
+- Opt-in posture: we want Postgres's relational model, not ES's search model
+
+### A5 — Obsidian Dataview / Bases as the query layer (no Postgres)
+
+**Rejected for Claude Code**. Bases (Obsidian 2025) and Dataview are excellent **inside Obsidian** but are plugin-level, not accessible via an MCP tool. Claude Code cannot query them. Bases is still useful as a *quality lever* — using it in Obsidian nudges user's frontmatter toward consistency, which benefits our Postgres index downstream.
+
+### A6 — Add pgvector to an existing Postgres instance (matrix-postgres, prefect-postgres, etc.)
+
+**Rejected**. Each existing Postgres is app-scoped (Synapse, Prefect, etc.). Co-tenancy risks operational coupling (pgvector extension install, schema namespace conflicts, backup independence). `research-postgres` was considered but is 2Gi and designed as SRE agent scratch-pad — scope mismatch. New dedicated `vault-postgres` is cleaner.
+
+### A7 — Extend Qdrant payload instead of adding Postgres
+
+**Rejected**. Qdrant payload supports filtering but not joins, aggregations, or full SQL. Every time we've pushed this boundary (VW-186, VW-194) it's been painful. The relational model belongs in a relational DB.
+
+## Implementation
+
+Refer to VW-213 Implementation Plan *(internal reference; not included)*. Five phases:
+
+1. **Phase 1 (1 day)** — Deploy vault-postgres + schema + one-shot indexer + vault_query MCP tool
+2. **Phase 2 (2 days)** — Kafka-triggered incremental indexer (KEDA ScaledJob)
+3. **Phase 3 (2-3 days)** — Qdrant chunk reconciliation via blocks table
+4. **Phase 4 (1 day)** — Structured Jira live-join
+5. **Phase 5 (2 days, CONTINGENT)** — Valkey cache tier
+
+Total: ~2 working weeks if all phases land. Phase 1 is the decision gate for Phase 2+.
+
+## Validation
+
+- Before Phase 2: qualitative check with Claude Code — does `vault_query` materially change how I answer vault questions?
+- After Phase 3: regression test that Qdrant+Postgres hybrid search matches baseline Qdrant quality and latency within 20%
+- After Phase 5: exact cache hit rate ≥ 20% over a 1-week window, else close plan as complete at Phases 1-4
+
+## References
+
+- Implementation Plan: 2026-04-19-VW-213-Vault-Structured-Index-Postgres-Plan *(internal reference; not included)*
+- Related: [ADR-034-Data-Source-Connector-Architecture](/adrs/034-data-source-connectors/)
+- Related: [ADR-035-Q2-2026-Enhancement-Program](/adrs/035-retrieval-evaluation-programme/)
+- Incidents informing this decision: VW-186 (Qdrant source filter), VW-194 (freshness retrieval rewrite)
+- External research: Notion Postgres block model, Supabase Vector, Logseq schema, Timescale pgvectorscale, Linux Foundation Valkey
+
+
+## Record identity correction — 14 October 2026 (VW-447)
+
+The canonical filename and ADR registry establish this record as ADR-036. Legacy metadata/headings have been aligned with that identity. This correction does not change the historical decision or assert current deployment. Run-Id: 01a13723-c94c-7cd0-9257-8d66c0784762.

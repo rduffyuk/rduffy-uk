@@ -1,10 +1,11 @@
 ---
 import { getCollection } from "astro:content";
 import stats from "@data/stats.json";
+import archive from "@data/adr-archive.json";
 
 // Single source of truth: stats.json + live collection counts (can't drift)
 const writing = await getCollection("writing", ({ data }) => !data.draft);
-const adrs = await getCollection("adrs");
+const adrs = (await getCollection("adrs")).filter(a => a.data.sourceKind === "source-record");
 
 const buildingSince = new Date("2025-09-11");
 const days = Math.floor((Date.now() - buildingSince.getTime()) / 86400000);
@@ -12,7 +13,7 @@ const asOf = new Date().toISOString().slice(0, 10);
 
 const items = [
   { value: stats.qdrantChunks.toLocaleString(), label: "vector chunks indexed" },
-  { value: String(stats.adrsTotal ?? 46), label: "architecture decision records" },
+  { value: String(adrs.length), label: "ADRs in the June archive" },
   { value: String(writing.length), label: "posts published" },
   { value: `${days} d`, label: "building in public" },
 ];
@@ -28,6 +29,6 @@ const items = [
     ))}
   </div>
   <div class="border-t border-[--color-border] px-5 py-2 font-mono text-[0.65625rem] text-[--color-text-subtle]">
-    source: stats.json + content collections · build-time · as of {asOf} · {adrs.length} ADRs published here
+    source: stats.json + content collections · build-time · as of {asOf} · {adrs.length} ADRs + {archive.legacyRecords} legacy records in the June archive
   </div>
 </div>

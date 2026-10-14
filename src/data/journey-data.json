@@ -1,9 +1,38 @@
 {
+  "reviewedAt": "2026-10-14",
+  "journalCutoff": "2026-06-14",
+  "journalEpisodes": 31,
   "milestones": [
     {
       "date": "2025-09-11",
       "title": "The Founding Conversation",
-      "description": "First vault indexed into ChromaDB. 1,399 markdown files became semantically searchable in a single session.",
+      "description": "A conversation about lost context became the ConvoCanvas plan: preserve conversations, organise them in a vault and turn them into useful knowledge. The published episode describes planning here; implementation follows in the next chapter.",
+      "nodes": [],
+      "edges": [
+        {
+          "from": "vault",
+          "to": "chromadb"
+        }
+      ],
+      "blogEpisode": "/writing/season-1-episode-1-day-zero/",
+      "kind": "story",
+      "dateLabel": "11 September 2025",
+      "journalEpisode": "season-1-episode-1-day-zero",
+      "journalLabel": "S1 · E01",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [],
+      "editorialNote": "Chronology correction: this was the planning conversation. Vault implementation and ChromaDB indexing appear in the following September chapters."
+    },
+    {
+      "date": "2025-09-15",
+      "dateLabel": "14–15 September 2025",
+      "kind": "story",
+      "title": "From the vault plan to a working MVP",
+      "blogEpisode": "/writing/season-1-episode-2-mvp/",
+      "journalEpisode": "season-1-episode-2-mvp",
+      "journalLabel": "S1 · E02",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [],
       "nodes": [
         {
           "id": "vault",
@@ -12,20 +41,136 @@
           "color": "#a855f7"
         },
         {
+          "id": "conversation-mvp",
+          "label": "Conversation MVP",
+          "group": "workflow",
+          "color": "#3b82f6"
+        }
+      ],
+      "edges": [],
+      "description": "The vault, LibreChat and a first FastAPI backend gave the idea a working path: upload a conversation, parse it and extract content ideas."
+    },
+    {
+      "date": "2025-09-19",
+      "dateLabel": "18–19 September 2025",
+      "kind": "story",
+      "title": "Local models and conversation ownership",
+      "blogEpisode": "/writing/season-1-episode-3-ai-awakening/",
+      "journalEpisode": "season-1-episode-3-ai-awakening",
+      "journalLabel": "S1 · E03",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [],
+      "nodes": [
+        {
+          "id": "ollama",
+          "label": "Ollama",
+          "group": "gpu",
+          "color": "#ef4444"
+        }
+      ],
+      "edges": [],
+      "description": "Ollama and local models opened a second path for working with conversations. The episode explores control, model selection and the limits that remained."
+    },
+    {
+      "date": "2025-09-27",
+      "dateLabel": "20–27 September 2025",
+      "kind": "story",
+      "title": "The vault becomes searchable",
+      "blogEpisode": "/writing/season-1-episode-4-documentation-overload/",
+      "journalEpisode": "season-1-episode-4-documentation-overload",
+      "journalLabel": "S1 · E04",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [],
+      "nodes": [
+        {
           "id": "chromadb",
           "label": "ChromaDB",
           "group": "database",
-          "color": "#f97316",
-          "retired": true
+          "color": "#f97316"
         }
       ],
-      "edges": [
+      "edges": [],
+      "description": "ChromaDB integration turned a growing collection of Markdown into semantic search. The episode follows the implementation and scaling work across the week."
+    },
+    {
+      "date": "2025-09-30",
+      "dateLabel": "30 September 2025",
+      "kind": "story",
+      "title": "The migration question",
+      "blogEpisode": "/writing/season-1-episode-5-migration-question/",
+      "journalEpisode": "season-1-episode-5-migration-question",
+      "journalLabel": "S1 · E05",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [
         {
-          "from": "vault",
-          "to": "chromadb"
+          "href": "/adrs/019-k3s-over-managed/",
+          "label": "K3s · design note"
         }
       ],
-      "blogEpisode": "https://blog.rduffy.uk/posts/season-1-episode-1-day-zero/"
+      "nodes": [
+        {
+          "id": "k3s",
+          "label": "K3s Cluster",
+          "group": "infra",
+          "color": "#3b82f6"
+        }
+      ],
+      "edges": [],
+      "description": "Research into update speed and operational cost led to a hybrid deployment decision. Existing K3s workloads did not mean every service should move into the cluster."
+    },
+    {
+      "date": "2025-10-05",
+      "dateLabel": "5 October 2025",
+      "kind": "story",
+      "title": "Recovering the K3s cluster",
+      "blogEpisode": "/writing/season-1-episode-6-k3s-crash-resurrection/",
+      "journalEpisode": "season-1-episode-6-k3s-crash-resurrection",
+      "journalLabel": "S1 · E06",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [
+        {
+          "href": "/adrs/019-k3s-over-managed/",
+          "label": "K3s · design note"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "description": "A failing cluster exposed networking and recovery assumptions. The chapter follows diagnosis, recovery and the need for better operational visibility."
+    },
+    {
+      "kind": "decision",
+      "recordKind": "historical-note",
+      "stableId": "2025-10-12-adr-019-k3s-over-managed-kubernetes-for-the-home-platform",
+      "dateLabel": "5 October 2025 · journal context",
+      "date": "2025-10-05",
+      "title": "Design note · K3s on the home platform",
+      "description": "The published journal describes running and recovering a K3s cluster on home hardware. The October recovery exposed the operational cost of owning the control plane, networking and storage.",
+      "nodes": [
+        {
+          "id": "note-019-k3s-over-managed",
+          "label": "K3s",
+          "group": "decision",
+          "color": "#a855f7"
+        }
+      ],
+      "edges": [],
+      "tags": [
+        {
+          "id": "historical-note",
+          "label": "historical-note",
+          "color": "#00d4ff"
+        },
+        {
+          "id": "journal",
+          "label": "journal",
+          "color": "#eab308"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/019-k3s-over-managed/",
+        "label": "Read design note"
+      }
     },
     {
       "date": "2025-10-07",
@@ -69,12 +214,48 @@
           "to": "chromadb"
         }
       ],
-      "blogEpisode": "https://blog.rduffy.uk/posts/season-1-episode-3-ai-awakening/"
+      "blogEpisode": null,
+      "kind": "story"
+    },
+    {
+      "date": "2025-10-07",
+      "dateLabel": "7 October 2025",
+      "kind": "story",
+      "title": "Teaching the platform to draw its architecture",
+      "blogEpisode": "/writing/season-1-episode-7-diagram-automation/",
+      "journalEpisode": "season-1-episode-7-diagram-automation",
+      "journalLabel": "S1 · E07",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [],
+      "nodes": [
+        {
+          "id": "architecture-diagrams",
+          "label": "Architecture Diagrams",
+          "group": "workflow",
+          "color": "#3b82f6"
+        }
+      ],
+      "edges": [],
+      "description": "Generated architecture diagrams made the growing platform easier to inspect and reduced the work of maintaining a separate mental picture."
+    },
+    {
+      "date": "2025-10-08",
+      "dateLabel": "5–8 October 2025",
+      "kind": "story",
+      "title": "The platform starts telling its own story",
+      "blogEpisode": "/writing/season-1-episode-8-meta/",
+      "journalEpisode": "season-1-episode-8-meta",
+      "journalLabel": "S1 · E08",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [],
+      "nodes": [],
+      "edges": [],
+      "description": "The same vault and search tooling helped reconstruct the first season. Publishing and episode navigation became part of the system being built."
     },
     {
       "date": "2025-10-09",
       "title": "Temporal Filtering",
-      "description": "Date-range search across the vault. +40 percentage points accuracy for historical queries by reversing metadata priority (frontmatter first, filename second).",
+      "description": "Reconstructing the early journal exposed a date problem: archive filenames could obscure when the work actually happened. Temporal search and metadata handling were corrected.",
       "nodes": [
         {
           "id": "temporal",
@@ -89,12 +270,32 @@
           "to": "chromadb"
         }
       ],
-      "blogEpisode": null
+      "blogEpisode": "/writing/season-2-episode-1-validation-chronicles/",
+      "kind": "story",
+      "dateLabel": "9 October 2025",
+      "journalEpisode": "season-2-episode-1-validation-chronicles",
+      "journalLabel": "S2 · E01",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": []
+    },
+    {
+      "date": "2025-10-11",
+      "dateLabel": "10–11 October 2025",
+      "kind": "story",
+      "title": "Validation becomes a development habit",
+      "blogEpisode": "/writing/season-2-episode-2-validation-to-velocity/",
+      "journalEpisode": "season-2-episode-2-validation-to-velocity",
+      "journalLabel": "S2 · E02",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [],
+      "nodes": [],
+      "edges": [],
+      "description": "Code review, systematic checks and metadata debugging tested whether recent improvements behaved as expected. The story makes the verification work visible alongside implementation."
     },
     {
       "date": "2025-10-12",
       "title": "54 Minutes to Production",
-      "description": "Six systems deployed in one day — GPU monitor, Perplexity gateway, agent router, MCP bridge, Prometheus exporter, and vault indexer.",
+      "description": "Capture cleanup, semantic chunking, architecture auditing and publishing tools advanced across several short sessions. The episode distinguishes active work from the elapsed overnight window.",
       "nodes": [
         {
           "id": "gpu-monitor",
@@ -106,44 +307,45 @@
           "id": "perplexity",
           "label": "Perplexity GW",
           "group": "infra",
-          "color": "#3b82f6",
-          "retired": true
+          "color": "#3b82f6"
         }
       ],
       "edges": [],
-      "blogEpisode": "https://blog.rduffy.uk/posts/season-2-episode-3-54-minutes-six-systems/"
+      "blogEpisode": "/writing/season-2-episode-3-54-minutes-six-systems/",
+      "kind": "story",
+      "dateLabel": "11–12 October 2025",
+      "journalEpisode": "season-2-episode-3-54-minutes-six-systems",
+      "journalLabel": "S2 · E03",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": []
     },
     {
-      "date": "2025-10-12",
-      "title": "ADR-019 · K3s over managed Kubernetes for the home platform",
-      "description": "The platform needed real orchestration — GPU inference serving, Kafka streaming consumers, a full observability stack, and scheduled jobs — running on a single GPU node plus a MacBook, with no cloud budget.",
-      "nodes": [
-        {
-          "id": "adr-019",
-          "label": "ADR-019",
-          "group": "decision",
-          "color": "#22c55e",
-          "retired": false
-        }
-      ],
+      "date": "2025-10-13",
+      "dateLabel": "11–13 October 2025",
+      "kind": "story",
+      "title": "Testing several systems together",
+      "blogEpisode": "/writing/season-2-episode-4-three-systems-parallel-testing/",
+      "journalEpisode": "season-2-episode-4-three-systems-parallel-testing",
+      "journalLabel": "S2 · E04",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [],
+      "nodes": [],
       "edges": [],
-      "tags": [
-        {
-          "id": "infra",
-          "label": "infra",
-          "color": "#a855f7"
-        },
-        {
-          "id": "k8s",
-          "label": "k8s",
-          "color": "#ef4444"
-        }
-      ],
-      "blogEpisode": null,
-      "link": {
-        "href": "/adrs/019-k3s-over-managed/",
-        "label": "Read decision"
-      }
+      "description": "A vault reindex, Journal v3, hybrid search and developer commands met in one testing window. Feature flags and measured trade-offs mattered as much as getting services deployed."
+    },
+    {
+      "date": "2025-10-18",
+      "dateLabel": "12–18 October 2025",
+      "kind": "story",
+      "title": "Turning research into operating patterns",
+      "blogEpisode": "/writing/season-2-episode-5-anthropic-patterns/",
+      "journalEpisode": "season-2-episode-5-anthropic-patterns",
+      "journalLabel": "S2 · E05",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [],
+      "nodes": [],
+      "edges": [],
+      "description": "Agent patterns, evaluation and resumable work were introduced alongside recovery and learning work. The episode also records the gap between agent-assisted execution and personal understanding."
     },
     {
       "date": "2025-12-01",
@@ -163,7 +365,8 @@
           "to": "router"
         }
       ],
-      "blogEpisode": null
+      "blogEpisode": null,
+      "kind": "story"
     },
     {
       "date": "2025-12-31",
@@ -189,7 +392,8 @@
           "to": "flux"
         }
       ],
-      "blogEpisode": "https://blog.rduffy.uk/posts/season-1-episode-5-migration-question/"
+      "blogEpisode": null,
+      "kind": "story"
     },
     {
       "date": "2026-01-04",
@@ -239,7 +443,8 @@
           "to": "ollama"
         }
       ],
-      "blogEpisode": "https://blog.rduffy.uk/posts/season-1-episode-6-k3s-crash-resurrection/"
+      "blogEpisode": null,
+      "kind": "story"
     },
     {
       "date": "2026-01-07",
@@ -263,7 +468,66 @@
           "to": "vllm"
         }
       ],
-      "blogEpisode": null
+      "blogEpisode": null,
+      "kind": "story"
+    },
+    {
+      "kind": "decision",
+      "recordKind": "legacy-record",
+      "decisionStatus": "Proposed",
+      "stableId": "2026-01-18-legacy-adr-008-trunk-based-development-with-feature-flags",
+      "date": "2026-01-18",
+      "title": "Legacy ADR-008 · Trunk-Based Development with Feature Flags",
+      "description": "The current development workflow lacks documented standards for:",
+      "nodes": [
+        {
+          "id": "legacy-2026-01-18-adr-008-branch-strategy",
+          "label": "Legacy ADR-008",
+          "group": "decision",
+          "color": "#eab308"
+        }
+      ],
+      "edges": [
+        {
+          "from": "note-019-k3s-over-managed",
+          "to": "legacy-2026-01-18-adr-008-branch-strategy"
+        }
+      ],
+      "tags": [],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/legacy-2026-01-18-adr-008-branch-strategy/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "legacy-record",
+      "decisionStatus": "Proposed",
+      "stableId": "2026-01-18-legacy-adr-009-unified-classification-system-architecture",
+      "date": "2026-01-18",
+      "title": "Legacy ADR-009 · Unified Classification System Architecture",
+      "description": "Multiple classification needs exist across the platform:",
+      "nodes": [
+        {
+          "id": "legacy-2026-01-18-adr-009-classification-system",
+          "label": "Legacy ADR-009",
+          "group": "decision",
+          "color": "#eab308"
+        }
+      ],
+      "edges": [
+        {
+          "from": "legacy-2026-01-18-adr-008-branch-strategy",
+          "to": "legacy-2026-01-18-adr-009-classification-system"
+        }
+      ],
+      "tags": [],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/legacy-2026-01-18-adr-009-classification-system/",
+        "label": "Read decision"
+      }
     },
     {
       "date": "2026-01-25",
@@ -299,7 +563,22 @@
           "to": "opa"
         }
       ],
-      "blogEpisode": null
+      "blogEpisode": null,
+      "kind": "story"
+    },
+    {
+      "date": "2026-01-25",
+      "dateLabel": "19 October 2025 – 25 January 2026",
+      "kind": "story",
+      "title": "From side project to platform",
+      "blogEpisode": "/writing/season-3-episode-1-from-side-project-to-platform/",
+      "journalEpisode": "season-3-episode-1-from-side-project-to-platform",
+      "journalLabel": "S3 · E01",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [],
+      "nodes": [],
+      "edges": [],
+      "description": "A long engineering arc brought storage migration, a rebrand and a more structured platform. This is a retrospective covering several months, not a single-day deployment."
     },
     {
       "date": "2026-01-31",
@@ -319,57 +598,135 @@
           "to": "qdrant"
         }
       ],
-      "blogEpisode": null
+      "blogEpisode": null,
+      "kind": "story"
     },
     {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "accepted",
+      "stableId": "2026-01-31-adr-010-streaming-journal-system-architecture",
       "date": "2026-01-31",
-      "title": "ADR-040 · Named-entity tagging without an LLM: spaCy and YAKE over the alternatives",
-      "description": "The vault auto-tagging pipeline extracted named entities — technical terms, project names, concepts, tools — from every document and wrote them as searchable tags into the vector store. The original implementation used a large…",
+      "title": "ADR-010 · Streaming Journal System Architecture",
+      "description": "Ryan's daily journal generation currently runs as a batch process via Prefect flows (journal-automation-v3). While functional, this approach has limitations:",
       "nodes": [
         {
-          "id": "adr-040",
-          "label": "ADR-040",
+          "id": "adr-010",
+          "label": "ADR-010",
           "group": "decision",
-          "color": "#22c55e",
-          "retired": false
+          "color": "#22c55e"
         }
       ],
       "edges": [
         {
-          "from": "adr-019",
-          "to": "adr-040"
+          "from": "legacy-2026-01-18-adr-009-classification-system",
+          "to": "adr-010"
+        }
+      ],
+      "tags": [],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/010-streaming-journal-system/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "proposed",
+      "stableId": "2026-01-31-adr-039-anthropic-github-tools-integration",
+      "date": "2026-01-31",
+      "title": "ADR-039 · Anthropic GitHub Tools Integration",
+      "description": "Morning scan of Anthropic's GitHub (github.com/anthropics) identified several tools that could enhance the Rootweaver Platform. This ADR documents the evaluation, trade-offs, and recommended integration path.",
+      "nodes": [
+        {
+          "id": "adr-039",
+          "label": "ADR-039",
+          "group": "decision",
+          "color": "#eab308"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-010",
+          "to": "adr-039"
         }
       ],
       "tags": [
         {
-          "id": "ner",
-          "label": "ner",
+          "id": "architecture",
+          "label": "architecture",
           "color": "#f97316"
         },
         {
-          "id": "spacy",
-          "label": "spacy",
+          "id": "mcp",
+          "label": "mcp",
           "color": "#ec4899"
         },
         {
-          "id": "yake",
-          "label": "yake",
-          "color": "#ec4899"
+          "id": "anthropic",
+          "label": "anthropic",
+          "color": "#3b82f6"
         },
         {
-          "id": "tagging",
-          "label": "tagging",
-          "color": "#00d4ff"
-        },
-        {
-          "id": "reliability",
-          "label": "reliability",
-          "color": "#ec4899"
+          "id": "integration",
+          "label": "integration",
+          "color": "#3b82f6"
         }
       ],
       "blogEpisode": null,
       "link": {
-        "href": "/adrs/040-ner-not-llm/",
+        "href": "/adrs/039-anthropic-github-tools-integration/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "legacy-record",
+      "decisionStatus": "proposed",
+      "stableId": "2026-01-31-legacy-adr-000-anthropic-github-tools-integration",
+      "date": "2026-01-31",
+      "title": "Legacy ADR · Anthropic GitHub Tools Integration",
+      "description": "Morning scan of Anthropic's GitHub (github.com/anthropics) identified several tools that could enhance the Rootweaver Platform. This ADR documents the evaluation, trade-offs, and recommended integration path.",
+      "nodes": [
+        {
+          "id": "legacy-2026-01-31-adr-anthropic-github-tools-integration",
+          "label": "Legacy ADR",
+          "group": "decision",
+          "color": "#eab308"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-039",
+          "to": "legacy-2026-01-31-adr-anthropic-github-tools-integration"
+        }
+      ],
+      "tags": [
+        {
+          "id": "architecture",
+          "label": "architecture",
+          "color": "#f97316"
+        },
+        {
+          "id": "mcp",
+          "label": "mcp",
+          "color": "#ec4899"
+        },
+        {
+          "id": "anthropic",
+          "label": "anthropic",
+          "color": "#3b82f6"
+        },
+        {
+          "id": "integration",
+          "label": "integration",
+          "color": "#3b82f6"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/legacy-2026-01-31-adr-anthropic-github-tools-integration/",
         "label": "Read decision"
       }
     },
@@ -383,14 +740,14 @@
           "label": "Jira",
           "group": "workflow",
           "color": "#ec4899",
-          "retired": true
+          "retiredBy": "2026-10-14",
+          "note": "Replaced as the platform tracker by the October architecture check."
         },
         {
           "id": "confluence",
           "label": "Confluence",
           "group": "workflow",
-          "color": "#ec4899",
-          "retired": true
+          "color": "#ec4899"
         }
       ],
       "edges": [
@@ -403,7 +760,195 @@
           "to": "jira"
         }
       ],
-      "blogEpisode": "https://blog.rduffy.uk/posts/season-3-episode-1-from-side-project-to-platform/"
+      "blogEpisode": null,
+      "kind": "story"
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "accepted",
+      "stableId": "2026-02-01-adr-001-linkedin-content-automation-pipeline",
+      "date": "2026-02-01",
+      "title": "ADR-001 · LinkedIn Content Automation Pipeline",
+      "description": "Building an online presence requires consistent, high-quality content on LinkedIn. Manual posting is time-consuming, and there's no native way to: 1. Preview posts before publishing 2. Generate visual carousels without design…",
+      "nodes": [
+        {
+          "id": "adr-001",
+          "label": "ADR-001",
+          "group": "decision",
+          "color": "#22c55e"
+        }
+      ],
+      "edges": [
+        {
+          "from": "legacy-2026-01-31-adr-anthropic-github-tools-integration",
+          "to": "adr-001"
+        }
+      ],
+      "tags": [
+        {
+          "id": "linkedin",
+          "label": "linkedin",
+          "color": "#ef4444"
+        },
+        {
+          "id": "automation",
+          "label": "automation",
+          "color": "#eab308"
+        },
+        {
+          "id": "social-media",
+          "label": "social-media",
+          "color": "#3b82f6"
+        },
+        {
+          "id": "content-pipeline",
+          "label": "content-pipeline",
+          "color": "#ef4444"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/001-linkedin-content-automation-pipeline/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Withdrawn-Duplicate-Of-ADR-032",
+      "stableId": "2026-02-01-adr-031-journal-llm-context-handling-for-large-sessions",
+      "date": "2026-02-01",
+      "title": "ADR-031 · Journal LLM Context Handling for Large Sessions",
+      "description": "Withdrawn duplicate of ADR-032. Retained for traceability; the original proposal does not override the recorded withdrawal.",
+      "nodes": [
+        {
+          "id": "adr-031",
+          "label": "ADR-031",
+          "group": "decision",
+          "color": "#a855f7"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-001",
+          "to": "adr-031"
+        }
+      ],
+      "tags": [],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/031-journal-llm-context-handling-for-large-sessions/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Proposed",
+      "stableId": "2026-02-01-adr-032-journal-llm-context-handling-for-large-sessions",
+      "date": "2026-02-01",
+      "title": "ADR-032 · Journal LLM Context Handling for Large Sessions",
+      "description": "The streaming journal system (VW-6, VW-7) synthesizes Claude Code sessions into reflective journal entries using a local LLM via vLLM. During development, we discovered:",
+      "nodes": [
+        {
+          "id": "adr-032",
+          "label": "ADR-032",
+          "group": "decision",
+          "color": "#eab308"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-031",
+          "to": "adr-032"
+        }
+      ],
+      "tags": [],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/032-journal-llm-context-handling-for-large-sessions/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "accepted",
+      "stableId": "2026-02-02-adr-041-k3s-pods-dashboard-architecture",
+      "date": "2026-02-02",
+      "title": "ADR-041 · K3s Pods Dashboard Architecture",
+      "description": "Need for real-time visibility into the K3s cluster state from any device. Existing options (kubectl, K9s, Lens) require CLI access or desktop apps. Grafana dashboards lack pod-level detail and interactivity.",
+      "nodes": [
+        {
+          "id": "adr-041",
+          "label": "ADR-041",
+          "group": "decision",
+          "color": "#22c55e"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-032",
+          "to": "adr-041"
+        }
+      ],
+      "tags": [
+        {
+          "id": "architecture",
+          "label": "architecture",
+          "color": "#f97316"
+        },
+        {
+          "id": "dashboard",
+          "label": "dashboard",
+          "color": "#3b82f6"
+        },
+        {
+          "id": "k3s",
+          "label": "k3s",
+          "color": "#f97316"
+        },
+        {
+          "id": "cloudflare",
+          "label": "cloudflare",
+          "color": "#22c55e"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/041-k3s-pods-dashboard/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "accepted",
+      "stableId": "2026-02-03-adr-011-journal-consolidator-llm-generation-tuning",
+      "date": "2026-02-03",
+      "title": "ADR-011 · Journal Consolidator LLM Generation Tuning",
+      "description": "The daily journal consolidator (daily_consolidator.py) uses vLLM with DeepSeek-R1-Qwen3-8B to synthesize streaming journal fragments into polished daily journals. Initial configuration used conservative defaults that…",
+      "nodes": [
+        {
+          "id": "adr-011",
+          "label": "ADR-011",
+          "group": "decision",
+          "color": "#22c55e"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-041",
+          "to": "adr-011"
+        }
+      ],
+      "tags": [],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/011-journal-consolidator-generation-tuning/",
+        "label": "Read decision"
+      }
     },
     {
       "date": "2026-02-07",
@@ -433,7 +978,140 @@
           "to": "sealed-secrets"
         }
       ],
-      "blogEpisode": "https://blog.rduffy.uk/posts/season-3-episode-3-the-day-everything-got-sealed/"
+      "blogEpisode": "/writing/season-3-episode-3-the-day-everything-got-sealed/",
+      "kind": "story",
+      "dateLabel": "1–11 February 2026",
+      "journalEpisode": "season-3-episode-3-the-day-everything-got-sealed",
+      "journalLabel": "S3 · E03",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": []
+    },
+    {
+      "kind": "decision",
+      "recordKind": "legacy-record",
+      "decisionStatus": "accepted",
+      "stableId": "2026-02-07-legacy-adr-013-secret-management-strategy-for-rootweaver-platform",
+      "date": "2026-02-07",
+      "title": "Legacy ADR-013 · Secret Management Strategy for Rootweaver Platform",
+      "description": "The Rootweaver platform currently stores secrets as plain-text base64-encoded Kubernetes Secrets committed directly to the rootweaver-gitops repository. This creates several critical security risks:",
+      "nodes": [
+        {
+          "id": "legacy-2026-02-07-adr-013-secret-management-strategy",
+          "label": "Legacy ADR-013",
+          "group": "decision",
+          "color": "#22c55e"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-011",
+          "to": "legacy-2026-02-07-adr-013-secret-management-strategy"
+        }
+      ],
+      "tags": [
+        {
+          "id": "security",
+          "label": "security",
+          "color": "#a855f7"
+        },
+        {
+          "id": "secrets",
+          "label": "secrets",
+          "color": "#f97316"
+        },
+        {
+          "id": "infrastructure",
+          "label": "infrastructure",
+          "color": "#f97316"
+        },
+        {
+          "id": "hashicorp-vault",
+          "label": "hashicorp-vault",
+          "color": "#ec4899"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/legacy-2026-02-07-adr-013-secret-management-strategy/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Proposed",
+      "stableId": "2026-02-08-adr-012-journal-pipeline-quality-overhaul-model-selection-e2a-architecture",
+      "date": "2026-02-08",
+      "title": "ADR-012 · Journal Pipeline Quality Overhaul — Model Selection & E2A Architecture",
+      "description": "The journal streaming pipeline (VW-6, VW-30) produces automated journal entries from Claude Code sessions. The pipeline works end-to-end — Kafka topics flow correctly, triggers fire, entries get written to vault. However,…",
+      "nodes": [
+        {
+          "id": "adr-012",
+          "label": "ADR-012",
+          "group": "decision",
+          "color": "#eab308"
+        }
+      ],
+      "edges": [
+        {
+          "from": "legacy-2026-02-07-adr-013-secret-management-strategy",
+          "to": "adr-012"
+        }
+      ],
+      "tags": [
+        {
+          "id": "journal",
+          "label": "journal",
+          "color": "#eab308"
+        },
+        {
+          "id": "inference",
+          "label": "inference",
+          "color": "#22c55e"
+        },
+        {
+          "id": "quality",
+          "label": "quality",
+          "color": "#eab308"
+        },
+        {
+          "id": "streaming",
+          "label": "streaming",
+          "color": "#ec4899"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/012-journal-pipeline-quality-overhaul/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "date": "2026-02-09",
+      "dateLabel": "26 January – 9 February 2026",
+      "kind": "story",
+      "title": "Rebuilding the journal pipeline",
+      "blogEpisode": "/writing/season-3-episode-2-streaming-journals/",
+      "journalEpisode": "season-3-episode-2-streaming-journals",
+      "journalLabel": "S3 · E02",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [],
+      "nodes": [
+        {
+          "id": "kafka",
+          "label": "Kafka",
+          "group": "workflow",
+          "color": "#00d4ff"
+        },
+        {
+          "id": "journal-parser",
+          "label": "Session Parser",
+          "group": "workflow",
+          "color": "#ec4899"
+        }
+      ],
+      "edges": [],
+      "description": "Unreliable generated journals prompted a Kafka-based pipeline, fuller session context and quality checks. The published chapter records iterations and limits rather than treating generated prose as evidence by itself."
     },
     {
       "date": "2026-02-11",
@@ -441,7 +1119,68 @@
       "description": "VW-51/52: Dead ChromaDB import causing 7.5GB per replica. 93% memory reduction. Kafka consumer crash-loop fixed (VW-62, 837 restarts).",
       "nodes": [],
       "edges": [],
-      "blogEpisode": "https://blog.rduffy.uk/posts/season-3-episode-2-streaming-journals/"
+      "blogEpisode": null,
+      "kind": "story"
+    },
+    {
+      "kind": "decision",
+      "recordKind": "legacy-record",
+      "decisionStatus": "proposed",
+      "stableId": "2026-02-12-legacy-adr-014-mcp-bridge-authentication-strategy",
+      "date": "2026-02-12",
+      "title": "Legacy ADR-014 · MCP Bridge Authentication Strategy",
+      "description": "The MCP bridge at mcp.rduffy.uk was deployed in VW-22 (2026-02-05) to give Claude.ai and mobile access to vault search tools via Cloudflare tunnel. At the time, Claude.ai only supported authless or OAuth MCP connectors, and…",
+      "nodes": [
+        {
+          "id": "legacy-2026-02-12-adr-014-mcp-bridge-authentication",
+          "label": "Legacy ADR-014",
+          "group": "decision",
+          "color": "#eab308"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-012",
+          "to": "legacy-2026-02-12-adr-014-mcp-bridge-authentication"
+        }
+      ],
+      "tags": [
+        {
+          "id": "mcp",
+          "label": "mcp",
+          "color": "#ec4899"
+        },
+        {
+          "id": "security",
+          "label": "security",
+          "color": "#a855f7"
+        },
+        {
+          "id": "authentication",
+          "label": "authentication",
+          "color": "#a855f7"
+        },
+        {
+          "id": "oauth",
+          "label": "oauth",
+          "color": "#eab308"
+        },
+        {
+          "id": "auth0",
+          "label": "auth0",
+          "color": "#a855f7"
+        },
+        {
+          "id": "cloudflare",
+          "label": "cloudflare",
+          "color": "#22c55e"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/legacy-2026-02-12-adr-014-mcp-bridge-authentication/",
+        "label": "Read decision"
+      }
     },
     {
       "date": "2026-02-15",
@@ -459,7 +1198,8 @@
           "label": "FalkorDB",
           "group": "database",
           "color": "#f97316",
-          "retired": true
+          "retiredBy": "2026-10-14",
+          "note": "Retired from normal operation by the October architecture check."
         },
         {
           "id": "reranker",
@@ -482,7 +1222,108 @@
           "to": "falkordb"
         }
       ],
-      "blogEpisode": null
+      "blogEpisode": null,
+      "kind": "story"
+    },
+    {
+      "kind": "decision",
+      "recordKind": "legacy-record",
+      "decisionStatus": "Accepted",
+      "stableId": "2026-02-15-legacy-adr-015-graphiti-falkordb-knowledge-graph-integration",
+      "date": "2026-02-15",
+      "title": "Legacy ADR-015 · Graphiti + FalkorDB Knowledge Graph Integration",
+      "description": "The Rootweaver platform currently relies entirely on vector similarity search (Qdrant, 148K+ docs, 1024d Qwen3-Embedding-0.6B) for knowledge retrieval. While effective for semantic similarity, this approach has blind spots:",
+      "nodes": [
+        {
+          "id": "legacy-2026-02-15-adr-015-graphiti-falkordb-knowledge-graph",
+          "label": "Legacy ADR-015",
+          "group": "decision",
+          "color": "#22c55e"
+        }
+      ],
+      "edges": [
+        {
+          "from": "legacy-2026-02-12-adr-014-mcp-bridge-authentication",
+          "to": "legacy-2026-02-15-adr-015-graphiti-falkordb-knowledge-graph"
+        }
+      ],
+      "tags": [
+        {
+          "id": "graphrag",
+          "label": "graphrag",
+          "color": "#ec4899"
+        },
+        {
+          "id": "falkordb",
+          "label": "falkordb",
+          "color": "#f97316"
+        },
+        {
+          "id": "graphiti",
+          "label": "graphiti",
+          "color": "#a855f7"
+        },
+        {
+          "id": "knowledge-graph",
+          "label": "knowledge-graph",
+          "color": "#eab308"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/legacy-2026-02-15-adr-015-graphiti-falkordb-knowledge-graph/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "legacy-record",
+      "decisionStatus": "Proposed",
+      "stableId": "2026-02-15-legacy-adr-015-matrix-accessibility-layer-architecture",
+      "date": "2026-02-15",
+      "title": "Legacy ADR-015 · Matrix Accessibility Layer Architecture",
+      "description": "The Rootweaver platform is currently accessible only via desktop interfaces — Claude Code CLI and Claude.ai (via Cloudflare tunnel). There is no mobile access, no push notifications for journal completions or system alerts,…",
+      "nodes": [
+        {
+          "id": "legacy-2026-02-15-adr-015-matrix-accessibility-layer",
+          "label": "Legacy ADR-015",
+          "group": "decision",
+          "color": "#eab308"
+        }
+      ],
+      "edges": [
+        {
+          "from": "legacy-2026-02-15-adr-015-graphiti-falkordb-knowledge-graph",
+          "to": "legacy-2026-02-15-adr-015-matrix-accessibility-layer"
+        }
+      ],
+      "tags": [
+        {
+          "id": "matrix",
+          "label": "matrix",
+          "color": "#22c55e"
+        },
+        {
+          "id": "messaging",
+          "label": "messaging",
+          "color": "#3b82f6"
+        },
+        {
+          "id": "accessibility",
+          "label": "accessibility",
+          "color": "#ef4444"
+        },
+        {
+          "id": "mcp",
+          "label": "mcp",
+          "color": "#ec4899"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/legacy-2026-02-15-adr-015-matrix-accessibility-layer/",
+        "label": "Read decision"
+      }
     },
     {
       "date": "2026-02-17",
@@ -502,7 +1343,123 @@
           "to": "qdrant"
         }
       ],
-      "blogEpisode": null
+      "blogEpisode": null,
+      "kind": "story"
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Proposed",
+      "stableId": "2026-02-17-adr-013-migrate-llm-observability-from-openlit-clickhouse-to-kafka-vector-elasticsearch",
+      "date": "2026-02-17",
+      "title": "ADR-013 · Migrate LLM Observability from OpenLIT+ClickHouse to Kafka→Vector→Elasticsearch",
+      "description": "### What Is LLM Observability?",
+      "nodes": [
+        {
+          "id": "adr-013",
+          "label": "ADR-013",
+          "group": "decision",
+          "color": "#eab308"
+        }
+      ],
+      "edges": [
+        {
+          "from": "legacy-2026-02-15-adr-015-matrix-accessibility-layer",
+          "to": "adr-013"
+        }
+      ],
+      "tags": [
+        {
+          "id": "observability",
+          "label": "observability",
+          "color": "#22c55e"
+        },
+        {
+          "id": "llm",
+          "label": "llm",
+          "color": "#00d4ff"
+        },
+        {
+          "id": "openlit",
+          "label": "openlit",
+          "color": "#00d4ff"
+        },
+        {
+          "id": "clickhouse",
+          "label": "clickhouse",
+          "color": "#a855f7"
+        },
+        {
+          "id": "elasticsearch",
+          "label": "elasticsearch",
+          "color": "#00d4ff"
+        },
+        {
+          "id": "kafka",
+          "label": "kafka",
+          "color": "#ef4444"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/013-llm-observability-migration/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Accepted",
+      "stableId": "2026-02-17-adr-016-modular-architecture-documentation",
+      "date": "2026-02-17",
+      "title": "ADR-016 · Modular Architecture Documentation",
+      "description": "The Rootweaver Platform's architecture documentation has grown to a point where it is no longer maintainable as monolithic files:",
+      "nodes": [
+        {
+          "id": "adr-016",
+          "label": "ADR-016",
+          "group": "decision",
+          "color": "#22c55e"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-013",
+          "to": "adr-016"
+        }
+      ],
+      "tags": [
+        {
+          "id": "architecture",
+          "label": "architecture",
+          "color": "#f97316"
+        },
+        {
+          "id": "documentation",
+          "label": "documentation",
+          "color": "#ec4899"
+        },
+        {
+          "id": "hld",
+          "label": "HLD",
+          "color": "#a855f7"
+        },
+        {
+          "id": "lld",
+          "label": "LLD",
+          "color": "#3b82f6"
+        },
+        {
+          "id": "modular",
+          "label": "modular",
+          "color": "#ec4899"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/016-modular-architecture-documentation/",
+        "label": "Read decision"
+      }
     },
     {
       "date": "2026-02-20",
@@ -517,7 +1474,123 @@
         }
       ],
       "edges": [],
-      "blogEpisode": null
+      "blogEpisode": null,
+      "kind": "story"
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Proposed",
+      "stableId": "2026-02-20-adr-017-sre-agent-architecture-autonomous-infrastructure-monitoring-with-change-intelligence",
+      "date": "2026-02-20",
+      "title": "ADR-017 · SRE Agent Architecture — Autonomous Infrastructure Monitoring with Change Intelligence",
+      "description": "### Problem Statement",
+      "nodes": [
+        {
+          "id": "adr-017",
+          "label": "ADR-017",
+          "group": "decision",
+          "color": "#eab308"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-016",
+          "to": "adr-017"
+        }
+      ],
+      "tags": [
+        {
+          "id": "architecture",
+          "label": "architecture",
+          "color": "#f97316"
+        },
+        {
+          "id": "sre",
+          "label": "sre",
+          "color": "#ef4444"
+        },
+        {
+          "id": "agent",
+          "label": "agent",
+          "color": "#00d4ff"
+        },
+        {
+          "id": "alertmanager",
+          "label": "alertmanager",
+          "color": "#22c55e"
+        },
+        {
+          "id": "kafka",
+          "label": "kafka",
+          "color": "#ef4444"
+        },
+        {
+          "id": "change-intelligence",
+          "label": "change-intelligence",
+          "color": "#3b82f6"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/017-sre-agent-architecture/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "accepted",
+      "stableId": "2026-02-20-adr-042-nl-to-cypher-llm-backend-selection",
+      "date": "2026-02-20",
+      "title": "ADR-042 · NL-to-Cypher LLM Backend Selection",
+      "description": "The query_code_graph_nl PDG tool converts natural language questions to Cypher queries for FalkorDB using an LLM. The original implementation used Ollama (qwen2.5-coder:7b) running CPU-only on the Desktop (GPU reserved for vLLM).",
+      "nodes": [
+        {
+          "id": "adr-042",
+          "label": "ADR-042",
+          "group": "decision",
+          "color": "#22c55e"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-017",
+          "to": "adr-042"
+        }
+      ],
+      "tags": [
+        {
+          "id": "vllm",
+          "label": "vllm",
+          "color": "#eab308"
+        },
+        {
+          "id": "ollama",
+          "label": "ollama",
+          "color": "#ef4444"
+        },
+        {
+          "id": "nlp",
+          "label": "nlp",
+          "color": "#ec4899"
+        },
+        {
+          "id": "cypher",
+          "label": "cypher",
+          "color": "#f97316"
+        },
+        {
+          "id": "gpu-sharing",
+          "label": "gpu-sharing",
+          "color": "#f97316"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/042-nl-to-cypher-backend-selection/",
+        "label": "Read decision"
+      }
     },
     {
       "date": "2026-02-22",
@@ -532,7 +1605,184 @@
         }
       ],
       "edges": [],
-      "blogEpisode": null
+      "blogEpisode": null,
+      "kind": "story"
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "proposed",
+      "stableId": "2026-02-22-adr-019-claude-voice-agent-architecture-voiceassistant-eval-benchmarking-prompt-repetition-optimization",
+      "date": "2026-02-22",
+      "title": "ADR-019 · Claude Voice Agent Architecture — VoiceAssistant-Eval Benchmarking & Prompt Repetition Optimization",
+      "description": "The Rootweaver platform currently interacts with users exclusively through text interfaces — Claude Code CLI and Claude.ai via Cloudflare tunnel. ADR-015 proposed a Matrix Accessibility Layer for mobile/voice access. This ADR…",
+      "nodes": [
+        {
+          "id": "adr-019",
+          "label": "ADR-019",
+          "group": "decision",
+          "color": "#eab308"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-042",
+          "to": "adr-019"
+        }
+      ],
+      "tags": [
+        {
+          "id": "voice-agent",
+          "label": "voice-agent",
+          "color": "#ec4899"
+        },
+        {
+          "id": "claude-api",
+          "label": "claude-api",
+          "color": "#f97316"
+        },
+        {
+          "id": "asr",
+          "label": "asr",
+          "color": "#a855f7"
+        },
+        {
+          "id": "tts",
+          "label": "tts",
+          "color": "#f97316"
+        },
+        {
+          "id": "prompt-repetition",
+          "label": "prompt-repetition",
+          "color": "#ec4899"
+        },
+        {
+          "id": "benchmarking",
+          "label": "benchmarking",
+          "color": "#00d4ff"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/019-claude-voice-agent-architecture/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "proposed",
+      "stableId": "2026-02-22-adr-033-short-form-video-generation-pipeline",
+      "date": "2026-02-22",
+      "title": "ADR-033 · Short-Form Video Generation Pipeline",
+      "description": "The Rootweaver platform produces technical content (architecture docs, SRE insights, infrastructure learnings) that could reach wider audiences via short-form video on TikTok, Instagram Reels, and YouTube Shorts.",
+      "nodes": [
+        {
+          "id": "adr-033",
+          "label": "ADR-033",
+          "group": "decision",
+          "color": "#eab308"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-019",
+          "to": "adr-033"
+        }
+      ],
+      "tags": [
+        {
+          "id": "content-pipeline",
+          "label": "content-pipeline",
+          "color": "#ef4444"
+        },
+        {
+          "id": "video",
+          "label": "video",
+          "color": "#f97316"
+        },
+        {
+          "id": "voice-cloning",
+          "label": "voice-cloning",
+          "color": "#eab308"
+        },
+        {
+          "id": "tiktok",
+          "label": "tiktok",
+          "color": "#ec4899"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/033-short-form-video-generation-pipeline/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "date": "2026-02-28",
+      "dateLabel": "February 2026 · day not specified",
+      "kind": "story",
+      "title": "The synthesis layer learns to refuse",
+      "blogEpisode": "/writing/season-3-episode-4-refusal-gate/",
+      "journalEpisode": "season-3-episode-4-refusal-gate",
+      "journalLabel": "S3 · E04",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [
+        {
+          "href": "/adrs/044-refusal-gate/",
+          "label": "Refusal gate · design note"
+        }
+      ],
+      "nodes": [
+        {
+          "id": "refusal-gate",
+          "label": "Refusal Gate",
+          "group": "core",
+          "color": "#a855f7"
+        }
+      ],
+      "edges": [],
+      "description": "The Matrix bot checked retrieval relevance before synthesis and refused when the evidence was too weak. The episode dates this engineering to February; the public ADR carries a later record date."
+    },
+    {
+      "kind": "decision",
+      "recordKind": "historical-note",
+      "stableId": "2026-05-08-adr-044-refusal-gate-answer-i-don-t-know-below-confidence-threshold",
+      "dateLabel": "February 2026 · exact day not established",
+      "date": "2026-02-28",
+      "title": "Design note · Refusal gate: answer only when the evidence supports it",
+      "description": "The journal describes a retrieval system that could produce a fluent answer even when its evidence was weak. The refusal-gate chapter places the work in February 2026; it does not establish the May acceptance date previously…",
+      "nodes": [
+        {
+          "id": "note-044-refusal-gate",
+          "label": "Refusal gate",
+          "group": "decision",
+          "color": "#a855f7"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-033",
+          "to": "note-044-refusal-gate"
+        }
+      ],
+      "tags": [
+        {
+          "id": "historical-note",
+          "label": "historical-note",
+          "color": "#00d4ff"
+        },
+        {
+          "id": "journal",
+          "label": "journal",
+          "color": "#eab308"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/044-refusal-gate/",
+        "label": "Read design note"
+      }
     },
     {
       "date": "2026-03-01",
@@ -574,7 +1824,68 @@
           "to": "tempo"
         }
       ],
-      "blogEpisode": null
+      "blogEpisode": null,
+      "kind": "story"
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "accepted",
+      "stableId": "2026-03-01-adr-022-local-llm-hybrid-routing-from-claude-code-augmentation-to-full-replacement",
+      "date": "2026-03-01",
+      "title": "ADR-022 · Local LLM Hybrid Routing — From Claude Code Augmentation to Full Replacement",
+      "description": "Claude Code usage incurs per-token API costs via Anthropic's subscription. Analysis of typical Claude Code sessions shows:",
+      "nodes": [
+        {
+          "id": "adr-022",
+          "label": "ADR-022",
+          "group": "decision",
+          "color": "#22c55e"
+        }
+      ],
+      "edges": [
+        {
+          "from": "note-044-refusal-gate",
+          "to": "adr-022"
+        }
+      ],
+      "tags": [
+        {
+          "id": "local-llm",
+          "label": "local-llm",
+          "color": "#f97316"
+        },
+        {
+          "id": "cost-optimization",
+          "label": "cost-optimization",
+          "color": "#00d4ff"
+        },
+        {
+          "id": "claude-code",
+          "label": "claude-code",
+          "color": "#3b82f6"
+        },
+        {
+          "id": "model-routing",
+          "label": "model-routing",
+          "color": "#ec4899"
+        },
+        {
+          "id": "apple-silicon",
+          "label": "apple-silicon",
+          "color": "#3b82f6"
+        },
+        {
+          "id": "hardware-upgrade",
+          "label": "hardware-upgrade",
+          "color": "#eab308"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/022-local-llm-hybrid-routing-for-claude-code/",
+        "label": "Read decision"
+      }
     },
     {
       "date": "2026-03-08",
@@ -608,7 +1919,58 @@
           "to": "qdrant"
         }
       ],
-      "blogEpisode": null
+      "blogEpisode": null,
+      "kind": "story"
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "proposed",
+      "stableId": "2026-03-09-adr-023-hld-aware-architecture-review-pipeline",
+      "date": "2026-03-09",
+      "title": "ADR-023 · HLD-Aware Architecture Review Pipeline",
+      "description": "The Rootweaver platform has 10 HLD modules and 9 LLD modules documenting its architecture, plus ADRs for key decisions. Code changes happen daily across multiple repos, but there's no automated check that changes align with…",
+      "nodes": [
+        {
+          "id": "adr-023",
+          "label": "ADR-023",
+          "group": "decision",
+          "color": "#eab308"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-022",
+          "to": "adr-023"
+        }
+      ],
+      "tags": [
+        {
+          "id": "architecture",
+          "label": "architecture",
+          "color": "#f97316"
+        },
+        {
+          "id": "code-review",
+          "label": "code-review",
+          "color": "#a855f7"
+        },
+        {
+          "id": "kafka",
+          "label": "kafka",
+          "color": "#ef4444"
+        },
+        {
+          "id": "vllm",
+          "label": "vllm",
+          "color": "#eab308"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/023-hld-aware-architecture-review-pipeline/",
+        "label": "Read decision"
+      }
     },
     {
       "date": "2026-03-10",
@@ -621,52 +1983,94 @@
           "to": "mcp-bridge"
         }
       ],
-      "blogEpisode": "https://blog.rduffy.uk/posts/season-3-episode-5-second-graph-online/"
+      "blogEpisode": "/writing/season-3-episode-5-second-graph-online/",
+      "kind": "story",
+      "dateLabel": "8–19 March 2026",
+      "journalEpisode": "season-3-episode-5-second-graph-online",
+      "journalLabel": "S3 · E05",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [
+        {
+          "href": "/adrs/020-codegraph-platform/",
+          "label": "ADR-020 · decision context"
+        },
+        {
+          "href": "/adrs/040-ner-not-llm/",
+          "label": "ADR-040 · decision context"
+        }
+      ]
     },
     {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Proposed",
+      "stableId": "2026-03-10-adr-024-gitlab-flow-branching-and-release-strategy",
+      "date": "2026-03-10",
+      "title": "ADR-024 · GitLab Flow Branching and Release Strategy",
+      "description": "The Rootweaver Platform currently has a functional but immature CI/CD pipeline. Key gaps:",
+      "nodes": [
+        {
+          "id": "adr-024",
+          "label": "ADR-024",
+          "group": "decision",
+          "color": "#eab308"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-023",
+          "to": "adr-024"
+        }
+      ],
+      "tags": [],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/024-gitlab-flow-branching-and-release-strategy/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "proposed",
+      "stableId": "2026-03-11-adr-020-a-self-hosted-code-knowledge-graph-ast-pdg-and-community-detection",
       "date": "2026-03-11",
-      "title": "ADR-020 · A self-hosted code-knowledge graph: AST, PDG and community detection",
-      "description": "Semantic search retrieves documents by meaning; it cannot answer \"which modules break if I change this function?\" That question requires a structural model of the codebase — a graph of how things connect and depend on each other.",
+      "title": "ADR-020 · Enterprise-Grade CodeGraph Platform",
+      "description": "The Rootweaver Platform has a working PDG (Program Dependency Graph) system: - 12,985 nodes / 16,137 edges in FalkorDB code_knowledge graph (VW-131) - 7 MCP tools wired into production bridge (impact analysis, dependency…",
       "nodes": [
         {
           "id": "adr-020",
           "label": "ADR-020",
           "group": "decision",
-          "color": "#eab308",
-          "retired": false
+          "color": "#eab308"
         }
       ],
       "edges": [
         {
-          "from": "adr-040",
+          "from": "adr-024",
           "to": "adr-020"
         }
       ],
       "tags": [
-        {
-          "id": "code-intelligence",
-          "label": "code-intelligence",
-          "color": "#eab308"
-        },
-        {
-          "id": "graph",
-          "label": "graph",
-          "color": "#ef4444"
-        },
         {
           "id": "pdg",
           "label": "pdg",
           "color": "#f97316"
         },
         {
-          "id": "community-detection",
-          "label": "community-detection",
+          "id": "code-intelligence",
+          "label": "code-intelligence",
+          "color": "#eab308"
+        },
+        {
+          "id": "enterprise",
+          "label": "enterprise",
           "color": "#22c55e"
         },
         {
-          "id": "tree-sitter",
-          "label": "tree-sitter",
-          "color": "#ec4899"
+          "id": "falkordb",
+          "label": "falkordb",
+          "color": "#f97316"
         }
       ],
       "blogEpisode": null,
@@ -693,7 +2097,103 @@
           "to": "kafka"
         }
       ],
-      "blogEpisode": null
+      "blogEpisode": null,
+      "kind": "story"
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Proposed",
+      "stableId": "2026-03-15-adr-025-trading-intelligence-platform-architecture",
+      "date": "2026-03-15",
+      "title": "ADR-025 · Trading Intelligence Platform Architecture",
+      "description": "A FinOps Trading Agent was designed in January 2026 with a comprehensive dual-stack architecture (Production: Perplexity + vLLM vs Testbed: VADER + FinBERT), IBKR paper trading integration, Prefect orchestration, and Unleash…",
+      "nodes": [
+        {
+          "id": "adr-025",
+          "label": "ADR-025",
+          "group": "decision",
+          "color": "#eab308"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-020",
+          "to": "adr-025"
+        }
+      ],
+      "tags": [
+        {
+          "id": "architecture",
+          "label": "architecture",
+          "color": "#f97316"
+        },
+        {
+          "id": "trading",
+          "label": "trading",
+          "color": "#22c55e"
+        },
+        {
+          "id": "dashboard",
+          "label": "dashboard",
+          "color": "#3b82f6"
+        },
+        {
+          "id": "finops",
+          "label": "finops",
+          "color": "#eab308"
+        },
+        {
+          "id": "interactive-brokers",
+          "label": "interactive-brokers",
+          "color": "#eab308"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/025-trading-intelligence-platform/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "historical-note",
+      "stableId": "2026-05-18-adr-045-search-quality-benchmark-suite-helm-scenario-grid-ragas-metrics-claude-code-as-llm-judge",
+      "dateLabel": "17 March 2026 · journal-reported delivery",
+      "date": "2026-03-17",
+      "title": "Design note · Measuring search quality with a repeatable benchmark",
+      "description": "Season 3 Episode 7 reports that the search benchmark was delivered on 17 March 2026 and used during the following week's tuning. It describes 30 queries across six scenario categories—not 30 queries multiplied by six categories.",
+      "nodes": [
+        {
+          "id": "note-045-benchmark-suite",
+          "label": "Search benchmark",
+          "group": "decision",
+          "color": "#a855f7"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-025",
+          "to": "note-045-benchmark-suite"
+        }
+      ],
+      "tags": [
+        {
+          "id": "historical-note",
+          "label": "historical-note",
+          "color": "#00d4ff"
+        },
+        {
+          "id": "journal",
+          "label": "journal",
+          "color": "#eab308"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/045-benchmark-suite/",
+        "label": "Read design note"
+      }
     },
     {
       "date": "2026-03-19",
@@ -708,7 +2208,214 @@
         }
       ],
       "edges": [],
-      "blogEpisode": null
+      "blogEpisode": null,
+      "kind": "story"
+    },
+    {
+      "date": "2026-03-19",
+      "dateLabel": "18–19 March 2026",
+      "kind": "story",
+      "title": "The audit and the cascade",
+      "blogEpisode": "/writing/season-3-episode-6-wednesday-audit-thursday-cascade/",
+      "journalEpisode": "season-3-episode-6-wednesday-audit-thursday-cascade",
+      "journalLabel": "S3 · E06",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [
+        {
+          "href": "/adrs/040-ner-not-llm/",
+          "label": "ADR-040 · decision context"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "description": "A security investigation became a chain of dependency repairs, rollback, metadata cleanup and documentation work. The published event window is March, separately from the later SRE milestones."
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "accepted",
+      "stableId": "2026-01-31-adr-040-named-entity-tagging-without-an-llm-spacy-and-yake-over-the-alternatives",
+      "date": "2026-03-19",
+      "title": "ADR-040 · NER System Evaluation — Span-Based Extraction",
+      "description": "### Current System",
+      "nodes": [
+        {
+          "id": "adr-040",
+          "label": "ADR-040",
+          "group": "decision",
+          "color": "#22c55e"
+        }
+      ],
+      "edges": [
+        {
+          "from": "note-045-benchmark-suite",
+          "to": "adr-040"
+        }
+      ],
+      "tags": [
+        {
+          "id": "ner",
+          "label": "ner",
+          "color": "#f97316"
+        },
+        {
+          "id": "spacy",
+          "label": "spacy",
+          "color": "#ec4899"
+        },
+        {
+          "id": "yake",
+          "label": "yake",
+          "color": "#ec4899"
+        },
+        {
+          "id": "gliner",
+          "label": "gliner",
+          "color": "#eab308"
+        },
+        {
+          "id": "architecture",
+          "label": "architecture",
+          "color": "#f97316"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/040-ner-not-llm/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "date": "2026-03-29",
+      "dateLabel": "28–29 March 2026",
+      "kind": "story",
+      "title": "The weekend search got measurably better",
+      "blogEpisode": "/writing/season-3-episode-7-the-long-weekend/",
+      "journalEpisode": "season-3-episode-7-the-long-weekend",
+      "journalLabel": "S3 · E07",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [
+        {
+          "href": "/adrs/045-benchmark-suite/",
+          "label": "Search benchmark · design note"
+        },
+        {
+          "href": "/adrs/046-mcp-transport/",
+          "label": "MCP transport · design note"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "description": "Benchmark-led fixes exposed scoring defects and a costly search path. The MCP transport migration improved connection behaviour, while deeper retrieval bottlenecks remained."
+    },
+    {
+      "kind": "decision",
+      "recordKind": "historical-note",
+      "stableId": "2026-05-28-adr-046-mcp-transport-migrate-sse-streamable-http",
+      "dateLabel": "29 March 2026 · documented migration",
+      "date": "2026-03-29",
+      "title": "Design note · MCP transport: moving from SSE to Streamable HTTP",
+      "description": "The March journal and platform specifications record the primary MCP bridge's migration from SSE to Streamable HTTP on 29 March 2026 (VW-177). The earlier website date and ADR number were part of an example record, not a…",
+      "nodes": [
+        {
+          "id": "note-046-mcp-transport",
+          "label": "MCP transport",
+          "group": "decision",
+          "color": "#a855f7"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-040",
+          "to": "note-046-mcp-transport"
+        }
+      ],
+      "tags": [
+        {
+          "id": "historical-note",
+          "label": "historical-note",
+          "color": "#00d4ff"
+        },
+        {
+          "id": "journal",
+          "label": "journal",
+          "color": "#eab308"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/046-mcp-transport/",
+        "label": "Read design note"
+      }
+    },
+    {
+      "date": "2026-03-31",
+      "dateLabel": "30–31 March 2026",
+      "kind": "story",
+      "title": "Async search and the missing evidence",
+      "blogEpisode": "/writing/season-3-episode-8-the-defenses-you-havent-built-yet/",
+      "journalEpisode": "season-3-episode-8-the-defenses-you-havent-built-yet",
+      "journalLabel": "S3 · E08",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [],
+      "nodes": [],
+      "edges": [],
+      "description": "An async retrieval refactor and a path-traversal fix improved different parts of the platform. The account also explains why retained journals had to stand in for missing raw transcripts."
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Proposed",
+      "stableId": "2026-04-01-adr-026-agent-lifecycle-patterns-lessons-from-claude-code-source-leak",
+      "date": "2026-04-01",
+      "title": "ADR-026 · Agent Lifecycle Patterns — Lessons from Claude Code Source Leak",
+      "description": "On 2026-03-31, Anthropic accidentally published Claude Code v2.1.88 to npm with a 59.8MB source map containing 512,000 lines of unobfuscated TypeScript across ~1,900 files. The leak exposed the entire agent harness — tool…",
+      "nodes": [
+        {
+          "id": "adr-026",
+          "label": "ADR-026",
+          "group": "decision",
+          "color": "#eab308"
+        }
+      ],
+      "edges": [
+        {
+          "from": "note-046-mcp-transport",
+          "to": "adr-026"
+        }
+      ],
+      "tags": [
+        {
+          "id": "architecture",
+          "label": "architecture",
+          "color": "#f97316"
+        },
+        {
+          "id": "agent-lifecycle",
+          "label": "agent-lifecycle",
+          "color": "#ec4899"
+        },
+        {
+          "id": "memory",
+          "label": "memory",
+          "color": "#22c55e"
+        },
+        {
+          "id": "performance",
+          "label": "performance",
+          "color": "#a855f7"
+        },
+        {
+          "id": "benchmark",
+          "label": "benchmark",
+          "color": "#00d4ff"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/026-agent-lifecycle-patterns-claude-code-leak/",
+        "label": "Read decision"
+      }
     },
     {
       "date": "2026-04-15",
@@ -732,52 +2439,166 @@
           "to": "qdrant"
         }
       ],
-      "blogEpisode": null
+      "blogEpisode": null,
+      "kind": "story"
     },
     {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Proposed",
+      "stableId": "2026-04-15-adr-034-auditable-connectors-feeding-a-shared-retrieval-path",
+      "date": "2026-04-15",
+      "title": "ADR-034 · Data Source Connector Architecture",
+      "description": "Rootweaver currently ingests data from a single source: the local Obsidian vault via inotify file-watcher → Kafka → KEDA ScaledJob → Qdrant. Jira and Confluence are accessible via MCP tools (Atlassian MCP server) but their…",
+      "nodes": [
+        {
+          "id": "adr-034",
+          "label": "ADR-034",
+          "group": "decision",
+          "color": "#eab308"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-026",
+          "to": "adr-034"
+        }
+      ],
+      "tags": [
+        {
+          "id": "architecture",
+          "label": "architecture",
+          "color": "#f97316"
+        },
+        {
+          "id": "connectors",
+          "label": "connectors",
+          "color": "#ef4444"
+        },
+        {
+          "id": "ingestion",
+          "label": "ingestion",
+          "color": "#3b82f6"
+        },
+        {
+          "id": "rag",
+          "label": "rag",
+          "color": "#a855f7"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/034-data-source-connectors/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Proposed",
+      "stableId": "2026-04-19-adr-035-an-evaluation-led-programme-for-retrieval-improvements",
       "date": "2026-04-19",
-      "title": "ADR-036 · Vault structured index in Postgres: relational authority beside vector recall",
-      "description": "The Obsidian vault (~6,000 markdown files) is the institutional memory of the platform. Three query tools already existed for navigating it: Qdrant semantic search, Grep, and file reads. Each does its job well. None of them…",
+      "title": "ADR-035 · Q2 2026 Retrieval, Inference & Evaluation Enhancement Program",
+      "description": "On 2026-04-19 we performed a paired internal/external review:",
+      "nodes": [
+        {
+          "id": "adr-035",
+          "label": "ADR-035",
+          "group": "decision",
+          "color": "#eab308"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-034",
+          "to": "adr-035"
+        }
+      ],
+      "tags": [
+        {
+          "id": "architecture",
+          "label": "architecture",
+          "color": "#f97316"
+        },
+        {
+          "id": "research-program",
+          "label": "research-program",
+          "color": "#ec4899"
+        },
+        {
+          "id": "retrieval",
+          "label": "retrieval",
+          "color": "#3b82f6"
+        },
+        {
+          "id": "inference",
+          "label": "inference",
+          "color": "#22c55e"
+        },
+        {
+          "id": "evaluation",
+          "label": "evaluation",
+          "color": "#3b82f6"
+        },
+        {
+          "id": "mcp",
+          "label": "mcp",
+          "color": "#ec4899"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/035-retrieval-evaluation-programme/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Accepted",
+      "stableId": "2026-04-19-adr-036-vault-structured-index-in-postgres-relational-authority-beside-vector-recall",
+      "date": "2026-04-19",
+      "title": "ADR-036 · Vault Structured Index in Postgres",
+      "description": "The Obsidian vault (~6,000 .md files, ~62K chunks in Qdrant) is the institutional memory of the platform. Claude Code — the primary user-facing interface — navigates it through three existing tools: Qdrant semantic search,…",
       "nodes": [
         {
           "id": "adr-036",
           "label": "ADR-036",
           "group": "decision",
-          "color": "#22c55e",
-          "retired": false
+          "color": "#22c55e"
         }
       ],
       "edges": [
         {
-          "from": "adr-020",
+          "from": "adr-035",
           "to": "adr-036"
         }
       ],
       "tags": [
+        {
+          "id": "architecture",
+          "label": "architecture",
+          "color": "#f97316"
+        },
         {
           "id": "postgres",
           "label": "postgres",
           "color": "#22c55e"
         },
         {
-          "id": "vault",
-          "label": "vault",
-          "color": "#ec4899"
+          "id": "vault-index",
+          "label": "vault-index",
+          "color": "#eab308"
+        },
+        {
+          "id": "claude-code",
+          "label": "claude-code",
+          "color": "#3b82f6"
         },
         {
           "id": "mcp",
           "label": "mcp",
           "color": "#ec4899"
-        },
-        {
-          "id": "structured-query",
-          "label": "structured-query",
-          "color": "#3b82f6"
-        },
-        {
-          "id": "retrieval",
-          "label": "retrieval",
-          "color": "#3b82f6"
         }
       ],
       "blogEpisode": null,
@@ -814,19 +2635,23 @@
           "to": "vllm"
         }
       ],
-      "blogEpisode": null
+      "blogEpisode": null,
+      "kind": "story"
     },
     {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Accepted",
+      "stableId": "2026-04-29-adr-029-keda-based-gpu-swap-controller-for-embed-inference-coexistence",
       "date": "2026-04-29",
-      "title": "ADR-029 · KEDA-based GPU swap controller for embed/inference coexistence",
-      "description": "The platform runs on a single RTX 4080 (16 GB VRAM). Three workloads need the GPU:",
+      "title": "ADR-029 · KEDA-Based GPU Swap Controller for Embed/Inference Coexistence",
+      "description": "The platform runs on a single NVIDIA RTX 4080 (16 GB VRAM). At least three workloads need the GPU:",
       "nodes": [
         {
           "id": "adr-029",
           "label": "ADR-029",
           "group": "decision",
-          "color": "#22c55e",
-          "retired": false
+          "color": "#22c55e"
         }
       ],
       "edges": [
@@ -837,24 +2662,19 @@
       ],
       "tags": [
         {
-          "id": "infra",
-          "label": "infra",
-          "color": "#a855f7"
-        },
-        {
-          "id": "k8s",
-          "label": "k8s",
-          "color": "#ef4444"
-        },
-        {
-          "id": "keda",
-          "label": "keda",
-          "color": "#eab308"
+          "id": "architecture",
+          "label": "architecture",
+          "color": "#f97316"
         },
         {
           "id": "gpu",
           "label": "gpu",
           "color": "#3b82f6"
+        },
+        {
+          "id": "keda",
+          "label": "keda",
+          "color": "#eab308"
         },
         {
           "id": "scheduling",
@@ -867,6 +2687,37 @@
         "href": "/adrs/029-keda-gpu-swap-controller/",
         "label": "Read decision"
       }
+    },
+    {
+      "date": "2026-04-30",
+      "dateLabel": "April 2026 · month-long arc",
+      "kind": "story",
+      "title": "The fleet, the connectors and the async ceiling",
+      "blogEpisode": "/writing/season-3-episode-9-scout-fleet-and-the-async-ceiling/",
+      "journalEpisode": "season-3-episode-9-scout-fleet-and-the-async-ceiling",
+      "journalLabel": "S3 · E09",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [
+        {
+          "href": "/adrs/034-data-source-connectors/",
+          "label": "ADR-034 · decision context"
+        },
+        {
+          "href": "/adrs/035-retrieval-evaluation-programme/",
+          "label": "ADR-035 · decision context"
+        },
+        {
+          "href": "/adrs/036-vault-structured-index-postgres/",
+          "label": "ADR-036 · decision context"
+        },
+        {
+          "href": "/adrs/029-keda-gpu-swap-controller/",
+          "label": "ADR-029 · decision context"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "description": "Fast search gains did not solve deep-search latency. Graph freshness, incomplete consumers and connector design led to a more explicit retrieval and evaluation programme."
     },
     {
       "date": "2026-05-01",
@@ -896,42 +2747,121 @@
           "to": "journal-parser"
         }
       ],
-      "blogEpisode": null
+      "blogEpisode": null,
+      "kind": "story"
     },
     {
-      "date": "2026-05-08",
-      "title": "ADR-044 · Refusal gate: answer 'I don't know' below confidence threshold",
-      "description": "The RAG pipeline answered every query, including ones where the retrieved context was irrelevant to the question. A confident, fluent, wrong answer is the worst possible failure mode for a knowledge system: it is…",
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "superseded",
+      "stableId": "2026-05-05-adr-037-daily-journal-consolidator-external-api-dependency",
+      "date": "2026-05-05",
+      "title": "ADR-037 · Daily Journal Consolidator External API Dependency",
+      "description": "The Rootweaver Platform's \"local-first\" architecture story is: GPU on desktop, vLLM serves all inference, no cloud LLMs in the production path. Two days of audit work uncovered that this story has one quiet exception.",
       "nodes": [
         {
-          "id": "adr-044",
-          "label": "ADR-044",
+          "id": "adr-037",
+          "label": "ADR-037",
           "group": "decision",
-          "color": "#22c55e",
-          "retired": false
+          "color": "#64748b"
         }
       ],
       "edges": [
         {
           "from": "adr-029",
-          "to": "adr-044"
+          "to": "adr-037"
         }
       ],
       "tags": [
         {
-          "id": "rag",
-          "label": "rag",
-          "color": "#a855f7"
+          "id": "journal",
+          "label": "journal",
+          "color": "#eab308"
         },
         {
-          "id": "quality",
-          "label": "quality",
-          "color": "#eab308"
+          "id": "llm",
+          "label": "llm",
+          "color": "#00d4ff"
+        },
+        {
+          "id": "external-dependency",
+          "label": "external-dependency",
+          "color": "#00d4ff"
+        },
+        {
+          "id": "cost-governance",
+          "label": "cost-governance",
+          "color": "#ec4899"
+        },
+        {
+          "id": "architecture-decision",
+          "label": "architecture-decision",
+          "color": "#ef4444"
         }
       ],
       "blogEpisode": null,
       "link": {
-        "href": "/adrs/044-refusal-gate/",
+        "href": "/adrs/037-daily-journal-consolidator-external-api-dependency/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "accepted",
+      "stableId": "2026-05-05-adr-038-daily-consolidator-reads-jsonl-directly-streaming-synth-model-swap",
+      "date": "2026-05-05",
+      "title": "ADR-038 · Daily Consolidator Reads JSONL Directly + Streaming Synth Model Swap",
+      "description": "The journal system has two LLM stages reading the same fundamental source (Claude Code session JSONLs):",
+      "nodes": [
+        {
+          "id": "adr-038",
+          "label": "ADR-038",
+          "group": "decision",
+          "color": "#22c55e"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-037",
+          "to": "adr-038"
+        }
+      ],
+      "tags": [
+        {
+          "id": "journal",
+          "label": "journal",
+          "color": "#eab308"
+        },
+        {
+          "id": "llm",
+          "label": "llm",
+          "color": "#00d4ff"
+        },
+        {
+          "id": "benchmark",
+          "label": "benchmark",
+          "color": "#00d4ff"
+        },
+        {
+          "id": "architecture-decision",
+          "label": "architecture-decision",
+          "color": "#ef4444"
+        },
+        {
+          "id": "model-selection",
+          "label": "model-selection",
+          "color": "#a855f7"
+        },
+        {
+          "id": "cost-governance",
+          "label": "cost-governance",
+          "color": "#ec4899"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/038-daily-consolidator-jsonl-direct-and-streaming-synth-model-swap/",
         "label": "Read decision"
       }
     },
@@ -961,7 +2891,63 @@
           "to": "retriever"
         }
       ],
-      "blogEpisode": null
+      "blogEpisode": null,
+      "kind": "story"
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Accepted",
+      "stableId": "2026-05-11-adr-030-a-workspace-with-enforceable-package-boundaries",
+      "date": "2026-05-11",
+      "title": "ADR-030 · Repository Structure for AI-Assisted Development",
+      "description": "The Rootweaver platform repository (REDACTED_HOME/2tb/rootweaver-platform/) has accumulated structural debt that costs measurable time per AI-assisted development session. Three concrete incidents on 2026-05-10 motivated this ADR:",
+      "nodes": [
+        {
+          "id": "adr-030",
+          "label": "ADR-030",
+          "group": "decision",
+          "color": "#22c55e"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-038",
+          "to": "adr-030"
+        }
+      ],
+      "tags": [
+        {
+          "id": "repository-structure",
+          "label": "repository-structure",
+          "color": "#a855f7"
+        },
+        {
+          "id": "ai-assisted-development",
+          "label": "ai-assisted-development",
+          "color": "#f97316"
+        },
+        {
+          "id": "monorepo",
+          "label": "monorepo",
+          "color": "#00d4ff"
+        },
+        {
+          "id": "uv-workspaces",
+          "label": "uv-workspaces",
+          "color": "#ec4899"
+        },
+        {
+          "id": "agents-md",
+          "label": "agents-md",
+          "color": "#ef4444"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/030-repository-workspace/",
+        "label": "Read decision"
+      }
     },
     {
       "date": "2026-05-17",
@@ -991,19 +2977,138 @@
           "to": "memory"
         }
       ],
-      "blogEpisode": null
+      "blogEpisode": null,
+      "kind": "story"
     },
     {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Proposed",
+      "stableId": "2026-05-17-adr-043-memory-system-derived-data-gdpr-position",
+      "date": "2026-05-17",
+      "title": "ADR-043 · Memory System Derived-Data GDPR Position",
+      "description": "The long-term memory system (VW-391) ingests Claude Code session JSONL transcripts and produces multiple layers of derived data:",
+      "nodes": [
+        {
+          "id": "adr-043",
+          "label": "ADR-043",
+          "group": "decision",
+          "color": "#eab308"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-030",
+          "to": "adr-043"
+        }
+      ],
+      "tags": [
+        {
+          "id": "gdpr",
+          "label": "gdpr",
+          "color": "#eab308"
+        },
+        {
+          "id": "memory",
+          "label": "memory",
+          "color": "#22c55e"
+        },
+        {
+          "id": "retention",
+          "label": "retention",
+          "color": "#ef4444"
+        },
+        {
+          "id": "compliance",
+          "label": "compliance",
+          "color": "#f97316"
+        },
+        {
+          "id": "vw-391",
+          "label": "vw-391",
+          "color": "#eab308"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/043-memory-system-derived-data-gdpr-position/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "superseded",
+      "stableId": "2026-05-18-adr-044-memory-eval-methodology-v1-synthesis-layer-anchor-mode-toggle-three-tier-artifact-split-superseded",
       "date": "2026-05-18",
-      "title": "ADR-045 · Search-quality benchmark suite: HELM scenario grid + RAGAS metrics, Claude Code as LLM judge",
-      "description": "Search \"worked\" — but that was a vibe, not a measurement. There was no answer to three questions that actually matter:",
+      "title": "ADR-044 · Memory Eval Methodology v1 — Synthesis-Layer, Anchor-Mode Toggle, Three-Tier Artifact Split [SUPERSEDED]",
+      "description": "VW-391 stood up a long-term structured memory store: 6 MCP tools (recall_session, recall_origin, recall_decisions, find_problems, recall_state_at, trace_decision_chain) backed by a Postgres memory.* schema populated from…",
+      "nodes": [
+        {
+          "id": "adr-044",
+          "label": "ADR-044",
+          "group": "decision",
+          "color": "#64748b"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-043",
+          "to": "adr-044"
+        }
+      ],
+      "tags": [
+        {
+          "id": "memory",
+          "label": "memory",
+          "color": "#22c55e"
+        },
+        {
+          "id": "benchmark",
+          "label": "benchmark",
+          "color": "#00d4ff"
+        },
+        {
+          "id": "methodology",
+          "label": "methodology",
+          "color": "#f97316"
+        },
+        {
+          "id": "locomo",
+          "label": "locomo",
+          "color": "#22c55e"
+        },
+        {
+          "id": "longmemeval",
+          "label": "longmemeval",
+          "color": "#00d4ff"
+        },
+        {
+          "id": "ragas",
+          "label": "ragas",
+          "color": "#ec4899"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/044-memory-eval-methodology-v1/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "proposed",
+      "stableId": "2026-05-18-adr-045-memory-eval-methodology-v2-engineering-memory-focus",
+      "date": "2026-05-18",
+      "title": "ADR-045 · Memory Eval Methodology v2 — Engineering Memory Focus",
+      "description": "ADR-044 (written same day, 2026-05-18 morning) committed to LoCoMo + LongMemEval as the external comparability path. By the afternoon, dispatched research + an end-to-end LoCoMo run (VW-397) had falsified that direction.",
       "nodes": [
         {
           "id": "adr-045",
           "label": "ADR-045",
           "group": "decision",
-          "color": "#22c55e",
-          "retired": false
+          "color": "#eab308"
         }
       ],
       "edges": [
@@ -1014,24 +3119,39 @@
       ],
       "tags": [
         {
+          "id": "memory",
+          "label": "memory",
+          "color": "#22c55e"
+        },
+        {
           "id": "benchmark",
           "label": "benchmark",
           "color": "#00d4ff"
         },
         {
-          "id": "rag",
-          "label": "rag",
+          "id": "methodology",
+          "label": "methodology",
+          "color": "#f97316"
+        },
+        {
+          "id": "engineering-memory",
+          "label": "engineering-memory",
+          "color": "#f97316"
+        },
+        {
+          "id": "synthetic-corpus",
+          "label": "synthetic-corpus",
           "color": "#a855f7"
         },
         {
-          "id": "quality",
-          "label": "quality",
-          "color": "#eab308"
+          "id": "rootweaver-public",
+          "label": "rootweaver-public",
+          "color": "#3b82f6"
         }
       ],
       "blogEpisode": null,
       "link": {
-        "href": "/adrs/045-benchmark-suite/",
+        "href": "/adrs/045-memory-eval-methodology-v2/",
         "label": "Read decision"
       }
     },
@@ -1048,7 +3168,63 @@
         }
       ],
       "edges": [],
-      "blogEpisode": null
+      "blogEpisode": null,
+      "kind": "story"
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "accepted-with-caveats",
+      "stableId": "2026-05-19-adr-046-memory-system-embedder-architecture-dimension-deployment-decision",
+      "date": "2026-05-19",
+      "title": "ADR-046 · Memory-System Embedder Architecture — Dimension + Deployment Decision",
+      "description": "The memory system writer (packages/rootweaver-memory) was designed in early VW-391 work with VECTOR(1024) columns on memory.facts.embedding, memory.rounds.embedding, memory.sessions.summary_embedding. The dim choice matched…",
+      "nodes": [
+        {
+          "id": "adr-046",
+          "label": "ADR-046",
+          "group": "decision",
+          "color": "#22c55e"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-045",
+          "to": "adr-046"
+        }
+      ],
+      "tags": [
+        {
+          "id": "memory",
+          "label": "memory",
+          "color": "#22c55e"
+        },
+        {
+          "id": "embedding",
+          "label": "embedding",
+          "color": "#eab308"
+        },
+        {
+          "id": "architecture",
+          "label": "architecture",
+          "color": "#f97316"
+        },
+        {
+          "id": "gpu-coordination",
+          "label": "gpu-coordination",
+          "color": "#3b82f6"
+        },
+        {
+          "id": "vw-391-followup",
+          "label": "vw-391-followup",
+          "color": "#ec4899"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/046-memory-system-embedder-architecture/",
+        "label": "Read decision"
+      }
     },
     {
       "date": "2026-05-21",
@@ -1078,7 +3254,183 @@
           "to": "jira"
         }
       ],
-      "blogEpisode": "https://blog.rduffy.uk/posts/season-3-episode-6-wednesday-audit-thursday-cascade/"
+      "blogEpisode": null,
+      "kind": "story"
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Proposed",
+      "stableId": "2026-05-21-adr-048-egress-control-strategy-forward-proxy-now-cni-migration-later",
+      "date": "2026-05-21",
+      "title": "ADR-048 · Egress Control Strategy — Forward Proxy Now, CNI Migration Later",
+      "description": "During VW-409 backfill work (2026-05-21 evening), we needed memory-synthesize Jobs to call OpenAI's gpt-4o-mini API to extract facts from 12 backlogged sessions. The Job pods reuse the app=memory-writer label for postgres…",
+      "nodes": [
+        {
+          "id": "adr-048",
+          "label": "ADR-048",
+          "group": "decision",
+          "color": "#eab308"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-046",
+          "to": "adr-048"
+        }
+      ],
+      "tags": [
+        {
+          "id": "networking",
+          "label": "networking",
+          "color": "#3b82f6"
+        },
+        {
+          "id": "security",
+          "label": "security",
+          "color": "#a855f7"
+        },
+        {
+          "id": "networkpolicy",
+          "label": "networkpolicy",
+          "color": "#a855f7"
+        },
+        {
+          "id": "egress",
+          "label": "egress",
+          "color": "#00d4ff"
+        },
+        {
+          "id": "vw-409-followup",
+          "label": "vw-409-followup",
+          "color": "#a855f7"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/048-egress-control-strategy/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Superseded-in-part-by-ADR-050",
+      "stableId": "2026-05-21-adr-049-personal-industry-radar-pipeline-precis-karpathy-llm-wiki-claude-code-subscription-synthesis",
+      "date": "2026-05-21",
+      "title": "ADR-049 · Personal Industry Radar Pipeline — Precis + Karpathy LLM Wiki + Claude Code Subscription Synthesis",
+      "description": "",
+      "nodes": [
+        {
+          "id": "adr-049",
+          "label": "ADR-049",
+          "group": "decision",
+          "color": "#64748b"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-048",
+          "to": "adr-049"
+        }
+      ],
+      "tags": [
+        {
+          "id": "architecture",
+          "label": "architecture",
+          "color": "#f97316"
+        },
+        {
+          "id": "knowledge-management",
+          "label": "knowledge-management",
+          "color": "#ec4899"
+        },
+        {
+          "id": "radar",
+          "label": "radar",
+          "color": "#ef4444"
+        },
+        {
+          "id": "rss",
+          "label": "rss",
+          "color": "#ec4899"
+        },
+        {
+          "id": "llm",
+          "label": "llm",
+          "color": "#00d4ff"
+        },
+        {
+          "id": "karpathy-wiki-pattern",
+          "label": "karpathy-wiki-pattern",
+          "color": "#a855f7"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/049-personal-industry-radar-pipeline/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Proposed",
+      "stableId": "2026-05-23-adr-051-radar-feed-acquisition-tiered-hierarchy-for-sites-without-native-rss",
+      "date": "2026-05-23",
+      "title": "ADR-051 · Radar Feed Acquisition — Tiered Hierarchy for Sites Without Native RSS",
+      "description": "",
+      "nodes": [
+        {
+          "id": "adr-051",
+          "label": "ADR-051",
+          "group": "decision",
+          "color": "#eab308"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-049",
+          "to": "adr-051"
+        }
+      ],
+      "tags": [
+        {
+          "id": "architecture",
+          "label": "architecture",
+          "color": "#f97316"
+        },
+        {
+          "id": "radar",
+          "label": "radar",
+          "color": "#ef4444"
+        },
+        {
+          "id": "rss",
+          "label": "rss",
+          "color": "#ec4899"
+        },
+        {
+          "id": "feed-acquisition",
+          "label": "feed-acquisition",
+          "color": "#ef4444"
+        },
+        {
+          "id": "rsshub",
+          "label": "rsshub",
+          "color": "#f97316"
+        },
+        {
+          "id": "sitemap",
+          "label": "sitemap",
+          "color": "#00d4ff"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/051-radar-feed-acquisition-tiered-hierarchy/",
+        "label": "Read decision"
+      }
     },
     {
       "date": "2026-05-26",
@@ -1098,7 +3450,8 @@
           "to": "retriever"
         }
       ],
-      "blogEpisode": null
+      "blogEpisode": null,
+      "kind": "story"
     },
     {
       "date": "2026-05-27",
@@ -1113,66 +3466,133 @@
         }
       ],
       "edges": [],
-      "blogEpisode": null
+      "blogEpisode": null,
+      "kind": "story"
     },
     {
-      "date": "2026-05-28",
-      "title": "ADR-046 · MCP transport: migrate SSE → streamable HTTP",
-      "description": "The MCP bridge exposes 29 tools to Claude Code and was served over SSE (Server-Sent Events). Two problems compounded each other:",
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Accepted",
+      "stableId": "2026-05-27-adr-052-benchmark-agentic-metrics-and-statistical-improvements",
+      "date": "2026-05-27",
+      "title": "ADR-052 · Benchmark Agentic Metrics and Statistical Improvements",
+      "description": "The Rootweaver benchmark suite (HELM-inspired, 32 queries, 7 categories) evaluates retrieval quality via faithfulness, answer relevancy, context precision, context recall, and MRR. However:",
       "nodes": [
         {
-          "id": "adr-046",
-          "label": "ADR-046",
+          "id": "adr-052",
+          "label": "ADR-052",
           "group": "decision",
-          "color": "#22c55e",
-          "retired": false
+          "color": "#22c55e"
         }
       ],
       "edges": [
         {
-          "from": "adr-045",
-          "to": "adr-046"
+          "from": "adr-051",
+          "to": "adr-052"
         }
       ],
       "tags": [
         {
-          "id": "mcp",
-          "label": "mcp",
-          "color": "#ec4899"
+          "id": "benchmark",
+          "label": "benchmark",
+          "color": "#00d4ff"
         },
         {
-          "id": "transport",
-          "label": "transport",
-          "color": "#22c55e"
+          "id": "evaluation",
+          "label": "evaluation",
+          "color": "#3b82f6"
         },
         {
-          "id": "keda",
-          "label": "keda",
-          "color": "#eab308"
+          "id": "statistics",
+          "label": "statistics",
+          "color": "#f97316"
         }
       ],
       "blogEpisode": null,
       "link": {
-        "href": "/adrs/046-mcp-transport/",
+        "href": "/adrs/052-benchmark-agentic-metrics-and-statistical-improvements/",
         "label": "Read decision"
       }
     },
     {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Accepted",
+      "stableId": "2026-05-28-adr-050-personal-industry-radar-pipeline-native-workspace-implementation",
       "date": "2026-05-28",
-      "title": "ADR-053 · Observability data routing: multi-backend log/trace/metric strategy",
-      "description": "A prior ADR established Kafka → Vector → Elasticsearch for LLM observability. In practice the platform now runs an intentional multi-backend observability rig: running VictoriaLogs/VictoriaMetrics alongside Elasticsearch gives…",
+      "title": "ADR-050 · Personal Industry Radar Pipeline — Native Workspace Implementation",
+      "description": "",
+      "nodes": [
+        {
+          "id": "adr-050",
+          "label": "ADR-050",
+          "group": "decision",
+          "color": "#22c55e"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-052",
+          "to": "adr-050"
+        }
+      ],
+      "tags": [
+        {
+          "id": "architecture",
+          "label": "architecture",
+          "color": "#f97316"
+        },
+        {
+          "id": "knowledge-management",
+          "label": "knowledge-management",
+          "color": "#ec4899"
+        },
+        {
+          "id": "radar",
+          "label": "radar",
+          "color": "#ef4444"
+        },
+        {
+          "id": "rss",
+          "label": "rss",
+          "color": "#ec4899"
+        },
+        {
+          "id": "llm",
+          "label": "llm",
+          "color": "#00d4ff"
+        },
+        {
+          "id": "rootweaver-radar",
+          "label": "rootweaver-radar",
+          "color": "#f97316"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/050-personal-industry-radar-native-implementation/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Accepted",
+      "stableId": "2026-05-28-adr-053-observability-data-routing-multi-backend-log-trace-metric-strategy",
+      "date": "2026-05-28",
+      "title": "ADR-053 · Observability Data Routing — Multi-Backend Log/Trace/Metric Strategy",
+      "description": "ADR-013 established Kafka → Vector → Elasticsearch for LLM observability. In practice the homelab now runs an intentional multi-backend observability rig: Ryan uses VictoriaLogs/VictoriaMetrics and Elasticsearch at work, and…",
       "nodes": [
         {
           "id": "adr-053",
           "label": "ADR-053",
           "group": "decision",
-          "color": "#22c55e",
-          "retired": false
+          "color": "#22c55e"
         }
       ],
       "edges": [
         {
-          "from": "adr-046",
+          "from": "adr-050",
           "to": "adr-053"
         }
       ],
@@ -1198,14 +3618,14 @@
           "color": "#ef4444"
         },
         {
-          "id": "kafka",
-          "label": "kafka",
-          "color": "#ef4444"
+          "id": "victoriametrics",
+          "label": "victoriametrics",
+          "color": "#3b82f6"
         },
         {
-          "id": "otel",
-          "label": "otel",
-          "color": "#3b82f6"
+          "id": "vector",
+          "label": "vector",
+          "color": "#f97316"
         }
       ],
       "blogEpisode": null,
@@ -1215,34 +3635,357 @@
       }
     },
     {
-      "date": "2026-06-04",
-      "title": "ADR-060 · Heterogeneous multi-node K3s: dedicated worker nodes and node-separated backup",
-      "description": "The cluster grew from a single control-plane node (desktop, amd64 + GPU) to three:",
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Accepted",
+      "stableId": "2026-05-29-adr-054-separate-embedding-from-the-shared-inference-gpu",
+      "date": "2026-05-29",
+      "title": "ADR-054 · Dedicated CPU Embedding Worker Node (rduffy-mini)",
+      "description": "The cluster has one RTX 4080 shared by two GPU-hungry tenants: vLLM (Qwen LLM inference) and the TEI embedder (Qwen3-Embedding-4B, 2560d). Every prior approach was a different answer to \"who gets the card\": VW-98 preempted…",
       "nodes": [
         {
-          "id": "adr-060",
-          "label": "ADR-060",
+          "id": "adr-054",
+          "label": "ADR-054",
           "group": "decision",
-          "color": "#22c55e",
-          "retired": false
+          "color": "#22c55e"
         }
       ],
       "edges": [
         {
           "from": "adr-053",
+          "to": "adr-054"
+        }
+      ],
+      "tags": [
+        {
+          "id": "k3s",
+          "label": "k3s",
+          "color": "#f97316"
+        },
+        {
+          "id": "embedding",
+          "label": "embedding",
+          "color": "#eab308"
+        },
+        {
+          "id": "tei",
+          "label": "tei",
+          "color": "#a855f7"
+        },
+        {
+          "id": "keda",
+          "label": "keda",
+          "color": "#eab308"
+        },
+        {
+          "id": "gpu",
+          "label": "gpu",
+          "color": "#3b82f6"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/054-dedicated-cpu-embedding/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Accepted",
+      "stableId": "2026-05-31-adr-055-data-store-backup-strategy-the-qdrant-snapshot-disruption-tradeoff",
+      "date": "2026-05-31",
+      "title": "ADR-055 · Data-Store Backup Strategy & the Qdrant Snapshot-Disruption Tradeoff",
+      "description": "The two stateful data stores — qdrant (vector DB, ~34K points / 148K chunks) and falkordb (knowledge graph) — had no working backup. The qdrant backup CronJob had *never* succeeded since 2026-03-15; falkordb's had been dead ~7…",
+      "nodes": [
+        {
+          "id": "adr-055",
+          "label": "ADR-055",
+          "group": "decision",
+          "color": "#22c55e"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-054",
+          "to": "adr-055"
+        }
+      ],
+      "tags": [
+        {
+          "id": "architecture",
+          "label": "architecture",
+          "color": "#f97316"
+        },
+        {
+          "id": "backups",
+          "label": "backups",
+          "color": "#22c55e"
+        },
+        {
+          "id": "disaster-recovery",
+          "label": "disaster-recovery",
+          "color": "#22c55e"
+        },
+        {
+          "id": "qdrant",
+          "label": "qdrant",
+          "color": "#a855f7"
+        },
+        {
+          "id": "falkordb",
+          "label": "falkordb",
+          "color": "#f97316"
+        },
+        {
+          "id": "observability",
+          "label": "observability",
+          "color": "#22c55e"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/055-data-store-backup-and-qdrant-snapshot-tradeoff/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Proposed",
+      "stableId": "2026-06-03-adr-056-dynamic-test-impact-analysis-for-ci-selective-per-package-testing",
+      "date": "2026-06-03",
+      "title": "ADR-056 · Dynamic Test Impact Analysis for CI (selective per-package testing)",
+      "description": "CI currently runs a fixed set of broad test jobs (test:unit:rag-platform, test:unit:agents, test:unit:scripts) on every MR regardless of which files changed. Two problems surfaced while unblocking the pipeline (VW-509 → VW-524):",
+      "nodes": [
+        {
+          "id": "adr-056",
+          "label": "ADR-056",
+          "group": "decision",
+          "color": "#eab308"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-055",
+          "to": "adr-056"
+        }
+      ],
+      "tags": [
+        {
+          "id": "ci",
+          "label": "ci",
+          "color": "#ef4444"
+        },
+        {
+          "id": "test-impact-analysis",
+          "label": "test-impact-analysis",
+          "color": "#a855f7"
+        },
+        {
+          "id": "pdg",
+          "label": "pdg",
+          "color": "#f97316"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/056-dynamic-test-impact-analysis/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Accepted",
+      "stableId": "2026-06-03-adr-057-mcp-bridge-efficiency-composite-tools-over-full-code-execution-migration",
+      "date": "2026-06-03",
+      "title": "ADR-057 · MCP Bridge Efficiency: Composite Tools over Full Code-Execution Migration",
+      "description": "VW-217 (Backlog, under ADR-027 Track D, Epic VW-209) proposed migrating the MCP bridge to Anthropic's \"Code Execution with MCP\" pattern, citing a 150K→2K token reduction (98.7%) on tool-heavy bridges. The pattern has two…",
+      "nodes": [
+        {
+          "id": "adr-057",
+          "label": "ADR-057",
+          "group": "decision",
+          "color": "#22c55e"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-056",
+          "to": "adr-057"
+        }
+      ],
+      "tags": [
+        {
+          "id": "mcp-bridge",
+          "label": "mcp-bridge",
+          "color": "#3b82f6"
+        },
+        {
+          "id": "token-efficiency",
+          "label": "token-efficiency",
+          "color": "#00d4ff"
+        },
+        {
+          "id": "benchmark",
+          "label": "benchmark",
+          "color": "#00d4ff"
+        },
+        {
+          "id": "claude-code",
+          "label": "claude-code",
+          "color": "#3b82f6"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/057-mcp-bridge-efficiency-composite-tools-over-code-execution/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Accepted",
+      "stableId": "2026-06-04-adr-058-rootweaver-deployment-contracts-for-baked-images-and-tei-safe-embedding",
+      "date": "2026-06-04",
+      "title": "ADR-058 · Rootweaver Deployment Contracts for Baked Images and TEI-Safe Embedding",
+      "description": "VW-552 stabilized the Rootweaver platform after several operational risks converged:",
+      "nodes": [
+        {
+          "id": "adr-058",
+          "label": "ADR-058",
+          "group": "decision",
+          "color": "#22c55e"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-057",
+          "to": "adr-058"
+        }
+      ],
+      "tags": [
+        {
+          "id": "rootweaver",
+          "label": "rootweaver",
+          "color": "#ec4899"
+        },
+        {
+          "id": "gitops",
+          "label": "gitops",
+          "color": "#a855f7"
+        },
+        {
+          "id": "k3s",
+          "label": "k3s",
+          "color": "#f97316"
+        },
+        {
+          "id": "embeddings",
+          "label": "embeddings",
+          "color": "#3b82f6"
+        },
+        {
+          "id": "deployment-contract",
+          "label": "deployment-contract",
+          "color": "#ec4899"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/058-rootweaver-deployment-contracts-for-baked-images-and-tei-safe-embedding/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Accepted",
+      "stableId": "2026-06-04-adr-059-memory-writer-asynchronous-embedding-decouple-from-hot-path",
+      "date": "2026-06-04",
+      "title": "ADR-059 · Memory-Writer Asynchronous Embedding (Decouple from Hot Path)",
+      "description": "### The broken state (VW-551 root cause)",
+      "nodes": [
+        {
+          "id": "adr-059",
+          "label": "ADR-059",
+          "group": "decision",
+          "color": "#22c55e"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-058",
+          "to": "adr-059"
+        }
+      ],
+      "tags": [
+        {
+          "id": "memory",
+          "label": "memory",
+          "color": "#22c55e"
+        },
+        {
+          "id": "embedding",
+          "label": "embedding",
+          "color": "#eab308"
+        },
+        {
+          "id": "async",
+          "label": "async",
+          "color": "#3b82f6"
+        },
+        {
+          "id": "kafka",
+          "label": "kafka",
+          "color": "#ef4444"
+        },
+        {
+          "id": "cronjob",
+          "label": "cronjob",
+          "color": "#eab308"
+        },
+        {
+          "id": "cpu-embedding",
+          "label": "cpu-embedding",
+          "color": "#ec4899"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/059-memory-writer-asynchronous-embedding/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Accepted",
+      "stableId": "2026-06-04-adr-060-heterogeneous-multi-node-k3s-dedicated-worker-nodes-and-node-separated-backup",
+      "date": "2026-06-04",
+      "title": "ADR-060 · Heterogeneous Multi-Node k3s: Dedicated Worker Nodes & Node-Separated Backup Tier",
+      "description": "The cluster grew from a single control-plane node (rduffy, desktop, amd64+GPU) to three nodes: - rduffy — control-plane/master, amd64, RTX 4080, runs the platform + GPU workloads. - rduffy-mini — amd64 CPU worker, dedicated to…",
+      "nodes": [
+        {
+          "id": "adr-060",
+          "label": "ADR-060",
+          "group": "decision",
+          "color": "#22c55e"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-059",
           "to": "adr-060"
         }
       ],
       "tags": [
         {
-          "id": "infra",
-          "label": "infra",
-          "color": "#a855f7"
-        },
-        {
-          "id": "k8s",
-          "label": "k8s",
-          "color": "#ef4444"
+          "id": "k3s",
+          "label": "k3s",
+          "color": "#f97316"
         },
         {
           "id": "multi-node",
@@ -1250,19 +3993,24 @@
           "color": "#ef4444"
         },
         {
+          "id": "taint",
+          "label": "taint",
+          "color": "#ec4899"
+        },
+        {
+          "id": "node-affinity",
+          "label": "node-affinity",
+          "color": "#f97316"
+        },
+        {
+          "id": "velero",
+          "label": "velero",
+          "color": "#00d4ff"
+        },
+        {
           "id": "backup",
           "label": "backup",
           "color": "#ec4899"
-        },
-        {
-          "id": "arm64",
-          "label": "arm64",
-          "color": "#ec4899"
-        },
-        {
-          "id": "networkpolicy",
-          "label": "networkpolicy",
-          "color": "#a855f7"
         }
       ],
       "blogEpisode": null,
@@ -1272,16 +4020,19 @@
       }
     },
     {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Accepted",
+      "stableId": "2026-06-05-adr-061-developer-agent-provenance-cryptographic-attribution-for-ai-authored-commits",
       "date": "2026-06-05",
-      "title": "ADR-061 · Developer-agent provenance: cryptographic attribution for AI-authored commits",
-      "description": "The platform is now built by several AI coding agents running concurrently — Claude Code, Codex, and local-model services — plus direct-API scripts. They all produce artifacts: git commits, vault markdown, issue tracker…",
+      "title": "ADR-061 · Developer-Agent Provenance & Cryptographic Attribution",
+      "description": "",
       "nodes": [
         {
           "id": "adr-061",
           "label": "ADR-061",
           "group": "decision",
-          "color": "#22c55e",
-          "retired": false
+          "color": "#22c55e"
         }
       ],
       "edges": [
@@ -1291,6 +4042,11 @@
         }
       ],
       "tags": [
+        {
+          "id": "architecture",
+          "label": "architecture",
+          "color": "#f97316"
+        },
         {
           "id": "provenance",
           "label": "provenance",
@@ -1312,9 +4068,9 @@
           "color": "#00d4ff"
         },
         {
-          "id": "trust",
-          "label": "trust",
-          "color": "#a855f7"
+          "id": "trust-boundary",
+          "label": "trust-boundary",
+          "color": "#eab308"
         }
       ],
       "blogEpisode": null,
@@ -1324,21 +4080,74 @@
       }
     },
     {
-      "date": "2026-06-07",
-      "title": "ADR-063 · The dreaming loop: self-curating typed memory",
-      "description": "The memory subsystem extracts typed facts from session transcripts once, at ingest, using a lightweight first-pass model. Review of the stored output revealed the problem concretely: a sample set of stored facts included bare…",
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Accepted",
+      "stableId": "2026-06-06-adr-062-deprecate-99-meta-as-live-retrieval-and-workflow-surface",
+      "date": "2026-06-06",
+      "title": "ADR-062 · Deprecate 99-Meta As Live Retrieval And Workflow Surface",
+      "description": "99-Meta was originally a vault-about-the-vault and automation workspace, but it now mixes several incompatible content classes:",
       "nodes": [
         {
-          "id": "adr-063",
-          "label": "ADR-063",
+          "id": "adr-062",
+          "label": "ADR-062",
           "group": "decision",
-          "color": "#eab308",
-          "retired": false
+          "color": "#22c55e"
         }
       ],
       "edges": [
         {
           "from": "adr-061",
+          "to": "adr-062"
+        }
+      ],
+      "tags": [
+        {
+          "id": "vault",
+          "label": "vault",
+          "color": "#ec4899"
+        },
+        {
+          "id": "retrieval-hygiene",
+          "label": "retrieval-hygiene",
+          "color": "#a855f7"
+        },
+        {
+          "id": "99-meta",
+          "label": "99-meta",
+          "color": "#ec4899"
+        },
+        {
+          "id": "indexing",
+          "label": "indexing",
+          "color": "#a855f7"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/062-deprecate-99-meta-as-live-retrieval-and-workflow-surface/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Proposed",
+      "stableId": "2026-06-07-adr-063-the-dreaming-loop-self-curating-typed-memory",
+      "date": "2026-06-07",
+      "title": "ADR-063 · Dreaming Enrich Re-Extraction — Hardened Two-Phase Memory Re-Mining with Supersede Gate",
+      "description": "Anthropic's \"dreaming\" (Claude Managed Agents) does two things: enrich (re-read transcripts to recover facts the original pass missed) and consolidate (merge dupes, drop stale). VW-480 covers consolidate; this ADR is the…",
+      "nodes": [
+        {
+          "id": "adr-063",
+          "label": "ADR-063",
+          "group": "decision",
+          "color": "#eab308"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-062",
           "to": "adr-063"
         }
       ],
@@ -1364,9 +4173,14 @@
           "color": "#ef4444"
         },
         {
-          "id": "typed-facts",
-          "label": "typed-facts",
-          "color": "#3b82f6"
+          "id": "supersede",
+          "label": "supersede",
+          "color": "#ef4444"
+        },
+        {
+          "id": "bitemporal",
+          "label": "bitemporal",
+          "color": "#22c55e"
         }
       ],
       "blogEpisode": null,
@@ -1376,21 +4190,170 @@
       }
     },
     {
+      "date": "2026-06-08",
+      "dateLabel": "1 May – 8 June 2026",
+      "kind": "story",
+      "title": "The great restructure and the measurement era",
+      "blogEpisode": "/writing/season-3-episode-10-the-great-restructure/",
+      "journalEpisode": "season-3-episode-10-the-great-restructure",
+      "journalLabel": "S3 · E10",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [
+        {
+          "href": "/adrs/030-repository-workspace/",
+          "label": "ADR-030 · decision context"
+        },
+        {
+          "href": "/adrs/054-dedicated-cpu-embedding/",
+          "label": "ADR-054 · decision context"
+        },
+        {
+          "href": "/adrs/053-observability-data-routing/",
+          "label": "ADR-053 · decision context"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "description": "The repository became a sixteen-package workspace while CI, memory evaluation and embedding contention were addressed. The chapter closes the season with clearer boundaries and a stronger decision trail."
+    },
+    {
       "date": "2026-06-10",
-      "title": "ADR-065 · Kafka consumer and producer durability contract",
-      "description": "An audit of Kafka producers and consumers across the platform uncovered 15 findings (8 high severity) sharing two root causes that silently lose events while offsets and watermarks advance:",
+      "dateLabel": "9–10 June 2026",
+      "kind": "story",
+      "title": "The night the fleet audited everything",
+      "blogEpisode": "/writing/season-4-episode-01-the-night-the-fleet-audited-everything/",
+      "journalEpisode": "season-4-episode-01-the-night-the-fleet-audited-everything",
+      "journalLabel": "S4 · E01",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [
+        {
+          "href": "/adrs/065-kafka-consumer-durability/",
+          "label": "ADR-065 · decision context"
+        },
+        {
+          "href": "/adrs/066-feature-flag-fail-closed/",
+          "label": "ADR-066 · decision context"
+        },
+        {
+          "href": "/adrs/070-config-keyed-clients/",
+          "label": "ADR-070 · decision context"
+        },
+        {
+          "href": "/adrs/071-graph-lifecycle/",
+          "label": "ADR-071 · decision context"
+        }
+      ],
       "nodes": [
         {
-          "id": "adr-065",
-          "label": "ADR-065",
+          "id": "audit-workflow",
+          "label": "Audit Workflow",
+          "group": "workflow",
+          "color": "#3b82f6"
+        }
+      ],
+      "edges": [],
+      "description": "A structured audit found defects across client isolation, Kafka durability, feature flags and graph handling. The work paused and resumed; findings still needed remediation and verification."
+    },
+    {
+      "date": "2026-06-10",
+      "dateLabel": "9–10 June 2026 · custody arc",
+      "kind": "story",
+      "title": "Git history for the agent’s context",
+      "blogEpisode": "/writing/season-4-episode-03-git-history-for-the-agents-brain/",
+      "journalEpisode": "season-4-episode-03-git-history-for-the-agents-brain",
+      "journalLabel": "S4 · E03",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [
+        {
+          "href": "/adrs/061-developer-agent-provenance/",
+          "label": "ADR-061 · decision context"
+        }
+      ],
+      "nodes": [
+        {
+          "id": "context-custody",
+          "label": "Context Custody",
+          "group": "workflow",
+          "color": "#3b82f6"
+        }
+      ],
+      "edges": [],
+      "description": "Vault and harness configuration gained versioning, recovery checks and clearer provenance. This describes the June custody model; the October operating model is recorded separately."
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Accepted",
+      "stableId": "2026-06-10-adr-064-vault-path-payload-contract",
+      "date": "2026-06-10",
+      "title": "ADR-064 · Vault Path & Payload Contract",
+      "description": "The vault indexing pipeline has two path namespaces that have repeatedly been confused (VW-504 was the first instance; the VW-673 audit found 20 recurrences — VW-681):",
+      "nodes": [
+        {
+          "id": "adr-064",
+          "label": "ADR-064",
           "group": "decision",
-          "color": "#22c55e",
-          "retired": false
+          "color": "#22c55e"
         }
       ],
       "edges": [
         {
           "from": "adr-063",
+          "to": "adr-064"
+        }
+      ],
+      "tags": [
+        {
+          "id": "vault-indexing",
+          "label": "vault-indexing",
+          "color": "#f97316"
+        },
+        {
+          "id": "qdrant",
+          "label": "qdrant",
+          "color": "#a855f7"
+        },
+        {
+          "id": "path-contract",
+          "label": "path-contract",
+          "color": "#ec4899"
+        },
+        {
+          "id": "exclusion-list",
+          "label": "exclusion-list",
+          "color": "#00d4ff"
+        },
+        {
+          "id": "watermark",
+          "label": "watermark",
+          "color": "#3b82f6"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/064-vault-path-and-payload-contract/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Accepted",
+      "stableId": "2026-06-10-adr-065-kafka-consumer-and-producer-durability-contract",
+      "date": "2026-06-10",
+      "title": "ADR-065 · Kafka Consumer & Producer Durability Contract",
+      "description": "The VW-673 audit confirmed 15 findings (8 high) sharing two root causes that silently lose events while offsets and watermarks advance:",
+      "nodes": [
+        {
+          "id": "adr-065",
+          "label": "ADR-065",
+          "group": "decision",
+          "color": "#22c55e"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-064",
           "to": "adr-065"
         }
       ],
@@ -1411,9 +4374,14 @@
           "color": "#22c55e"
         },
         {
-          "id": "reliability",
-          "label": "reliability",
-          "color": "#ec4899"
+          "id": "offset-commit",
+          "label": "offset-commit",
+          "color": "#22c55e"
+        },
+        {
+          "id": "delivery-callback",
+          "label": "delivery-callback",
+          "color": "#ef4444"
         }
       ],
       "blogEpisode": null,
@@ -1423,16 +4391,19 @@
       }
     },
     {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Accepted",
+      "stableId": "2026-06-10-adr-066-feature-flags-fail-closed-safe-by-default-for-llm-experiments",
       "date": "2026-06-10",
-      "title": "ADR-066 · Feature flags fail closed: safe-by-default for LLM experiments",
-      "description": "The feature-flag client controlled which capabilities were active in the pipeline — multi-hop reasoning, experimental rerankers, cost-intensive synthesis steps. When the flag service was reachable, flags behaved correctly. An…",
+      "title": "ADR-066 · Feature-Flag Fail-Closed Policy",
+      "description": "The Unleash-backed feature-flag client (rootweaver_capabilities.feature_flags) failed OPEN in two ways the VW-673 audit confirmed:",
       "nodes": [
         {
           "id": "adr-066",
           "label": "ADR-066",
           "group": "decision",
-          "color": "#22c55e",
-          "retired": false
+          "color": "#22c55e"
         }
       ],
       "edges": [
@@ -1448,19 +4419,14 @@
           "color": "#a855f7"
         },
         {
-          "id": "reliability",
-          "label": "reliability",
-          "color": "#ec4899"
+          "id": "unleash",
+          "label": "unleash",
+          "color": "#3b82f6"
         },
         {
           "id": "fail-closed",
           "label": "fail-closed",
           "color": "#f97316"
-        },
-        {
-          "id": "unleash",
-          "label": "unleash",
-          "color": "#3b82f6"
         }
       ],
       "blogEpisode": null,
@@ -1470,29 +4436,462 @@
       }
     },
     {
-      "date": "2026-06-12",
-      "title": "ADR-074 · Treating AI-agent spend as a metered resource",
-      "description": "Running two AI coding agents on flat-rate subscriptions sounds simple until you try to pace them. Neither vendor provides proactive in-session usage signals. Both agents can exhaust their quota in a single bursty evening…",
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Proposed",
+      "stableId": "2026-06-10-adr-067-dual-audience-http-api-contract-llm-first-conventions",
+      "date": "2026-06-10",
+      "title": "ADR-067 · Dual-Audience HTTP API Contract (LLM-First Conventions)",
+      "description": "The platform is about to grow new HTTP surfaces (memory API VW-695, diagnostics API VW-696, selective innovation endpoints) consumed by two audiences: human-facing clients (Rootweaver Console, scripts, curl) and LLM agents —…",
       "nodes": [
         {
-          "id": "adr-074",
-          "label": "ADR-074",
+          "id": "adr-067",
+          "label": "ADR-067",
           "group": "decision",
-          "color": "#22c55e",
-          "retired": false
+          "color": "#eab308"
         }
       ],
       "edges": [
         {
           "from": "adr-066",
+          "to": "adr-067"
+        }
+      ],
+      "tags": [
+        {
+          "id": "api-design",
+          "label": "api-design",
+          "color": "#22c55e"
+        },
+        {
+          "id": "rag-gateway",
+          "label": "rag-gateway",
+          "color": "#eab308"
+        },
+        {
+          "id": "llm-agents",
+          "label": "llm-agents",
+          "color": "#ef4444"
+        },
+        {
+          "id": "openapi",
+          "label": "openapi",
+          "color": "#a855f7"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/067-dual-audience-http-api-contract/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Proposed",
+      "stableId": "2026-06-10-adr-068-memory-api-in-rag-gateway-mcp-bridge-becomes-a-thin-proxy",
+      "date": "2026-06-10",
+      "title": "ADR-068 · Memory API in rag-gateway; mcp-bridge Becomes a Thin Proxy",
+      "description": "The typed memory layer — recall_decisions, find_problems, recall_session, recall_state_at, recall_origin, trace_decision_chain (Postgres + FalkorDB) and save/recall_agent_context (Qdrant) — is implemented inside mcp-bridge…",
+      "nodes": [
+        {
+          "id": "adr-068",
+          "label": "ADR-068",
+          "group": "decision",
+          "color": "#eab308"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-067",
+          "to": "adr-068"
+        }
+      ],
+      "tags": [
+        {
+          "id": "memory",
+          "label": "memory",
+          "color": "#22c55e"
+        },
+        {
+          "id": "rag-gateway",
+          "label": "rag-gateway",
+          "color": "#eab308"
+        },
+        {
+          "id": "mcp-bridge",
+          "label": "mcp-bridge",
+          "color": "#3b82f6"
+        },
+        {
+          "id": "api-design",
+          "label": "api-design",
+          "color": "#22c55e"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/068-memory-api-gateway-router-mcp-thin-proxy/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Proposed",
+      "stableId": "2026-06-10-adr-069-llm-facing-diagnostics-api-curated-read-only-sre-brain",
+      "date": "2026-06-10",
+      "title": "ADR-069 · LLM-Facing Diagnostics API (Curated, Read-Only, sre-brain)",
+      "description": "The platform has rich human-facing observability (Grafana, Prometheus :30090, Alertmanager :30903, VictoriaLogs, Kibana) but no agent-facing diagnostic surface: sre-event-collector only ingests webhooks; sre-brain exposes…",
+      "nodes": [
+        {
+          "id": "adr-069",
+          "label": "ADR-069",
+          "group": "decision",
+          "color": "#eab308"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-068",
+          "to": "adr-069"
+        }
+      ],
+      "tags": [
+        {
+          "id": "diagnostics",
+          "label": "diagnostics",
+          "color": "#3b82f6"
+        },
+        {
+          "id": "sre",
+          "label": "sre",
+          "color": "#ef4444"
+        },
+        {
+          "id": "llm-agents",
+          "label": "llm-agents",
+          "color": "#ef4444"
+        },
+        {
+          "id": "sre-brain",
+          "label": "sre-brain",
+          "color": "#eab308"
+        },
+        {
+          "id": "observability",
+          "label": "observability",
+          "color": "#22c55e"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/069-llm-facing-diagnostics-api/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Accepted",
+      "stableId": "2026-06-10-adr-070-share-clients-by-configuration-without-mutating-other-callers",
+      "date": "2026-06-10",
+      "title": "ADR-070 · Config-Keyed Client Singletons",
+      "description": "rootweaver-core/utils/clients.py exposes process-wide singleton clients (QdrantVectorClient, OllamaLLMClient, VLLMClient) behind feature-flagged __new__ overrides. The audit confirmed two defects in the single-instance form:",
+      "nodes": [
+        {
+          "id": "adr-070",
+          "label": "ADR-070",
+          "group": "decision",
+          "color": "#22c55e"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-069",
+          "to": "adr-070"
+        }
+      ],
+      "tags": [
+        {
+          "id": "rootweaver-core",
+          "label": "rootweaver-core",
+          "color": "#ec4899"
+        },
+        {
+          "id": "singletons",
+          "label": "singletons",
+          "color": "#a855f7"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/070-config-keyed-clients/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Accepted",
+      "stableId": "2026-06-10-adr-071-give-graph-nodes-a-lifecycle-and-keep-rebuilds-off-the-event-loop",
+      "date": "2026-06-10",
+      "title": "ADR-071 · Graph Node Lifecycle & Event-Loop Offloading Contract",
+      "description": "The PDG/code-knowledge graph layer served wrong or stale answers through four independent mechanisms, each silent:",
+      "nodes": [
+        {
+          "id": "adr-071",
+          "label": "ADR-071",
+          "group": "decision",
+          "color": "#22c55e"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-070",
+          "to": "adr-071"
+        }
+      ],
+      "tags": [
+        {
+          "id": "pdg",
+          "label": "pdg",
+          "color": "#f97316"
+        },
+        {
+          "id": "falkordb",
+          "label": "falkordb",
+          "color": "#f97316"
+        },
+        {
+          "id": "mcp-bridge",
+          "label": "mcp-bridge",
+          "color": "#3b82f6"
+        },
+        {
+          "id": "rootweaver-graph",
+          "label": "rootweaver-graph",
+          "color": "#f97316"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/071-graph-lifecycle/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "date": "2026-06-11",
+      "dateLabel": "10–11 June 2026 · audit aftermath",
+      "kind": "story",
+      "title": "Proving the fixes were real",
+      "blogEpisode": "/writing/season-4-episode-02-the-morning-after-proving-the-fixes-were-real/",
+      "journalEpisode": "season-4-episode-02-the-morning-after-proving-the-fixes-were-real",
+      "journalLabel": "S4 · E02",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [
+        {
+          "href": "/adrs/065-kafka-consumer-durability/",
+          "label": "ADR-065 · decision context"
+        },
+        {
+          "href": "/adrs/070-config-keyed-clients/",
+          "label": "ADR-070 · decision context"
+        },
+        {
+          "href": "/adrs/071-graph-lifecycle/",
+          "label": "ADR-071 · decision context"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "description": "Live probes and benchmark reruns checked the audit fixes. Missing raw benchmark outputs and a misleading judge comparison exposed why a result needs replayable evidence."
+    },
+    {
+      "date": "2026-06-11",
+      "dateLabel": "11 June 2026 · console beginnings",
+      "kind": "story",
+      "title": "Building the cockpit",
+      "blogEpisode": "/writing/season-4-episode-04-building-the-cockpit/",
+      "journalEpisode": "season-4-episode-04-building-the-cockpit",
+      "journalLabel": "S4 · E04",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [],
+      "nodes": [
+        {
+          "id": "console",
+          "label": "Rootweaver Console",
+          "group": "workflow",
+          "color": "#3b82f6"
+        }
+      ],
+      "edges": [],
+      "description": "Operational noise, ingestion work and metadata repairs made a shared review surface necessary. The first Console combined a review tracker, canvas and visible provenance."
+    },
+    {
+      "date": "2026-06-12",
+      "dateLabel": "11–12 June 2026 · opening of a longer arc",
+      "kind": "story",
+      "title": "Giving the Codex lane its own guardrails",
+      "blogEpisode": "/writing/season-4-episode-06-the-codex-lane/",
+      "journalEpisode": "season-4-episode-06-the-codex-lane",
+      "journalLabel": "S4 · E06",
+      "evidenceLabel": "Backfilled through 14 June only. The linked episode also contains later work.",
+      "relatedLinks": [
+        {
+          "href": "/adrs/074-agent-budget-governance/",
+          "label": "ADR-074 · decision context"
+        }
+      ],
+      "nodes": [
+        {
+          "id": "codex-lane",
+          "label": "Codex Lane",
+          "group": "workflow",
+          "color": "#3b82f6"
+        }
+      ],
+      "edges": [],
+      "description": "Separate configuration, valid hook responses and visible usage were the first steps. This milestone covers the opening work only; the published episode continues through 18 June, including the later handoff design."
+    },
+    {
+      "date": "2026-06-12",
+      "dateLabel": "12 June 2026 · opening of the budget arc",
+      "kind": "story",
+      "title": "Choosing an authoritative usage meter",
+      "blogEpisode": "/writing/season-4-episode-07-the-proxy-that-ran-hot/",
+      "journalEpisode": "season-4-episode-07-the-proxy-that-ran-hot",
+      "journalLabel": "S4 · E07",
+      "evidenceLabel": "Backfilled through 14 June only. The linked episode also contains later work.",
+      "relatedLinks": [
+        {
+          "href": "/adrs/074-agent-budget-governance/",
+          "label": "ADR-074 · decision context"
+        }
+      ],
+      "nodes": [
+        {
+          "id": "usage-guard",
+          "label": "Usage Guard",
+          "group": "monitoring",
+          "color": "#ec4899"
+        }
+      ],
+      "edges": [],
+      "description": "Codex’s guard read server-provided rate-limit windows, while the Claude guard still estimated usage from local transcripts. The later recalibration and deduplication work is beyond this 14 June backfill."
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Accepted",
+      "stableId": "2026-06-12-adr-072-launch-agent-sessions-through-a-bounded-console-runner",
+      "date": "2026-06-12",
+      "title": "ADR-072 · Agent-Ops Console Module — Desktop Session Runner with Template-Gated Launch",
+      "description": "Launching an AI coding session from a web page is remote code execution on the desktop by construction. The VW-725 brainstorm locked three constraints this design must honour:",
+      "nodes": [
+        {
+          "id": "adr-072",
+          "label": "ADR-072",
+          "group": "decision",
+          "color": "#22c55e"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-071",
+          "to": "adr-072"
+        }
+      ],
+      "tags": [
+        {
+          "id": "agent-ops",
+          "label": "agent-ops",
+          "color": "#ec4899"
+        },
+        {
+          "id": "rootweaver-console",
+          "label": "rootweaver-console",
+          "color": "#3b82f6"
+        },
+        {
+          "id": "security",
+          "label": "security",
+          "color": "#a855f7"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/072-console-session-runner/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Accepted",
+      "stableId": "2026-06-12-adr-073-interactive-agent-sessions-with-explicit-human-approvals",
+      "date": "2026-06-12",
+      "title": "ADR-073 · Interactive Agent Sessions — Audited Free-Form Supersedes Template-Only",
+      "description": "ADR-072 gated launches to a template allowlist precisely because a free-form web prompt is an injection-to-RCE funnel. The cockpit spec (approved same day) requires interactive sessions: follow-up messages typed from the…",
+      "nodes": [
+        {
+          "id": "adr-073",
+          "label": "ADR-073",
+          "group": "decision",
+          "color": "#22c55e"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-072",
+          "to": "adr-073"
+        }
+      ],
+      "tags": [
+        {
+          "id": "agent-ops",
+          "label": "agent-ops",
+          "color": "#ec4899"
+        },
+        {
+          "id": "security",
+          "label": "security",
+          "color": "#a855f7"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/073-interactive-agent-sessions/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Accepted",
+      "stableId": "2026-06-12-adr-074-treating-ai-agent-spend-as-a-metered-resource",
+      "date": "2026-06-12",
+      "title": "ADR-074 · AI Agent Subscription Budget Governance (Claude + Codex)",
+      "description": "Ryan runs two AI coding agents on flat-rate subscriptions:",
+      "nodes": [
+        {
+          "id": "adr-074",
+          "label": "ADR-074",
+          "group": "decision",
+          "color": "#22c55e"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-073",
           "to": "adr-074"
         }
       ],
       "tags": [
         {
-          "id": "budget",
-          "label": "budget",
-          "color": "#00d4ff"
+          "id": "agent-ops",
+          "label": "agent-ops",
+          "color": "#ec4899"
         },
         {
           "id": "observability",
@@ -1500,19 +4899,19 @@
           "color": "#22c55e"
         },
         {
-          "id": "agent-ops",
-          "label": "agent-ops",
-          "color": "#ec4899"
-        },
-        {
-          "id": "governance",
-          "label": "governance",
-          "color": "#ec4899"
-        },
-        {
-          "id": "cost",
-          "label": "cost",
+          "id": "budget",
+          "label": "budget",
           "color": "#00d4ff"
+        },
+        {
+          "id": "claude-code",
+          "label": "claude-code",
+          "color": "#3b82f6"
+        },
+        {
+          "id": "codex",
+          "label": "codex",
+          "color": "#f97316"
         }
       ],
       "blogEpisode": null,
@@ -1522,21 +4921,195 @@
       }
     },
     {
-      "date": "2026-06-15",
-      "title": "ADR-077 · Inter-hop context compaction in multi-hop retrieval",
-      "description": "MultiHopRAG builds up its reasoning context by simple concatenation across hops with no pruning. With up to five hops and fact blocks of 400–800 characters each, the accumulated context easily reaches 4–8K characters before…",
+      "date": "2026-06-13",
+      "dateLabel": "12–13 June 2026",
+      "kind": "story",
+      "title": "The cockpit becomes an instrument panel",
+      "blogEpisode": "/writing/season-4-episode-05-the-instrument-panel/",
+      "journalEpisode": "season-4-episode-05-the-instrument-panel",
+      "journalLabel": "S4 · E05",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [
+        {
+          "href": "/adrs/072-console-session-runner/",
+          "label": "ADR-072 · decision context"
+        },
+        {
+          "href": "/adrs/073-interactive-agent-sessions/",
+          "label": "ADR-073 · decision context"
+        }
+      ],
       "nodes": [
         {
-          "id": "adr-077",
-          "label": "ADR-077",
+          "id": "interactive-runner",
+          "label": "Interactive Runner",
+          "group": "workflow",
+          "color": "#3b82f6"
+        }
+      ],
+      "edges": [],
+      "description": "Live vault views, voice capture, interactive sessions and explicit approvals joined into an idea-to-session-to-review loop. Terminal access in this period was read-only."
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Proposed",
+      "stableId": "2026-06-13-adr-075-workload-level-provenance-for-autonomous-agent-commits",
+      "date": "2026-06-13",
+      "title": "ADR-075 · Workload-Level Provenance for Autonomous Agent Commits",
+      "description": "",
+      "nodes": [
+        {
+          "id": "adr-075",
+          "label": "ADR-075",
           "group": "decision",
-          "color": "#22c55e",
-          "retired": false
+          "color": "#eab308"
         }
       ],
       "edges": [
         {
           "from": "adr-074",
+          "to": "adr-075"
+        }
+      ],
+      "tags": [
+        {
+          "id": "architecture",
+          "label": "architecture",
+          "color": "#f97316"
+        },
+        {
+          "id": "provenance",
+          "label": "provenance",
+          "color": "#22c55e"
+        },
+        {
+          "id": "attribution",
+          "label": "attribution",
+          "color": "#eab308"
+        },
+        {
+          "id": "autonomous-agent",
+          "label": "autonomous-agent",
+          "color": "#a855f7"
+        },
+        {
+          "id": "commit-trailers",
+          "label": "commit-trailers",
+          "color": "#ef4444"
+        },
+        {
+          "id": "workload",
+          "label": "workload",
+          "color": "#eab308"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/075-workload-level-provenance/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "date": "2026-06-14",
+      "kind": "story",
+      "title": "The machine had one memory budget",
+      "description": "Several agent-assisted jobs overwhelmed the MacBook. The incident led to a resource guard and a clearer warning when another job would exceed the machine’s capacity. This is the June engineering event told in Season 4, Episode 9; the episode shipped in October.",
+      "nodes": [
+        {
+          "id": "resource-guard",
+          "label": "Resource Guard",
+          "group": "workflow",
+          "color": "#3b82f6"
+        }
+      ],
+      "edges": [],
+      "blogEpisode": "/writing/season-4-episode-09-the-night-the-mac-died/",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "dateLabel": "14 June 2026",
+      "journalEpisode": "season-4-episode-09-the-night-the-mac-died",
+      "journalLabel": "S4 · E09",
+      "relatedLinks": []
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Accepted",
+      "stableId": "2026-06-14-adr-076-radar-mac-youtube-transcript-extraction-lane-off-cluster-rationed-byo-data",
+      "date": "2026-06-14",
+      "title": "ADR-076 · Radar→Mac YouTube Transcript-Extraction Lane (off-cluster, rationed, BYO-data)",
+      "description": "",
+      "nodes": [
+        {
+          "id": "adr-076",
+          "label": "ADR-076",
+          "group": "decision",
+          "color": "#22c55e"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-075",
+          "to": "adr-076"
+        }
+      ],
+      "tags": [
+        {
+          "id": "architecture",
+          "label": "architecture",
+          "color": "#f97316"
+        },
+        {
+          "id": "knowledge-management",
+          "label": "knowledge-management",
+          "color": "#ec4899"
+        },
+        {
+          "id": "radar",
+          "label": "radar",
+          "color": "#ef4444"
+        },
+        {
+          "id": "youtube",
+          "label": "youtube",
+          "color": "#f97316"
+        },
+        {
+          "id": "transcripts",
+          "label": "transcripts",
+          "color": "#00d4ff"
+        },
+        {
+          "id": "yt-ingest",
+          "label": "yt-ingest",
+          "color": "#ef4444"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/076-radar-mac-transcript-extraction-lane/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Accepted",
+      "stableId": "2026-06-15-adr-077-inter-hop-context-compaction-in-multi-hop-retrieval",
+      "date": "2026-06-15",
+      "title": "ADR-077 · Inter-Hop Context Compaction for Multi-Hop Reasoning",
+      "description": "MultiHopRAG.multi_hop_search accumulates reasoning context by simple concatenation across hops:",
+      "nodes": [
+        {
+          "id": "adr-077",
+          "label": "ADR-077",
+          "group": "decision",
+          "color": "#22c55e"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-076",
           "to": "adr-077"
         }
       ],
@@ -1547,11 +5120,6 @@
           "color": "#00d4ff"
         },
         {
-          "id": "rag",
-          "label": "rag",
-          "color": "#a855f7"
-        },
-        {
           "id": "compaction",
           "label": "compaction",
           "color": "#00d4ff"
@@ -1560,11 +5128,6 @@
           "id": "context-management",
           "label": "context-management",
           "color": "#22c55e"
-        },
-        {
-          "id": "retrieval",
-          "label": "retrieval",
-          "color": "#3b82f6"
         }
       ],
       "blogEpisode": null,
@@ -1574,51 +5137,73 @@
       }
     },
     {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Accepted",
+      "stableId": "2026-06-15-adr-078-writable-console-terminal-socket-bounded-ttyd-supersedes-read-only-mirror-phase-a",
       "date": "2026-06-15",
-      "title": "ADR-079 · Claude drives Codex: autonomous dual-agent coding handoff",
-      "description": "Measured usage showed that coding tasks — implementation, debugging, refactoring — accounted for roughly 80% of weighted token consumption. A separately-held Codex subscription was sitting at around 30% utilisation. The…",
+      "title": "ADR-078 · Writable Console Terminal — Socket-Bounded ttyd Supersedes Read-Only Mirror (Phase A)",
+      "description": "ADR-072 (Alternatives, line 108) explicitly rejected \"Web SSH / terminal in the console\" as \"worst possible injection surface\" — a sound call for a TCP-exposed, basic-auth-credentialled, full-shell terminal with no audit…",
       "nodes": [
         {
-          "id": "adr-079",
-          "label": "ADR-079",
+          "id": "adr-078",
+          "label": "ADR-078",
           "group": "decision",
-          "color": "#22c55e",
-          "retired": false
+          "color": "#22c55e"
         }
       ],
       "edges": [
         {
           "from": "adr-077",
-          "to": "adr-079"
+          "to": "adr-078"
         }
       ],
       "tags": [
         {
-          "id": "multi-agent",
-          "label": "multi-agent",
-          "color": "#22c55e"
-        },
-        {
-          "id": "orchestration",
-          "label": "orchestration",
-          "color": "#22c55e"
-        },
-        {
-          "id": "budget",
-          "label": "budget",
-          "color": "#00d4ff"
-        },
-        {
-          "id": "coding",
-          "label": "coding",
+          "id": "agent-ops",
+          "label": "agent-ops",
           "color": "#ec4899"
         },
         {
-          "id": "autonomy",
-          "label": "autonomy",
+          "id": "rootweaver-console",
+          "label": "rootweaver-console",
           "color": "#3b82f6"
+        },
+        {
+          "id": "security",
+          "label": "security",
+          "color": "#a855f7"
         }
       ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/078-writable-console-terminal-socket-bounded-ttyd/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Accepted",
+      "stableId": "2026-06-15-adr-079-claude-drives-codex-autonomous-dual-agent-coding-handoff",
+      "date": "2026-06-15",
+      "title": "ADR-079 · Claude-drives-Codex Autonomous Handoff (Dual-Agent Coding Routing)",
+      "description": "Downgrading Claude Max 20x → Max 5x (VW-829) drops the weekly weighted cap ~4× (to ~145M). Measured Claude usage is ~81% coding by weighted-token cost (~300M weighted/wk non-Fable, rising), so coding alone overruns Max 5x by…",
+      "nodes": [
+        {
+          "id": "adr-079",
+          "label": "ADR-079",
+          "group": "decision",
+          "color": "#22c55e"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-078",
+          "to": "adr-079"
+        }
+      ],
+      "tags": [],
       "blogEpisode": null,
       "link": {
         "href": "/adrs/079-claude-drives-codex/",
@@ -1626,51 +5211,57 @@
       }
     },
     {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Accepted",
+      "stableId": "2026-06-16-adr-080-cluster-wide-namespace-taxonomy-and-rootweaver-decomposition",
       "date": "2026-06-16",
-      "title": "ADR-081 · Evaluation-harness governance: immutable snapshots and PR-gated regressions",
-      "description": "Six evaluation harnesses accumulated organically with no shared standard for structure, metadata, versioning, judge calibration, lifecycle, or documentation. A discovery pass surfaced three failure modes that are worse than…",
+      "title": "ADR-080 · Cluster-Wide Namespace Taxonomy and rootweaver Decomposition",
+      "description": "The cluster has ~32 namespaces. Infrastructure is already split per-function (kafka, vllm, monitoring, langfuse, unleash, netbox, minio, matrix, searxng, forgejo, harbor-system, …). The exception is the application plane: a…",
       "nodes": [
         {
-          "id": "adr-081",
-          "label": "ADR-081",
+          "id": "adr-080",
+          "label": "ADR-080",
           "group": "decision",
-          "color": "#22c55e",
-          "retired": false
+          "color": "#22c55e"
         }
       ],
       "edges": [
         {
           "from": "adr-079",
+          "to": "adr-080"
+        }
+      ],
+      "tags": [],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/080-cluster-namespace-taxonomy-and-rootweaver-decomposition/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Accepted",
+      "stableId": "2026-06-16-adr-081-evaluation-harness-governance-immutable-snapshots-and-pr-gated-regressions",
+      "date": "2026-06-16",
+      "title": "ADR-081 · Evaluation Harness Governance Framework",
+      "description": "The platform accumulated six evaluation harnesses organically, with no shared standard for structure, metadata, versioning, judge calibration, lifecycle, or per-harness documentation. Discovery (VW-864) found:",
+      "nodes": [
+        {
+          "id": "adr-081",
+          "label": "ADR-081",
+          "group": "decision",
+          "color": "#22c55e"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-080",
           "to": "adr-081"
         }
       ],
-      "tags": [
-        {
-          "id": "evaluation",
-          "label": "evaluation",
-          "color": "#3b82f6"
-        },
-        {
-          "id": "benchmarking",
-          "label": "benchmarking",
-          "color": "#00d4ff"
-        },
-        {
-          "id": "governance",
-          "label": "governance",
-          "color": "#ec4899"
-        },
-        {
-          "id": "llm-judge",
-          "label": "llm-judge",
-          "color": "#eab308"
-        },
-        {
-          "id": "ci",
-          "label": "ci",
-          "color": "#ef4444"
-        }
-      ],
+      "tags": [],
       "blogEpisode": null,
       "link": {
         "href": "/adrs/081-eval-harness-governance/",
@@ -1678,16 +5269,19 @@
       }
     },
     {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Accepted",
+      "stableId": "2026-06-18-adr-082-vault-ingest-lanes-and-lane-aware-retrieval",
       "date": "2026-06-18",
-      "title": "ADR-082 · Vault ingest lanes and lane-aware retrieval",
-      "description": "A recurrence of embedding queue lag exposed a deeper problem: the hot embedding path was not a clean stream of vault knowledge. It was a mixed filesystem event stream.",
+      "title": "ADR-082 · Vault Ingest Lanes and Lane-Aware Retrieval",
+      "description": "VW-885 exposed a recurring problem in the vault embedding pipeline: queue lag was visible as Mini TEI timeouts, but the input stream was not a clean representation of high-value vault work. The hot embedding path mixed…",
       "nodes": [
         {
           "id": "adr-082",
           "label": "ADR-082",
           "group": "decision",
-          "color": "#22c55e",
-          "retired": false
+          "color": "#22c55e"
         }
       ],
       "edges": [
@@ -1697,6 +5291,11 @@
         }
       ],
       "tags": [
+        {
+          "id": "vault-indexing",
+          "label": "vault-indexing",
+          "color": "#f97316"
+        },
         {
           "id": "kafka",
           "label": "kafka",
@@ -1713,13 +5312,13 @@
           "color": "#3b82f6"
         },
         {
-          "id": "vault-indexing",
-          "label": "vault-indexing",
-          "color": "#f97316"
-        },
-        {
           "id": "freshness",
           "label": "freshness",
+          "color": "#00d4ff"
+        },
+        {
+          "id": "lane-routing",
+          "label": "lane-routing",
           "color": "#00d4ff"
         }
       ],
@@ -1730,39 +5329,215 @@
       }
     },
     {
-      "date": "2026-06-28",
-      "title": "ADR-088 · Self-healing SRE: a six-rung LLM autonomy ladder",
-      "description": "The platform's SRE brain currently operates at what I'm calling rung 2 of an autonomy ladder: it consumes alert events from a message queue, collects diagnostic context (pod state, logs, metrics), invokes an LLM triage engine,…",
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Accepted",
+      "stableId": "2026-06-19-adr-083-sever-the-neural-vault-import-blind-spot-vs-workspace-ify-it",
+      "date": "2026-06-19",
+      "title": "ADR-083 · Sever the neural-vault Import Blind Spot (vs Workspace-ify It)",
+      "description": "import-linter (.importlinter) governs only the packages/* uv-workspace members (per ADR-030 *(reference outside this archive)*). The legacy flat module directory neural-vault/ is not a workspace package — it has no…",
       "nodes": [
         {
-          "id": "adr-088",
-          "label": "ADR-088",
+          "id": "adr-083",
+          "label": "ADR-083",
           "group": "decision",
-          "color": "#22c55e",
-          "retired": false
+          "color": "#22c55e"
         }
       ],
       "edges": [
         {
           "from": "adr-082",
-          "to": "adr-088"
+          "to": "adr-083"
+        }
+      ],
+      "tags": [],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/083-sever-neural-vault-import-blind-spot/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Accepted",
+      "stableId": "2026-06-21-adr-084-data-driven-ci-cd-engineering-measurement-pipeline-optimization-and-llm-channel-contracts",
+      "date": "2026-06-21",
+      "title": "ADR-084 · Data-Driven CI/CD Engineering: Measurement, Pipeline Optimization, and LLM-Channel Contracts",
+      "description": "### The Reactive Problem",
+      "nodes": [
+        {
+          "id": "adr-084",
+          "label": "ADR-084",
+          "group": "decision",
+          "color": "#22c55e"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-083",
+          "to": "adr-084"
         }
       ],
       "tags": [
         {
-          "id": "sre",
-          "label": "sre",
+          "id": "ci-cd",
+          "label": "ci-cd",
+          "color": "#a855f7"
+        },
+        {
+          "id": "dora",
+          "label": "dora",
+          "color": "#ec4899"
+        },
+        {
+          "id": "metrics",
+          "label": "metrics",
+          "color": "#f97316"
+        },
+        {
+          "id": "opa",
+          "label": "opa",
+          "color": "#a855f7"
+        },
+        {
+          "id": "llm-agents",
+          "label": "llm-agents",
           "color": "#ef4444"
         },
         {
-          "id": "autonomy",
-          "label": "autonomy",
+          "id": "pipeline",
+          "label": "pipeline",
+          "color": "#ec4899"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/084-data-driven-cicd-engineering-measurement-pipeline-llm-contracts/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Accepted",
+      "stableId": "2026-06-26-adr-085-self-host-the-spend-tracker-off-cloud-private-forgejo-k8s-secrets-code-only-repo",
+      "date": "2026-06-26",
+      "title": "ADR-085 · Self-Host the spend-tracker Off-Cloud: Private Forgejo, k8s Secrets, Code-Only Repo",
+      "description": "The spend-tracker is a personal \"safe to spend today\" budget companion: it reads the live Monzo balance + Flex + month-to-date spend, computes a daily allowance to payday, and delivers it over WhatsApp (the mautrix-whatsapp…",
+      "nodes": [
+        {
+          "id": "adr-085",
+          "label": "ADR-085",
+          "group": "decision",
+          "color": "#22c55e"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-084",
+          "to": "adr-085"
+        }
+      ],
+      "tags": [
+        {
+          "id": "spend-tracker",
+          "label": "spend-tracker",
+          "color": "#22c55e"
+        },
+        {
+          "id": "personal-finance",
+          "label": "personal-finance",
+          "color": "#00d4ff"
+        },
+        {
+          "id": "forgejo",
+          "label": "forgejo",
           "color": "#3b82f6"
         },
         {
-          "id": "safety",
-          "label": "safety",
-          "color": "#ec4899"
+          "id": "self-hosting",
+          "label": "self-hosting",
+          "color": "#22c55e"
+        },
+        {
+          "id": "data-privacy",
+          "label": "data-privacy",
+          "color": "#00d4ff"
+        },
+        {
+          "id": "secrets-management",
+          "label": "secrets-management",
+          "color": "#00d4ff"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/085-self-host-spend-tracker-off-cloud/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Accepted",
+      "stableId": "2026-06-26-adr-086-gpu-webgl-graph-lens-over-falkordb-rootweaver-console-graph-tab",
+      "date": "2026-06-26",
+      "title": "ADR-086 · GPU/WebGL Graph Lens over FalkorDB (rootweaver-console Graph Tab)",
+      "description": "Obsidian's built-in graph view is a single-threaded JavaScript force-simulation. At ~17k vault nodes (Ryan's vault as of June 2026, tracked in VW-1015) rendering becomes sluggish and navigation stalls. The ceiling is roughly…",
+      "nodes": [
+        {
+          "id": "adr-086",
+          "label": "ADR-086",
+          "group": "decision",
+          "color": "#22c55e"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-085",
+          "to": "adr-086"
+        }
+      ],
+      "tags": [],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/086-gpu-webgl-graph-lens-falkordb/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Accepted",
+      "stableId": "2026-05-21-adr-047-llm-content-trust-boundary-four-layer-defence-with-end-to-end-provenance",
+      "date": "2026-06-27",
+      "title": "ADR-047 · LLM Content Trust Boundary — Four-Layer Defence with End-to-End Provenance",
+      "description": "",
+      "nodes": [
+        {
+          "id": "adr-047",
+          "label": "ADR-047",
+          "group": "decision",
+          "color": "#22c55e"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-086",
+          "to": "adr-047"
+        }
+      ],
+      "tags": [
+        {
+          "id": "architecture",
+          "label": "architecture",
+          "color": "#f97316"
+        },
+        {
+          "id": "security",
+          "label": "security",
+          "color": "#a855f7"
         },
         {
           "id": "llm",
@@ -1770,16 +5545,189 @@
           "color": "#00d4ff"
         },
         {
-          "id": "self-healing",
-          "label": "self-healing",
+          "id": "prompt-injection",
+          "label": "prompt-injection",
+          "color": "#ef4444"
+        },
+        {
+          "id": "trust-boundary",
+          "label": "trust-boundary",
+          "color": "#eab308"
+        },
+        {
+          "id": "provenance",
+          "label": "provenance",
           "color": "#22c55e"
         }
       ],
       "blogEpisode": null,
       "link": {
+        "href": "/adrs/047-llm-content-trust-boundary/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Accepted",
+      "stableId": "2026-06-27-adr-087-severity-routed-discord-alerting-via-self-built-masgustavos-forwarder",
+      "date": "2026-06-27",
+      "title": "ADR-087 · Severity-Routed Discord Alerting via Self-Built masgustavos Forwarder",
+      "description": "Alertmanager (monitoring ns, NodePort 30903) delivers alerts to Discord (\"rduffy labs\" guild 391499950732607489). Previously all severities — critical, warning, info — were forwarded by benjojo/alertmanager-discord:latest into…",
+      "nodes": [
+        {
+          "id": "adr-087",
+          "label": "ADR-087",
+          "group": "decision",
+          "color": "#22c55e"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-047",
+          "to": "adr-087"
+        }
+      ],
+      "tags": [
+        {
+          "id": "alerting",
+          "label": "alerting",
+          "color": "#ef4444"
+        },
+        {
+          "id": "observability",
+          "label": "observability",
+          "color": "#22c55e"
+        },
+        {
+          "id": "discord",
+          "label": "discord",
+          "color": "#3b82f6"
+        },
+        {
+          "id": "gitops",
+          "label": "gitops",
+          "color": "#a855f7"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/087-severity-routed-discord-alerting/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "kind": "decision",
+      "recordKind": "adr",
+      "decisionStatus": "Accepted",
+      "stableId": "2026-06-28-adr-088-self-healing-sre-a-six-rung-llm-autonomy-ladder",
+      "date": "2026-06-28",
+      "title": "ADR-088 · Self-Healing SRE — LLM Autonomy Ladder",
+      "description": "sre-brain currently operates at rung 2 of the autonomy ladder: it consumes Kafka alerts, collects diagnostic context (Kubernetes pod state, Loki logs), invokes an LLM triage engine, and emits a TriageResult{severity,…",
+      "nodes": [
+        {
+          "id": "adr-088",
+          "label": "ADR-088",
+          "group": "decision",
+          "color": "#22c55e"
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-087",
+          "to": "adr-088"
+        }
+      ],
+      "tags": [],
+      "blogEpisode": null,
+      "link": {
         "href": "/adrs/088-self-healing-sre-autonomy-ladder/",
         "label": "Read decision"
       }
+    },
+    {
+      "date": "2026-10-14",
+      "kind": "checkpoint",
+      "title": "Where the platform stands",
+      "description": "A dated check of code, declared configuration and running workloads: source-graph queries now use PostgreSQL; retrieval uses configured external embeddings; the cluster spans four nodes. Native coding tools, scoped memory and research tools sit around those paths. This checkpoint records what was observed—it is not the date every component shipped.",
+      "nodes": [
+        {
+          "id": "source-graph-postgres",
+          "label": "PostgreSQL Source Graph",
+          "group": "database",
+          "color": "#22c55e"
+        },
+        {
+          "id": "external-embeddings",
+          "label": "External Embeddings",
+          "group": "core",
+          "color": "#a855f7"
+        },
+        {
+          "id": "litellm",
+          "label": "LiteLLM",
+          "group": "core",
+          "color": "#a855f7"
+        },
+        {
+          "id": "vikunja",
+          "label": "Vikunja",
+          "group": "workflow",
+          "color": "#3b82f6"
+        },
+        {
+          "id": "jupyterlab",
+          "label": "JupyterLab",
+          "group": "workflow",
+          "color": "#3b82f6"
+        },
+        {
+          "id": "mlflow",
+          "label": "MLflow",
+          "group": "workflow",
+          "color": "#3b82f6"
+        },
+        {
+          "id": "langfuse",
+          "label": "Langfuse",
+          "group": "monitoring",
+          "color": "#ec4899"
+        }
+      ],
+      "edges": [
+        {
+          "from": "pdg",
+          "to": "source-graph-postgres"
+        },
+        {
+          "from": "retriever",
+          "to": "external-embeddings"
+        },
+        {
+          "from": "rag-gateway",
+          "to": "litellm"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/rootweaver/",
+        "label": "Explore the current architecture"
+      },
+      "relatedLinks": [
+        {
+          "href": "/adrs/020-codegraph-platform/",
+          "label": "Source graph · decision and later context"
+        },
+        {
+          "href": "/adrs/029-keda-gpu-swap-controller/",
+          "label": "GPU scheduling · what changed"
+        },
+        {
+          "href": "/adrs/060-heterogeneous-multi-node-cluster/",
+          "label": "Cluster growth · decision and later context"
+        }
+      ],
+      "evidenceLabel": "Architecture checked 14 October · selected paths, not a full health check"
     }
   ]
 }

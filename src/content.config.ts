@@ -45,15 +45,22 @@ const writing = defineCollection({
     .passthrough(),
 });
 
-// Curated ADRs synced from the platform repo (public: true only)
+// Reviewed source archive and separately identified historical design notes.
 const adrs = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/adrs" }),
   schema: z.object({
     id: z.number(),
     title: z.string(),
-    status: z.enum(["accepted", "superseded", "proposed", "deprecated"]),
+    status: z.enum(["accepted", "superseded", "proposed", "deprecated", "historical", "withdrawn"]),
+    recordedStatus: z.string().optional(),
     date: z.coerce.date(),
     tags: z.array(z.string()).default([]),
+    sourceKind: z.enum(["journal-summary", "historical-note", "source-record", "legacy-record"]).optional(),
+    dateLabel: z.string().optional(),
+    datePrecision: z.enum(["day", "month"]).default("day"),
+    proposedDate: z.coerce.date().optional(),
+    journeyId: z.string().optional(),
+    noteLabel: z.string().optional(),
     supersedes: z.string().optional(),
     supersededBy: z.string().optional(),
     episode: z.string().optional(), // e.g. "season-3-episode-7-the-long-weekend"

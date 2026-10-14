@@ -1,0 +1,1785 @@
+{
+  "milestones": [
+    {
+      "date": "2025-09-11",
+      "title": "The Founding Conversation",
+      "description": "First vault indexed into ChromaDB. 1,399 markdown files became semantically searchable in a single session.",
+      "nodes": [
+        {
+          "id": "vault",
+          "label": "Obsidian Vault",
+          "group": "core",
+          "color": "#a855f7"
+        },
+        {
+          "id": "chromadb",
+          "label": "ChromaDB",
+          "group": "database",
+          "color": "#f97316",
+          "retired": true
+        }
+      ],
+      "edges": [
+        {
+          "from": "vault",
+          "to": "chromadb"
+        }
+      ],
+      "blogEpisode": "https://blog.rduffy.uk/posts/season-1-episode-1-day-zero/"
+    },
+    {
+      "date": "2025-10-07",
+      "title": "Multi-Agent Search",
+      "description": "FastSearch (<1s), DeepResearch (~10s), and AgentRouter with heuristic-based intent classification.",
+      "nodes": [
+        {
+          "id": "fast-agent",
+          "label": "FastSearch",
+          "group": "core",
+          "color": "#22c55e"
+        },
+        {
+          "id": "deep-agent",
+          "label": "DeepResearch",
+          "group": "core",
+          "color": "#ec4899"
+        },
+        {
+          "id": "router",
+          "label": "AgentRouter",
+          "group": "core",
+          "color": "#a855f7"
+        }
+      ],
+      "edges": [
+        {
+          "from": "router",
+          "to": "fast-agent"
+        },
+        {
+          "from": "router",
+          "to": "deep-agent"
+        },
+        {
+          "from": "fast-agent",
+          "to": "chromadb"
+        },
+        {
+          "from": "deep-agent",
+          "to": "chromadb"
+        }
+      ],
+      "blogEpisode": "https://blog.rduffy.uk/posts/season-1-episode-3-ai-awakening/"
+    },
+    {
+      "date": "2025-10-09",
+      "title": "Temporal Filtering",
+      "description": "Date-range search across the vault. +40 percentage points accuracy for historical queries by reversing metadata priority (frontmatter first, filename second).",
+      "nodes": [
+        {
+          "id": "temporal",
+          "label": "Temporal Filter",
+          "group": "core",
+          "color": "#a855f7"
+        }
+      ],
+      "edges": [
+        {
+          "from": "temporal",
+          "to": "chromadb"
+        }
+      ],
+      "blogEpisode": null
+    },
+    {
+      "date": "2025-10-12",
+      "title": "54 Minutes to Production",
+      "description": "Six systems deployed in one day — GPU monitor, Perplexity gateway, agent router, MCP bridge, Prometheus exporter, and vault indexer.",
+      "nodes": [
+        {
+          "id": "gpu-monitor",
+          "label": "GPU Monitor",
+          "group": "monitoring",
+          "color": "#f97316"
+        },
+        {
+          "id": "perplexity",
+          "label": "Perplexity GW",
+          "group": "infra",
+          "color": "#3b82f6",
+          "retired": true
+        }
+      ],
+      "edges": [],
+      "blogEpisode": "https://blog.rduffy.uk/posts/season-2-episode-3-54-minutes-six-systems/"
+    },
+    {
+      "date": "2025-10-12",
+      "title": "ADR-019 · K3s over managed Kubernetes for the home platform",
+      "description": "The platform needed real orchestration — GPU inference serving, Kafka streaming consumers, a full observability stack, and scheduled jobs — running on a single GPU node plus a MacBook, with no cloud budget.",
+      "nodes": [
+        {
+          "id": "adr-019",
+          "label": "ADR-019",
+          "group": "decision",
+          "color": "#22c55e",
+          "retired": false
+        }
+      ],
+      "edges": [],
+      "tags": [
+        {
+          "id": "infra",
+          "label": "infra",
+          "color": "#a855f7"
+        },
+        {
+          "id": "k8s",
+          "label": "k8s",
+          "color": "#ef4444"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/019-k3s-over-managed/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "date": "2025-12-01",
+      "title": "MCP Bridge",
+      "description": "Model Context Protocol bridge connecting Claude Code to the platform via SSE. The interface that makes everything accessible from a conversation.",
+      "nodes": [
+        {
+          "id": "mcp-bridge",
+          "label": "MCP Bridge",
+          "group": "infra",
+          "color": "#3b82f6"
+        }
+      ],
+      "edges": [
+        {
+          "from": "mcp-bridge",
+          "to": "router"
+        }
+      ],
+      "blogEpisode": null
+    },
+    {
+      "date": "2025-12-31",
+      "title": "K3s Migration Begins",
+      "description": "First K3s manifests committed. Platform moving from systemd services to Kubernetes with FluxCD GitOps.",
+      "nodes": [
+        {
+          "id": "k3s",
+          "label": "K3s Cluster",
+          "group": "infra",
+          "color": "#3b82f6"
+        },
+        {
+          "id": "flux",
+          "label": "FluxCD",
+          "group": "infra",
+          "color": "#38bdf8"
+        }
+      ],
+      "edges": [
+        {
+          "from": "k3s",
+          "to": "flux"
+        }
+      ],
+      "blogEpisode": "https://blog.rduffy.uk/posts/season-1-episode-5-migration-question/"
+    },
+    {
+      "date": "2026-01-04",
+      "title": "K3s Production — 26 Commits in One Day",
+      "description": "RAG Gateway, Retriever, MCP Bridge, Ollama, and ChromaDB all deployed to K3s. Prefect work queues wired. CrashLoopBackOff fixed (K8s env var parsing). Platform is cloud-native.",
+      "nodes": [
+        {
+          "id": "rag-gateway",
+          "label": "RAG Gateway",
+          "group": "core",
+          "color": "#a855f7"
+        },
+        {
+          "id": "retriever",
+          "label": "Retriever",
+          "group": "core",
+          "color": "#a855f7"
+        },
+        {
+          "id": "ollama",
+          "label": "Ollama",
+          "group": "gpu",
+          "color": "#ef4444"
+        },
+        {
+          "id": "prefect",
+          "label": "Prefect",
+          "group": "workflow",
+          "color": "#ec4899"
+        }
+      ],
+      "edges": [
+        {
+          "from": "k3s",
+          "to": "rag-gateway"
+        },
+        {
+          "from": "rag-gateway",
+          "to": "retriever"
+        },
+        {
+          "from": "mcp-bridge",
+          "to": "rag-gateway"
+        },
+        {
+          "from": "k3s",
+          "to": "ollama"
+        }
+      ],
+      "blogEpisode": "https://blog.rduffy.uk/posts/season-1-episode-6-k3s-crash-resurrection/"
+    },
+    {
+      "date": "2026-01-07",
+      "title": "vLLM GPU Inference",
+      "description": "vLLM deployed on RTX 4080 for GPU-accelerated model serving. Ollama relegated to CPU-only fallback. 30x embedding speedup.",
+      "nodes": [
+        {
+          "id": "vllm",
+          "label": "vLLM",
+          "group": "gpu",
+          "color": "#ef4444"
+        }
+      ],
+      "edges": [
+        {
+          "from": "k3s",
+          "to": "vllm"
+        },
+        {
+          "from": "rag-gateway",
+          "to": "vllm"
+        }
+      ],
+      "blogEpisode": null
+    },
+    {
+      "date": "2026-01-25",
+      "title": "PDG Pipeline on K3s",
+      "description": "Program Dependency Graph deployed to production. OPA policy enforcement, DORA metrics exporter, Discord notifications for high-risk MRs. 221 passing tests.",
+      "nodes": [
+        {
+          "id": "pdg",
+          "label": "PDG Generator",
+          "group": "core",
+          "color": "#a855f7"
+        },
+        {
+          "id": "opa",
+          "label": "OPA Server",
+          "group": "infra",
+          "color": "#3b82f6"
+        },
+        {
+          "id": "dora",
+          "label": "DORA Metrics",
+          "group": "monitoring",
+          "color": "#f97316"
+        }
+      ],
+      "edges": [
+        {
+          "from": "pdg",
+          "to": "falkordb"
+        },
+        {
+          "from": "pdg",
+          "to": "opa"
+        }
+      ],
+      "blogEpisode": null
+    },
+    {
+      "date": "2026-01-31",
+      "title": "NER Auto-Tagging",
+      "description": "spaCy NER (en_core_web_lg + EntityRuler + YAKE) replaces LLM-based tagging at ~1000x lower cost. ADR-040 accepted.",
+      "nodes": [
+        {
+          "id": "ner",
+          "label": "NER Consumer",
+          "group": "workflow",
+          "color": "#ec4899"
+        }
+      ],
+      "edges": [
+        {
+          "from": "ner",
+          "to": "qdrant"
+        }
+      ],
+      "blogEpisode": null
+    },
+    {
+      "date": "2026-01-31",
+      "title": "ADR-040 · Named-entity tagging without an LLM: spaCy and YAKE over the alternatives",
+      "description": "The vault auto-tagging pipeline extracted named entities — technical terms, project names, concepts, tools — from every document and wrote them as searchable tags into the vector store. The original implementation used a large…",
+      "nodes": [
+        {
+          "id": "adr-040",
+          "label": "ADR-040",
+          "group": "decision",
+          "color": "#22c55e",
+          "retired": false
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-019",
+          "to": "adr-040"
+        }
+      ],
+      "tags": [
+        {
+          "id": "ner",
+          "label": "ner",
+          "color": "#f97316"
+        },
+        {
+          "id": "spacy",
+          "label": "spacy",
+          "color": "#ec4899"
+        },
+        {
+          "id": "yake",
+          "label": "yake",
+          "color": "#ec4899"
+        },
+        {
+          "id": "tagging",
+          "label": "tagging",
+          "color": "#00d4ff"
+        },
+        {
+          "id": "reliability",
+          "label": "reliability",
+          "color": "#ec4899"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/040-ner-not-llm/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "date": "2026-02-01",
+      "title": "Jira + Confluence Integration",
+      "description": "VW Jira project created. Jira-first development workflow, automated Confluence documentation, bidirectional vault-Confluence linking. LinkedIn automation pipeline (ADR-001).",
+      "nodes": [
+        {
+          "id": "jira",
+          "label": "Jira",
+          "group": "workflow",
+          "color": "#ec4899",
+          "retired": true
+        },
+        {
+          "id": "confluence",
+          "label": "Confluence",
+          "group": "workflow",
+          "color": "#ec4899",
+          "retired": true
+        }
+      ],
+      "edges": [
+        {
+          "from": "jira",
+          "to": "confluence"
+        },
+        {
+          "from": "mcp-bridge",
+          "to": "jira"
+        }
+      ],
+      "blogEpisode": "https://blog.rduffy.uk/posts/season-3-episode-1-from-side-project-to-platform/"
+    },
+    {
+      "date": "2026-02-07",
+      "title": "Sealed Secrets + Harbor",
+      "description": "19 Bitnami Sealed Secrets deployed. Harbor container registry on K3s. NetBox IPAM for infrastructure tracking.",
+      "nodes": [
+        {
+          "id": "harbor",
+          "label": "Harbor",
+          "group": "infra",
+          "color": "#3b82f6"
+        },
+        {
+          "id": "sealed-secrets",
+          "label": "Sealed Secrets",
+          "group": "infra",
+          "color": "#3b82f6"
+        }
+      ],
+      "edges": [
+        {
+          "from": "k3s",
+          "to": "harbor"
+        },
+        {
+          "from": "k3s",
+          "to": "sealed-secrets"
+        }
+      ],
+      "blogEpisode": "https://blog.rduffy.uk/posts/season-3-episode-3-the-day-everything-got-sealed/"
+    },
+    {
+      "date": "2026-02-11",
+      "title": "Gateway Memory Leak — 7.5GB to 532MB",
+      "description": "VW-51/52: Dead ChromaDB import causing 7.5GB per replica. 93% memory reduction. Kafka consumer crash-loop fixed (VW-62, 837 restarts).",
+      "nodes": [],
+      "edges": [],
+      "blogEpisode": "https://blog.rduffy.uk/posts/season-3-episode-2-streaming-journals/"
+    },
+    {
+      "date": "2026-02-15",
+      "title": "Qdrant Migration + Reranking",
+      "description": "ChromaDB replaced by Qdrant (148K chunks). FlashRank reranker deployed, then replaced by ColBERT after benchmark comparison. FalkorDB knowledge graph activated (VW-79).",
+      "nodes": [
+        {
+          "id": "qdrant",
+          "label": "Qdrant",
+          "group": "database",
+          "color": "#f97316"
+        },
+        {
+          "id": "falkordb",
+          "label": "FalkorDB",
+          "group": "database",
+          "color": "#f97316",
+          "retired": true
+        },
+        {
+          "id": "reranker",
+          "label": "Reranker",
+          "group": "core",
+          "color": "#a855f7"
+        }
+      ],
+      "edges": [
+        {
+          "from": "retriever",
+          "to": "qdrant"
+        },
+        {
+          "from": "retriever",
+          "to": "reranker"
+        },
+        {
+          "from": "deep-agent",
+          "to": "falkordb"
+        }
+      ],
+      "blogEpisode": null
+    },
+    {
+      "date": "2026-02-17",
+      "title": "Shared Embedding Service — 2560d Vectors",
+      "description": "Qwen3-Embedding-4B at 2560 dimensions. Graph ingestion bug fixes (VW-85/86/90 — asyncio event loop scoping). HLD/LLD modularised (ADR-016).",
+      "nodes": [
+        {
+          "id": "embedding",
+          "label": "Embedding 2560d",
+          "group": "core",
+          "color": "#a855f7"
+        }
+      ],
+      "edges": [
+        {
+          "from": "embedding",
+          "to": "qdrant"
+        }
+      ],
+      "blogEpisode": null
+    },
+    {
+      "date": "2026-02-20",
+      "title": "NetworkPolicies + Security Hardening",
+      "description": "55+ NetworkPolicies deployed (default-deny + per-service whitelists). Vault indexer exclusion list alignment after 13,880-chunk data leak incident.",
+      "nodes": [
+        {
+          "id": "netpol",
+          "label": "NetworkPolicies",
+          "group": "infra",
+          "color": "#3b82f6"
+        }
+      ],
+      "edges": [],
+      "blogEpisode": null
+    },
+    {
+      "date": "2026-02-22",
+      "title": "LinkedIn Carousel Publishing",
+      "description": "Full LinkedIn automation pipeline: text posts, PDF carousel generation (Puppeteer + pdf-lib), and publishing via REST API. ADR-019: Claude Voice Agent architecture proposed.",
+      "nodes": [
+        {
+          "id": "linkedin",
+          "label": "LinkedIn API",
+          "group": "workflow",
+          "color": "#ec4899"
+        }
+      ],
+      "edges": [],
+      "blogEpisode": null
+    },
+    {
+      "date": "2026-03-01",
+      "title": "Observability Stack",
+      "description": "Prometheus, Grafana (18+ panels), Tempo (distributed tracing), Loki (log aggregation), Beyla eBPF, Blackbox Exporter. SLOs defined: RAG Gateway 99.9%, MCP Bridge 99.5%.",
+      "nodes": [
+        {
+          "id": "prometheus",
+          "label": "Prometheus",
+          "group": "monitoring",
+          "color": "#f97316"
+        },
+        {
+          "id": "grafana",
+          "label": "Grafana",
+          "group": "monitoring",
+          "color": "#f97316"
+        },
+        {
+          "id": "tempo",
+          "label": "Tempo",
+          "group": "monitoring",
+          "color": "#f97316"
+        },
+        {
+          "id": "loki",
+          "label": "Loki",
+          "group": "monitoring",
+          "color": "#f97316"
+        }
+      ],
+      "edges": [
+        {
+          "from": "prometheus",
+          "to": "grafana"
+        },
+        {
+          "from": "rag-gateway",
+          "to": "tempo"
+        }
+      ],
+      "blogEpisode": null
+    },
+    {
+      "date": "2026-03-08",
+      "title": "Event-Driven NER Pipeline",
+      "description": "Kafka event bus activated. File watcher (inotify) → Kafka → NER consumer (spaCy + YAKE) → auto-tagging → Qdrant indexing. KEDA scales consumers 0→N.",
+      "nodes": [
+        {
+          "id": "kafka",
+          "label": "Kafka",
+          "group": "workflow",
+          "color": "#00d4ff"
+        },
+        {
+          "id": "file-watcher",
+          "label": "File Watcher",
+          "group": "workflow",
+          "color": "#ec4899"
+        }
+      ],
+      "edges": [
+        {
+          "from": "file-watcher",
+          "to": "kafka"
+        },
+        {
+          "from": "kafka",
+          "to": "ner"
+        },
+        {
+          "from": "ner",
+          "to": "qdrant"
+        }
+      ],
+      "blogEpisode": null
+    },
+    {
+      "date": "2026-03-10",
+      "title": "PDG Activation — Code Intelligence",
+      "description": "FalkorDB code_knowledge graph live: 7,768 nodes. Community detection (Leiden clustering), impact radius queries, tree-sitter AST parsing.",
+      "nodes": [],
+      "edges": [
+        {
+          "from": "pdg",
+          "to": "mcp-bridge"
+        }
+      ],
+      "blogEpisode": "https://blog.rduffy.uk/posts/season-3-episode-5-second-graph-online/"
+    },
+    {
+      "date": "2026-03-11",
+      "title": "ADR-020 · A self-hosted code-knowledge graph: AST, PDG and community detection",
+      "description": "Semantic search retrieves documents by meaning; it cannot answer \"which modules break if I change this function?\" That question requires a structural model of the codebase — a graph of how things connect and depend on each other.",
+      "nodes": [
+        {
+          "id": "adr-020",
+          "label": "ADR-020",
+          "group": "decision",
+          "color": "#eab308",
+          "retired": false
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-040",
+          "to": "adr-020"
+        }
+      ],
+      "tags": [
+        {
+          "id": "code-intelligence",
+          "label": "code-intelligence",
+          "color": "#eab308"
+        },
+        {
+          "id": "graph",
+          "label": "graph",
+          "color": "#ef4444"
+        },
+        {
+          "id": "pdg",
+          "label": "pdg",
+          "color": "#f97316"
+        },
+        {
+          "id": "community-detection",
+          "label": "community-detection",
+          "color": "#22c55e"
+        },
+        {
+          "id": "tree-sitter",
+          "label": "tree-sitter",
+          "color": "#ec4899"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/020-codegraph-platform/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "date": "2026-03-15",
+      "title": "Platform Hardening — 52 Commits",
+      "description": "Biggest single-day push. Leiden clustering, TreeSitter, local model optimisations, Scout fleet deployment, shared_constants.py for exclusion lists, benchmark suite designed.",
+      "nodes": [
+        {
+          "id": "scout",
+          "label": "Scout Fleet",
+          "group": "workflow",
+          "color": "#ec4899"
+        }
+      ],
+      "edges": [
+        {
+          "from": "scout",
+          "to": "kafka"
+        }
+      ],
+      "blogEpisode": null
+    },
+    {
+      "date": "2026-03-19",
+      "title": "Security Audit + Feature Flags",
+      "description": "VW-147 security hardening. Unleash feature flags deployed. CRAG and Speculative RAG prototyped behind flags. Infrastructure upgrades across the cluster.",
+      "nodes": [
+        {
+          "id": "unleash",
+          "label": "Unleash",
+          "group": "infra",
+          "color": "#3b82f6"
+        }
+      ],
+      "edges": [],
+      "blogEpisode": null
+    },
+    {
+      "date": "2026-04-15",
+      "title": "Data Source Connectors",
+      "description": "ADR-034: Multi-source connector architecture. Jira, Confluence, GitLab, and vault connectors for unified indexing into Qdrant.",
+      "nodes": [
+        {
+          "id": "connectors",
+          "label": "Connectors",
+          "group": "workflow",
+          "color": "#ec4899"
+        }
+      ],
+      "edges": [
+        {
+          "from": "connectors",
+          "to": "kafka"
+        },
+        {
+          "from": "connectors",
+          "to": "qdrant"
+        }
+      ],
+      "blogEpisode": null
+    },
+    {
+      "date": "2026-04-19",
+      "title": "ADR-036 · Vault structured index in Postgres: relational authority beside vector recall",
+      "description": "The Obsidian vault (~6,000 markdown files) is the institutional memory of the platform. Three query tools already existed for navigating it: Qdrant semantic search, Grep, and file reads. Each does its job well. None of them…",
+      "nodes": [
+        {
+          "id": "adr-036",
+          "label": "ADR-036",
+          "group": "decision",
+          "color": "#22c55e",
+          "retired": false
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-020",
+          "to": "adr-036"
+        }
+      ],
+      "tags": [
+        {
+          "id": "postgres",
+          "label": "postgres",
+          "color": "#22c55e"
+        },
+        {
+          "id": "vault",
+          "label": "vault",
+          "color": "#ec4899"
+        },
+        {
+          "id": "mcp",
+          "label": "mcp",
+          "color": "#ec4899"
+        },
+        {
+          "id": "structured-query",
+          "label": "structured-query",
+          "color": "#3b82f6"
+        },
+        {
+          "id": "retrieval",
+          "label": "retrieval",
+          "color": "#3b82f6"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/036-vault-structured-index-postgres/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "date": "2026-04-29",
+      "title": "KEDA GPU Swap Controller",
+      "description": "ADR-029: KEDA scales TEI embedding service 0→1 on demand, swapping GPU between vLLM and TEI. Desktop + MacBook multi-device setup via Tailscale.",
+      "nodes": [
+        {
+          "id": "keda",
+          "label": "KEDA",
+          "group": "infra",
+          "color": "#3b82f6"
+        },
+        {
+          "id": "tei",
+          "label": "TEI Embedding",
+          "group": "gpu",
+          "color": "#ef4444"
+        }
+      ],
+      "edges": [
+        {
+          "from": "keda",
+          "to": "tei"
+        },
+        {
+          "from": "keda",
+          "to": "vllm"
+        }
+      ],
+      "blogEpisode": null
+    },
+    {
+      "date": "2026-04-29",
+      "title": "ADR-029 · KEDA-based GPU swap controller for embed/inference coexistence",
+      "description": "The platform runs on a single RTX 4080 (16 GB VRAM). Three workloads need the GPU:",
+      "nodes": [
+        {
+          "id": "adr-029",
+          "label": "ADR-029",
+          "group": "decision",
+          "color": "#22c55e",
+          "retired": false
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-036",
+          "to": "adr-029"
+        }
+      ],
+      "tags": [
+        {
+          "id": "infra",
+          "label": "infra",
+          "color": "#a855f7"
+        },
+        {
+          "id": "k8s",
+          "label": "k8s",
+          "color": "#ef4444"
+        },
+        {
+          "id": "keda",
+          "label": "keda",
+          "color": "#eab308"
+        },
+        {
+          "id": "gpu",
+          "label": "gpu",
+          "color": "#3b82f6"
+        },
+        {
+          "id": "scheduling",
+          "label": "scheduling",
+          "color": "#3b82f6"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/029-keda-gpu-swap-controller/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "date": "2026-05-01",
+      "title": "Kafka Streaming Pipeline — Flink",
+      "description": "Apache Flink deployed for real-time conversation processing. Journal session parser, synthesizer, and DLQ reprocessor. Claim-check pattern for large payloads.",
+      "nodes": [
+        {
+          "id": "flink",
+          "label": "Apache Flink",
+          "group": "workflow",
+          "color": "#ec4899"
+        },
+        {
+          "id": "journal-parser",
+          "label": "Session Parser",
+          "group": "workflow",
+          "color": "#ec4899"
+        }
+      ],
+      "edges": [
+        {
+          "from": "kafka",
+          "to": "flink"
+        },
+        {
+          "from": "kafka",
+          "to": "journal-parser"
+        }
+      ],
+      "blogEpisode": null
+    },
+    {
+      "date": "2026-05-08",
+      "title": "ADR-044 · Refusal gate: answer 'I don't know' below confidence threshold",
+      "description": "The RAG pipeline answered every query, including ones where the retrieved context was irrelevant to the question. A confident, fluent, wrong answer is the worst possible failure mode for a knowledge system: it is…",
+      "nodes": [
+        {
+          "id": "adr-044",
+          "label": "ADR-044",
+          "group": "decision",
+          "color": "#22c55e",
+          "retired": false
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-029",
+          "to": "adr-044"
+        }
+      ],
+      "tags": [
+        {
+          "id": "rag",
+          "label": "rag",
+          "color": "#a855f7"
+        },
+        {
+          "id": "quality",
+          "label": "quality",
+          "color": "#eab308"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/044-refusal-gate/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "date": "2026-05-11",
+      "title": "ADR-030: Repository Restructure",
+      "description": "14-package uv workspace. 6-stage migration plan. Canonical module boundaries, per-package AGENTS.md, service Dockerfiles with workspace-dep linting. 40 commits.",
+      "nodes": [
+        {
+          "id": "workspace",
+          "label": "uv Workspace",
+          "group": "core",
+          "color": "#a855f7"
+        }
+      ],
+      "edges": [
+        {
+          "from": "workspace",
+          "to": "rag-gateway"
+        },
+        {
+          "from": "workspace",
+          "to": "mcp-bridge"
+        },
+        {
+          "from": "workspace",
+          "to": "retriever"
+        }
+      ],
+      "blogEpisode": null
+    },
+    {
+      "date": "2026-05-17",
+      "title": "Long-Term Memory System",
+      "description": "Postgres-backed structured memory pipeline. GDPR-compliant tombstoning (ADR-043). 6 recall MCP tools: session, origin, decisions, state-at-time, trace chain, save context. Backfill flow processes 222 sessions. Git commit trailers (VW-393).",
+      "nodes": [
+        {
+          "id": "memory",
+          "label": "Memory System",
+          "group": "core",
+          "color": "#a855f7"
+        },
+        {
+          "id": "postgres",
+          "label": "Postgres",
+          "group": "database",
+          "color": "#f97316"
+        }
+      ],
+      "edges": [
+        {
+          "from": "memory",
+          "to": "postgres"
+        },
+        {
+          "from": "mcp-bridge",
+          "to": "memory"
+        }
+      ],
+      "blogEpisode": null
+    },
+    {
+      "date": "2026-05-18",
+      "title": "ADR-045 · Search-quality benchmark suite: HELM scenario grid + RAGAS metrics, Claude Code as LLM judge",
+      "description": "Search \"worked\" — but that was a vibe, not a measurement. There was no answer to three questions that actually matter:",
+      "nodes": [
+        {
+          "id": "adr-045",
+          "label": "ADR-045",
+          "group": "decision",
+          "color": "#22c55e",
+          "retired": false
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-044",
+          "to": "adr-045"
+        }
+      ],
+      "tags": [
+        {
+          "id": "benchmark",
+          "label": "benchmark",
+          "color": "#00d4ff"
+        },
+        {
+          "id": "rag",
+          "label": "rag",
+          "color": "#a855f7"
+        },
+        {
+          "id": "quality",
+          "label": "quality",
+          "color": "#eab308"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/045-benchmark-suite/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "date": "2026-05-19",
+      "title": "Engineering Memory Benchmark",
+      "description": "Empirical study: layered retrieval (typed→semantic→grep) scores 0.954. 5 conditions, 3 model tiers, 36 generated ADRs. Published as open-source on GitHub.",
+      "nodes": [
+        {
+          "id": "benchmark",
+          "label": "Benchmark Suite",
+          "group": "core",
+          "color": "#a855f7"
+        }
+      ],
+      "edges": [],
+      "blogEpisode": null
+    },
+    {
+      "date": "2026-05-21",
+      "title": "SRE Agent + Security ADRs",
+      "description": "Autonomous SRE triage: Alertmanager webhook → event collector → LLM-powered brain → Jira issue creation. ADR-047 (LLM Content Trust Boundary), ADR-048 (Egress Control with Squid proxy).",
+      "nodes": [
+        {
+          "id": "sre-agent",
+          "label": "SRE Agent",
+          "group": "core",
+          "color": "#22c55e"
+        },
+        {
+          "id": "alertmanager",
+          "label": "Alertmanager",
+          "group": "monitoring",
+          "color": "#f97316"
+        }
+      ],
+      "edges": [
+        {
+          "from": "alertmanager",
+          "to": "sre-agent"
+        },
+        {
+          "from": "sre-agent",
+          "to": "jira"
+        }
+      ],
+      "blogEpisode": "https://blog.rduffy.uk/posts/season-3-episode-6-wednesday-audit-thursday-cascade/"
+    },
+    {
+      "date": "2026-05-26",
+      "title": "Score Decomposition + DAT",
+      "description": "Per-result vector_score, bm25_score, rerank_score. Dynamic Alpha Tuning (arXiv:2503.23013) — LLM-as-judge per-query weighting. Temporal edge timestamps on FalkorDB PDG. Competitive analysis: 5 research repos evaluated.",
+      "nodes": [
+        {
+          "id": "dat",
+          "label": "DAT Tuning",
+          "group": "core",
+          "color": "#a855f7"
+        }
+      ],
+      "edges": [
+        {
+          "from": "dat",
+          "to": "retriever"
+        }
+      ],
+      "blogEpisode": null
+    },
+    {
+      "date": "2026-05-27",
+      "title": "rduffy.uk Goes Live",
+      "description": "Personal website deployed to Cloudflare Workers. Contribution heatmap (GitHub + GitLab), interactive architecture diagrams, CV from vault. Built with Astro 6, React Islands, and Tailwind CSS 4.",
+      "nodes": [
+        {
+          "id": "website",
+          "label": "rduffy.uk",
+          "group": "infra",
+          "color": "#3b82f6"
+        }
+      ],
+      "edges": [],
+      "blogEpisode": null
+    },
+    {
+      "date": "2026-05-28",
+      "title": "ADR-046 · MCP transport: migrate SSE → streamable HTTP",
+      "description": "The MCP bridge exposes 29 tools to Claude Code and was served over SSE (Server-Sent Events). Two problems compounded each other:",
+      "nodes": [
+        {
+          "id": "adr-046",
+          "label": "ADR-046",
+          "group": "decision",
+          "color": "#22c55e",
+          "retired": false
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-045",
+          "to": "adr-046"
+        }
+      ],
+      "tags": [
+        {
+          "id": "mcp",
+          "label": "mcp",
+          "color": "#ec4899"
+        },
+        {
+          "id": "transport",
+          "label": "transport",
+          "color": "#22c55e"
+        },
+        {
+          "id": "keda",
+          "label": "keda",
+          "color": "#eab308"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/046-mcp-transport/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "date": "2026-05-28",
+      "title": "ADR-053 · Observability data routing: multi-backend log/trace/metric strategy",
+      "description": "A prior ADR established Kafka → Vector → Elasticsearch for LLM observability. In practice the platform now runs an intentional multi-backend observability rig: running VictoriaLogs/VictoriaMetrics alongside Elasticsearch gives…",
+      "nodes": [
+        {
+          "id": "adr-053",
+          "label": "ADR-053",
+          "group": "decision",
+          "color": "#22c55e",
+          "retired": false
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-046",
+          "to": "adr-053"
+        }
+      ],
+      "tags": [
+        {
+          "id": "observability",
+          "label": "observability",
+          "color": "#22c55e"
+        },
+        {
+          "id": "elasticsearch",
+          "label": "elasticsearch",
+          "color": "#00d4ff"
+        },
+        {
+          "id": "loki",
+          "label": "loki",
+          "color": "#22c55e"
+        },
+        {
+          "id": "victorialogs",
+          "label": "victorialogs",
+          "color": "#ef4444"
+        },
+        {
+          "id": "kafka",
+          "label": "kafka",
+          "color": "#ef4444"
+        },
+        {
+          "id": "otel",
+          "label": "otel",
+          "color": "#3b82f6"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/053-observability-data-routing/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "date": "2026-06-04",
+      "title": "ADR-060 · Heterogeneous multi-node K3s: dedicated worker nodes and node-separated backup",
+      "description": "The cluster grew from a single control-plane node (desktop, amd64 + GPU) to three:",
+      "nodes": [
+        {
+          "id": "adr-060",
+          "label": "ADR-060",
+          "group": "decision",
+          "color": "#22c55e",
+          "retired": false
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-053",
+          "to": "adr-060"
+        }
+      ],
+      "tags": [
+        {
+          "id": "infra",
+          "label": "infra",
+          "color": "#a855f7"
+        },
+        {
+          "id": "k8s",
+          "label": "k8s",
+          "color": "#ef4444"
+        },
+        {
+          "id": "multi-node",
+          "label": "multi-node",
+          "color": "#ef4444"
+        },
+        {
+          "id": "backup",
+          "label": "backup",
+          "color": "#ec4899"
+        },
+        {
+          "id": "arm64",
+          "label": "arm64",
+          "color": "#ec4899"
+        },
+        {
+          "id": "networkpolicy",
+          "label": "networkpolicy",
+          "color": "#a855f7"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/060-heterogeneous-multi-node-cluster/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "date": "2026-06-05",
+      "title": "ADR-061 · Developer-agent provenance: cryptographic attribution for AI-authored commits",
+      "description": "The platform is now built by several AI coding agents running concurrently — Claude Code, Codex, and local-model services — plus direct-API scripts. They all produce artifacts: git commits, vault markdown, issue tracker…",
+      "nodes": [
+        {
+          "id": "adr-061",
+          "label": "ADR-061",
+          "group": "decision",
+          "color": "#22c55e",
+          "retired": false
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-060",
+          "to": "adr-061"
+        }
+      ],
+      "tags": [
+        {
+          "id": "provenance",
+          "label": "provenance",
+          "color": "#22c55e"
+        },
+        {
+          "id": "attribution",
+          "label": "attribution",
+          "color": "#eab308"
+        },
+        {
+          "id": "multi-agent",
+          "label": "multi-agent",
+          "color": "#22c55e"
+        },
+        {
+          "id": "signing",
+          "label": "signing",
+          "color": "#00d4ff"
+        },
+        {
+          "id": "trust",
+          "label": "trust",
+          "color": "#a855f7"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/061-developer-agent-provenance/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "date": "2026-06-07",
+      "title": "ADR-063 · The dreaming loop: self-curating typed memory",
+      "description": "The memory subsystem extracts typed facts from session transcripts once, at ingest, using a lightweight first-pass model. Review of the stored output revealed the problem concretely: a sample set of stored facts included bare…",
+      "nodes": [
+        {
+          "id": "adr-063",
+          "label": "ADR-063",
+          "group": "decision",
+          "color": "#eab308",
+          "retired": false
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-061",
+          "to": "adr-063"
+        }
+      ],
+      "tags": [
+        {
+          "id": "memory",
+          "label": "memory",
+          "color": "#22c55e"
+        },
+        {
+          "id": "dreaming",
+          "label": "dreaming",
+          "color": "#eab308"
+        },
+        {
+          "id": "extraction",
+          "label": "extraction",
+          "color": "#eab308"
+        },
+        {
+          "id": "prompt-injection",
+          "label": "prompt-injection",
+          "color": "#ef4444"
+        },
+        {
+          "id": "typed-facts",
+          "label": "typed-facts",
+          "color": "#3b82f6"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/063-dreaming-loop/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "date": "2026-06-10",
+      "title": "ADR-065 · Kafka consumer and producer durability contract",
+      "description": "An audit of Kafka producers and consumers across the platform uncovered 15 findings (8 high severity) sharing two root causes that silently lose events while offsets and watermarks advance:",
+      "nodes": [
+        {
+          "id": "adr-065",
+          "label": "ADR-065",
+          "group": "decision",
+          "color": "#22c55e",
+          "retired": false
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-063",
+          "to": "adr-065"
+        }
+      ],
+      "tags": [
+        {
+          "id": "kafka",
+          "label": "kafka",
+          "color": "#ef4444"
+        },
+        {
+          "id": "durability",
+          "label": "durability",
+          "color": "#22c55e"
+        },
+        {
+          "id": "dlq",
+          "label": "dlq",
+          "color": "#22c55e"
+        },
+        {
+          "id": "reliability",
+          "label": "reliability",
+          "color": "#ec4899"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/065-kafka-consumer-durability/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "date": "2026-06-10",
+      "title": "ADR-066 · Feature flags fail closed: safe-by-default for LLM experiments",
+      "description": "The feature-flag client controlled which capabilities were active in the pipeline — multi-hop reasoning, experimental rerankers, cost-intensive synthesis steps. When the flag service was reachable, flags behaved correctly. An…",
+      "nodes": [
+        {
+          "id": "adr-066",
+          "label": "ADR-066",
+          "group": "decision",
+          "color": "#22c55e",
+          "retired": false
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-065",
+          "to": "adr-066"
+        }
+      ],
+      "tags": [
+        {
+          "id": "feature-flags",
+          "label": "feature-flags",
+          "color": "#a855f7"
+        },
+        {
+          "id": "reliability",
+          "label": "reliability",
+          "color": "#ec4899"
+        },
+        {
+          "id": "fail-closed",
+          "label": "fail-closed",
+          "color": "#f97316"
+        },
+        {
+          "id": "unleash",
+          "label": "unleash",
+          "color": "#3b82f6"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/066-feature-flag-fail-closed/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "date": "2026-06-12",
+      "title": "ADR-074 · Treating AI-agent spend as a metered resource",
+      "description": "Running two AI coding agents on flat-rate subscriptions sounds simple until you try to pace them. Neither vendor provides proactive in-session usage signals. Both agents can exhaust their quota in a single bursty evening…",
+      "nodes": [
+        {
+          "id": "adr-074",
+          "label": "ADR-074",
+          "group": "decision",
+          "color": "#22c55e",
+          "retired": false
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-066",
+          "to": "adr-074"
+        }
+      ],
+      "tags": [
+        {
+          "id": "budget",
+          "label": "budget",
+          "color": "#00d4ff"
+        },
+        {
+          "id": "observability",
+          "label": "observability",
+          "color": "#22c55e"
+        },
+        {
+          "id": "agent-ops",
+          "label": "agent-ops",
+          "color": "#ec4899"
+        },
+        {
+          "id": "governance",
+          "label": "governance",
+          "color": "#ec4899"
+        },
+        {
+          "id": "cost",
+          "label": "cost",
+          "color": "#00d4ff"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/074-agent-budget-governance/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "date": "2026-06-15",
+      "title": "ADR-077 · Inter-hop context compaction in multi-hop retrieval",
+      "description": "MultiHopRAG builds up its reasoning context by simple concatenation across hops with no pruning. With up to five hops and fact blocks of 400–800 characters each, the accumulated context easily reaches 4–8K characters before…",
+      "nodes": [
+        {
+          "id": "adr-077",
+          "label": "ADR-077",
+          "group": "decision",
+          "color": "#22c55e",
+          "retired": false
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-074",
+          "to": "adr-077"
+        }
+      ],
+      "tags": [
+        {
+          "id": "multi-hop",
+          "label": "multi-hop",
+          "color": "#00d4ff"
+        },
+        {
+          "id": "rag",
+          "label": "rag",
+          "color": "#a855f7"
+        },
+        {
+          "id": "compaction",
+          "label": "compaction",
+          "color": "#00d4ff"
+        },
+        {
+          "id": "context-management",
+          "label": "context-management",
+          "color": "#22c55e"
+        },
+        {
+          "id": "retrieval",
+          "label": "retrieval",
+          "color": "#3b82f6"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/077-inter-hop-compaction/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "date": "2026-06-15",
+      "title": "ADR-079 · Claude drives Codex: autonomous dual-agent coding handoff",
+      "description": "Measured usage showed that coding tasks — implementation, debugging, refactoring — accounted for roughly 80% of weighted token consumption. A separately-held Codex subscription was sitting at around 30% utilisation. The…",
+      "nodes": [
+        {
+          "id": "adr-079",
+          "label": "ADR-079",
+          "group": "decision",
+          "color": "#22c55e",
+          "retired": false
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-077",
+          "to": "adr-079"
+        }
+      ],
+      "tags": [
+        {
+          "id": "multi-agent",
+          "label": "multi-agent",
+          "color": "#22c55e"
+        },
+        {
+          "id": "orchestration",
+          "label": "orchestration",
+          "color": "#22c55e"
+        },
+        {
+          "id": "budget",
+          "label": "budget",
+          "color": "#00d4ff"
+        },
+        {
+          "id": "coding",
+          "label": "coding",
+          "color": "#ec4899"
+        },
+        {
+          "id": "autonomy",
+          "label": "autonomy",
+          "color": "#3b82f6"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/079-claude-drives-codex/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "date": "2026-06-16",
+      "title": "ADR-081 · Evaluation-harness governance: immutable snapshots and PR-gated regressions",
+      "description": "Six evaluation harnesses accumulated organically with no shared standard for structure, metadata, versioning, judge calibration, lifecycle, or documentation. A discovery pass surfaced three failure modes that are worse than…",
+      "nodes": [
+        {
+          "id": "adr-081",
+          "label": "ADR-081",
+          "group": "decision",
+          "color": "#22c55e",
+          "retired": false
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-079",
+          "to": "adr-081"
+        }
+      ],
+      "tags": [
+        {
+          "id": "evaluation",
+          "label": "evaluation",
+          "color": "#3b82f6"
+        },
+        {
+          "id": "benchmarking",
+          "label": "benchmarking",
+          "color": "#00d4ff"
+        },
+        {
+          "id": "governance",
+          "label": "governance",
+          "color": "#ec4899"
+        },
+        {
+          "id": "llm-judge",
+          "label": "llm-judge",
+          "color": "#eab308"
+        },
+        {
+          "id": "ci",
+          "label": "ci",
+          "color": "#ef4444"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/081-eval-harness-governance/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "date": "2026-06-18",
+      "title": "ADR-082 · Vault ingest lanes and lane-aware retrieval",
+      "description": "A recurrence of embedding queue lag exposed a deeper problem: the hot embedding path was not a clean stream of vault knowledge. It was a mixed filesystem event stream.",
+      "nodes": [
+        {
+          "id": "adr-082",
+          "label": "ADR-082",
+          "group": "decision",
+          "color": "#22c55e",
+          "retired": false
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-081",
+          "to": "adr-082"
+        }
+      ],
+      "tags": [
+        {
+          "id": "kafka",
+          "label": "kafka",
+          "color": "#ef4444"
+        },
+        {
+          "id": "embedding",
+          "label": "embedding",
+          "color": "#eab308"
+        },
+        {
+          "id": "retrieval",
+          "label": "retrieval",
+          "color": "#3b82f6"
+        },
+        {
+          "id": "vault-indexing",
+          "label": "vault-indexing",
+          "color": "#f97316"
+        },
+        {
+          "id": "freshness",
+          "label": "freshness",
+          "color": "#00d4ff"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/082-lane-aware-retrieval/",
+        "label": "Read decision"
+      }
+    },
+    {
+      "date": "2026-06-28",
+      "title": "ADR-088 · Self-healing SRE: a six-rung LLM autonomy ladder",
+      "description": "The platform's SRE brain currently operates at what I'm calling rung 2 of an autonomy ladder: it consumes alert events from a message queue, collects diagnostic context (pod state, logs, metrics), invokes an LLM triage engine,…",
+      "nodes": [
+        {
+          "id": "adr-088",
+          "label": "ADR-088",
+          "group": "decision",
+          "color": "#22c55e",
+          "retired": false
+        }
+      ],
+      "edges": [
+        {
+          "from": "adr-082",
+          "to": "adr-088"
+        }
+      ],
+      "tags": [
+        {
+          "id": "sre",
+          "label": "sre",
+          "color": "#ef4444"
+        },
+        {
+          "id": "autonomy",
+          "label": "autonomy",
+          "color": "#3b82f6"
+        },
+        {
+          "id": "safety",
+          "label": "safety",
+          "color": "#ec4899"
+        },
+        {
+          "id": "llm",
+          "label": "llm",
+          "color": "#00d4ff"
+        },
+        {
+          "id": "self-healing",
+          "label": "self-healing",
+          "color": "#22c55e"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/adrs/088-self-healing-sre-autonomy-ladder/",
+        "label": "Read decision"
+      }
+    }
+  ]
+}

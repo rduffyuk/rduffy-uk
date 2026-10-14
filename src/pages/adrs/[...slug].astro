@@ -1,6 +1,12 @@
 ---
 import { render, getCollection, type CollectionEntry } from "astro:content";
 import BaseLayout from "@layouts/BaseLayout.astro";
+import reviews from "@data/adr-reviews.json";
+import journey from "@data/journey-data.json";
+import journal from "@data/journal-backfill.json";
+import archive from "@data/adr-archive.json";
+import { milestoneId } from "@components/journey/journeyNavigation";
+import "@/styles/adr-review.css";
 
 export async function getStaticPaths() {
   const adrs = await getCollection("adrs");
@@ -11,12 +17,18 @@ interface Props {
   adr: CollectionEntry<"adrs">;
 }
 const { adr } = Astro.props;
-const { Content } = await render(adr);
+const { Content, headings } = await render(adr);
+const source = archive.records.find(r => r.slug === adr.id);
+const review = (reviews.entries as Record<string, {category:string; title:string; note:string; label:string; reviewedAt:string}>)[adr.id];
+const milestone = journey.milestones.find(m => m.link?.href === `/adrs/${adr.id}/`);
 
-const pad = `ADR-${String(adr.data.id).padStart(3, "0")}`;
+const isNote = adr.data.sourceKind === "historical-note";
+const isLegacy = adr.data.sourceKind === "legacy-record";
+const pad = isNote ? "Design note" : isLegacy ? `Legacy ADR${adr.data.id ? '-'+String(adr.data.id).padStart(3,'0') : ''}` : `ADR-${String(adr.data.id).padStart(3, "0")}`;
 const fmt = (d: Date) => d.toISOString().slice(0, 10);
 
 const writing = await getCollection("writing");
+const linkedJournal = journal.records.filter(r=>r.relatedLinks.some(l=>l.href === `/adrs/${adr.id}/`));
 const episode = adr.data.episode ? writing.find((p) => p.id === adr.data.episode) : null;
 const epChipM = adr.data.episode?.match(/season-(\d+)-episode-(\d+)/);
 const epChip = epChipM ? `S${epChipM[1]}·E${String(epChipM[2]).padStart(2, "0")}` : null;
@@ -24,7 +36,7 @@ const epChip = epChipM ? `S${epChipM[1]}·E${String(epChipM[2]).padStart(2, "0")
 
 <BaseLayout title={`${pad} — ${adr.data.title}`} description={adr.data.title}>
   <section class="mx-auto grid max-w-5xl gap-10 px-6 py-11 md:grid-cols-[1fr_16.5rem]">
-    <article>
+    <article class="adr-article">
       <nav class="mb-4 font-mono text-xs text-[--color-text-subtle]" aria-label="Breadcrumb">
         <a href="/adrs" class="text-[--color-accent] hover:underline">adrs</a>
         <span> / </span>
@@ -33,6 +45,27 @@ const epChip = epChipM ? `S${epChipM[1]}·E${String(epChipM[2]).padStart(2, "0")
       <h1 class="notebook-title text-[1.625rem] font-semibold leading-snug tracking-tight md:text-[1.75rem]">
         {adr.data.title}
       </h1>
+      {source && <aside class="adr-source-edition" aria-label="About this source edition">
+        <span class="adr-review-eyebrow">{isLegacy ? 'Legacy source record' : 'Full source record'} · June archive</span>
+        <p>Record dated {source.recordDate}. Source text retrieved 14 October 2026. Recorded status: <strong>{source.recordedStatus}</strong>.</p>
+        {source.identityNote && <p class="adr-identity-note">{source.identityNote}</p>}
+        {'duplicateOf' in source && <p><a href={source.duplicateOf}>Read the canonical ADR-032 →</a></p>}
+        {source.laterAmendments.length > 0 && <p class="adr-amendment"><strong>Later amendments retained:</strong> {source.laterAmendments.join(' · ')}. This text is not a frozen June snapshot.</p>}
+        <details><summary>Source and disclosure notes{source.redactionCount ? ` · ${source.redactionCount} marked edits` : ''}</summary>
+          <p>The decision body, alternatives and consequences are retained. Narrative dates are displayed at day precision. REDACTED markers identify omitted disclosure details. Internal references remain labelled where a public destination is unavailable. Source frontmatter is represented by selected record fields; private provenance metadata is not reproduced.</p>
+          {source.redactions.length > 0 && <p>Omitted: {source.redactions.join('; ')}.</p>}
+          <p>Historical claims and reported measurements are reproduced as written, without independent requalification. Legacy numbering can remain inside the text; links follow verified source filenames.</p>
+          <p class="adr-source-hash">Source SHA-256: <code>{source.sourceSha256}</code></p>
+        </details>
+        {milestone && <div class="adr-context-links"><a href={`/journey/?at=${milestoneId(milestone)}&decisions=1`}>Find this record in the journey →</a></div>}
+      </aside>}
+      {review && (!source || review.category !== "matched") && <aside class:list={["adr-current-context", `adr-current-context--${review.category}`]} aria-label="Later context for this decision">
+        <span class="adr-review-eyebrow">{review.label} · {review.reviewedAt}</span>
+        <h2>{review.title}</h2><p>{review.note}</p>
+        <div class="adr-context-links"><a href="/rootweaver/">Architecture as checked →</a>{milestone && <a href={`/journey/?at=${milestoneId(milestone)}&decisions=1`}>Find this record in the journey →</a>}</div>
+      </aside>}
+      <div class="adr-original-label">{isNote ? "Historical design note · journal context" : source ? "Source body · recorded reasoning" : "Published decision record"} · {adr.data.dateLabel ?? fmt(adr.data.date)}</div>
+      {source && headings.filter(h=>h.depth===2).length > 2 && <details class="adr-contents md:hidden"><summary>On this page</summary><nav aria-label="Record sections">{headings.filter(h=>h.depth===2).map(h=><a href={`#${h.slug}`}>{h.text}</a>)}</nav></details>}
       <div class="prose prose-rd mt-6 max-w-none">
         <Content />
       </div>
@@ -41,22 +74,24 @@ const epChip = epChipM ? `S${epChipM[1]}·E${String(epChipM[2]).padStart(2, "0")
     <aside class="self-start md:sticky md:top-20">
       <div class="u-panel px-4 py-3.5">
         {[
-          ["status", adr.data.status],
-          ["date", fmt(adr.data.date)],
+          [isNote ? "record" : "decision", isNote ? "Historical design note" : adr.data.recordedStatus ?? adr.data.status],
+          [isNote ? "context" : "recorded", adr.data.dateLabel ?? fmt(adr.data.date)],
+          ...(adr.data.proposedDate ? [["proposed", fmt(adr.data.proposedDate)], ["accepted", fmt(adr.data.date)]] : []),
           ...(adr.data.supersedes ? [["supersedes", adr.data.supersedes]] : []),
           ...(adr.data.supersededBy ? [["superseded by", adr.data.supersededBy]] : []),
           ...(adr.data.tags.length ? [["tags", adr.data.tags.join(" · ")]] : []),
         ].map(([k, v]) => (
           <div class="flex items-baseline gap-3 border-b border-[--color-border] py-2 last:border-b-0">
             <span class="u-label w-[4.75rem] flex-none !text-[0.625rem]">{k}</span>
-            {k === "status" ? (
-              <span class:list={["u-status-pill", `u-status-pill--${v}`]}>{v}</span>
+            {k === "decision" ? (
+              <span class:list={["u-status-pill", `u-status-pill--${adr.data.status}`]}>{v}</span>
             ) : (
               <span class="font-mono text-xs text-[--color-text]">{v}</span>
             )}
           </div>
         ))}
-        {episode && (
+        {linkedJournal.length > 0 && <div class="adr-journal-links"><div class="u-label">In the journal</div>{linkedJournal.map(r=><a href={`/writing/${r.journalEpisode}/`}><strong>{r.journalLabel}</strong><span>{writing.find(p=>p.id===r.journalEpisode)?.data.title ?? r.title}</span><small>{r.dateLabel}</small></a>)}</div>}
+        {episode && !linkedJournal.length && (
           <div class="pt-3">
             <div class="u-label mb-2 !text-[0.625rem]">discussed in</div>
             <a href={`/writing/${episode.id}/`} class="flex items-baseline gap-2.5 rounded-md border border-[--color-border] px-3 py-2 transition-colors hover:bg-[--color-card-hover]">
@@ -66,6 +101,7 @@ const epChip = epChipM ? `S${epChipM[1]}·E${String(epChipM[2]).padStart(2, "0")
           </div>
         )}
       </div>
+      {source && headings.filter(h=>h.depth===2).length > 2 && <details class="adr-contents hidden md:block"><summary>On this page</summary><nav aria-label="Record sections">{headings.filter(h=>h.depth===2).map(h=><a href={`#${h.slug}`}>{h.text}</a>)}</nav></details>}
     </aside>
   </section>
 </BaseLayout>

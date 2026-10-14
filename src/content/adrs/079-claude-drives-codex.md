@@ -1,59 +1,92 @@
 ---
 id: 79
-title: "Claude drives Codex: autonomous dual-agent coding handoff"
+title: "Claude-drives-Codex Autonomous Handoff (Dual-Agent Coding Routing)"
 status: accepted
+recordedStatus: "Accepted"
 date: 2026-06-15
-tags: [multi-agent, orchestration, budget, coding, autonomy]
+tags: []
+sourceKind: source-record
 public: true
+journeyId: "2026-06-15-adr-079-claude-drives-codex-autonomous-dual-agent-coding-handoff"
 ---
+# ADR-079: Claude-drives-Codex Autonomous Handoff (Dual-Agent Coding Routing)
+
+**Status:** Accepted · **Date:** 2026-06-15 · **Owner:** Ryan Duffy
+**Implements:** VW-841 · **Review:** VW-842 (2026-06-22) · **Relates to:** [ADR-074-AI-Agent-Subscription-Budget-Governance-Claude-Codex](/adrs/074-agent-budget-governance/)
 
 ## Context
 
-Measured usage showed that coding tasks — implementation, debugging, refactoring — accounted for roughly 80% of weighted token consumption. A separately-held Codex subscription was sitting at around 30% utilisation. The cheapest route to fitting within a tighter Claude budget was to shift coding work to Codex, but ad-hoc manual routing had already been tried and kept failing: it is easy to forget when deep in a task, and the discipline only matters if it is automatic.
-
-The deeper problem was architectural. Just routing by memory produces neither reliability nor quality gains. Research on multi-agent systems (arXiv:2601.12307) shows that same-model multi-agent arrangements match single-agent performance — the quality advantage only survives across *different* base models. It also shows that naive handoffs carry substantial overhead: up to 41% quality loss from poorly structured multi-agent calls, and 54% of tokens spent on inter-agent communication when context is dumped rather than spec'd. And test-gaming by autonomous coding agents is well-documented (36–75% of cases in some evaluations edit tests rather than code when unconstrained).
-
-These three forces — budget, research evidence, and autonomy risk — shaped the design.
+Downgrading Claude Max 20x → Max 5x (VW-829) drops the weekly weighted cap ~4× (to ~145M). Measured Claude usage is **~81% coding by weighted-token cost** (~300M weighted/wk non-Fable, rising), so coding alone overruns Max 5x by ~2×. A paid **Codex Pro 5x** subscription is already held and only ~30% utilised (server-truth `rate_limits.secondary`). The cheapest way to fit Max 5x without losing capability is to route coding to Codex — but ad-hoc routing fails because it is easy to forget, and naive multi-agent handoff carries real overhead.
 
 ## Decision
 
-```mermaid
-flowchart TB
-  PROMPT["User prompt"] --> ROUTER["Work router<br/>(fires on every prompt)"]
-  ROUTER -->|"architecture / spec / review"| CLAUDE["Claude<br/>architect mode"]
-  ROUTER -->|"bounded implementation"| HANDOFF["codex-handoff skill"]
-  HANDOFF --> WORKTREE["Isolated worktree<br/>(unique branch)"]
-  WORKTREE --> CODEX["Codex exec<br/>(sandbox: workspace-write)"]
-  CODEX --> GATE["Integrity gate<br/>(tests pass + none deleted)"]
-  GATE -->|"PASS"| REVIEW["Cross-vendor review<br/>Claude reads diff vs spec"]
-  GATE -->|"FAIL"| KEEP["Keep worktree<br/>surface failure"]
-  REVIEW --> MERGE["Merge / discard"]
-  classDef good fill:#fffefb,stroke:#1f7a4d,color:#21262e;
-  classDef bad fill:#fffefb,stroke:#c5383f,color:#21262e;
-  classDef neutral fill:#f1eee6,stroke:#a36207,color:#21262e;
-  class CLAUDE,MERGE good;
-  class KEEP bad;
-  class ROUTER,GATE,REVIEW neutral;
-```
+Adopt a **single-interface, Claude-drives-Codex** division of labour:
 
-A **single-interface, Claude-drives-Codex** division of labour:
+1. **Roles.** Claude = architecture, spec, review, orchestration, vault/Jira. **Codex = implementation.** The user talks only to Claude; Claude invokes Codex via `codex exec` as a subprocess (no second interface).
+2. **Handoff (`/codex-handoff` skill).** Architect (spec + acceptance gates) → isolate (git worktree, unique branch) → `codex exec --sandbox workspace-write --ignore-user-config --ignore-rules --json --cd` (preflight `>=0.38.0`) → **gate** (full test suite + a check that fails if test assertions were removed) → **cross-vendor review** (Claude reads the diff vs intent) → merge on PASS / keep-worktree on FAIL → cleanup.
+3. **Always-on nudge.** A `UserPromptSubmit` hook reminds (advisory, 30-min suppressed) on every *substantial* coding prompt regardless of cap — coding routes to Codex *going forward by default*, not only near the cap (proactive habit, not damage-control).
 
-1. **Role split.** Claude handles architecture, specification, review, orchestration, and documentation. Codex handles bounded implementation. The user talks only to Claude; Claude invokes Codex as a subprocess via a skill command.
+## Subsequent Enhancement - Work Router and Lane Contract (2026-06-18 / VW-842)
 
-2. **Handoff mechanics.** A `/codex-handoff` skill turns a spec into a structured lane: isolate in a git worktree on a unique branch, run Codex with sandbox isolation (workspace-write only, no network, no user config), apply an integrity gate that fails if test assertions were deleted or the suite does not pass, then run a cross-vendor review where Claude reads the diff against the original intent. The worktree is merged on PASS and discarded on FAIL.
+VW-842 hardened the runtime policy after review found that the original design
+was mechanically healthy but too advisory. The active Claude hook is now
+`~/.claude/hooks/ai_work_router.py`, wired in `~/.claude/settings.json` as
+`AI work router (VW-842)`.
 
-3. **Always-on routing.** A `UserPromptSubmit` hook fires before every prompt. It reads current usage state from both agents and emits one of four directives: `CLAUDE_ARCHITECT` (keep on spec/review), `CODEX_HANDOFF` (route implementation), `CLAUDE_SMALL_FIX` (trivial edit too small to route), or `PAUSE_HEAVY_WORK` (both agents near exhaustion). A pending-handoff state closes the failure mode where an architecture turn is followed by a short user approval — "go", "ok" — that would otherwise restart Claude implementation.
+The router reads the same budget truth as ADR-074: Claude account checkpoints,
+Claude local guard state, and Codex server `rate_limits`. It emits one of four
+plain routing directives:
 
-The lane contract — the prompt injected before every Codex run — enforces platform rules (issue-first development, staging protocol for docs, provenance trailers, no secrets) even though Codex runs in an isolated subprocess without access to the normal rules directory.
+| Directive | Meaning |
+|---|---|
+| `CLAUDE_ARCHITECT` | Keep Claude on architecture, spec, review, and orchestration only. Record a pending Codex handoff for the next approval/go prompt. |
+| `CODEX_HANDOFF` | Route bounded implementation to `/codex-handoff` with a small spec, Jira key, exact test command, and acceptance gates. |
+| `CLAUDE_SMALL_FIX` | Reserved for later if a genuinely tiny edit can safely stay on Claude while the account is not hot. |
+| `PAUSE_HEAVY_WORK` | Do not start heavy automated Claude or Codex work when Codex weekly or 5h windows are near exhaustion. |
 
-## Alternatives considered
+The pending-handoff state closes the failure mode where Claude designs a change
+and then misses a short user approval such as "approved", "ok", or "go". The
+approval prompt is routed to Codex when a recent architecture/spec turn created
+pending state.
 
-- **Stay on the higher-capacity subscription tier** — rejected: the Codex subscription already provided the capacity; paying for both at maximum tier was pure waste.
-- **Mix models within Claude (Sonnet for coding turns)** — rejected: this applies a partial multiplier to Claude usage, not zero; Codex removes coding from the Claude cap entirely, which is structurally different.
-- **Same-vendor Claude sub-agents for implementation** — rejected: the research evidence shows no quality gain from homogeneous multi-agent arrangements; the cross-vendor split is the specific regime where the advantage survives.
+VW-842 also changes the lane contract. `run-codex-lane.sh` still uses
+`codex exec --sandbox workspace-write --ignore-user-config --ignore-rules` for
+isolation, but it now prepends a mandatory prompt contract plus
+`~/.codex/AGENTS.md` and the nearest local `AGENTS.md` before the task spec.
+This preserves Jira-first, vault staging, provenance, no-secret, no-git-in-vault,
+and test-preservation rules even though Codex's normal config/rules are ignored
+by the isolated subprocess.
+
+Current verified baseline when this amendment was made:
+
+- Claude: 100% account checkpoint; local deduped Claude Code corpus 82% and projected 83%.
+- Codex: 12% weekly, 77% 5h window, 6.9x pro-rata pace.
+- Tests: 32 hook/handoff tests pass.
+- Config validation: Claude/Codex hook config valid; `errors=0`, one existing `.stignore` warning.
+
+## Rationale (evidence)
+
+- **Heterogeneous-vendor split is the validated regime.** Same-model multi-agent matches single-agent (arXiv:2601.12307); the advantage survives only across *different* base models — exactly Claude+Codex.
+- **Role split pays at repo scale.** MAGIS (NeurIPS 2024) 13.94% vs 1.74% GPT-4 solo; QA/review role +1.92pp; Self-Collaboration +29.9–47.1% pass@1.
+- **Test-gaming is rampant → the integrity gate + cross-vendor review are necessary,** not optional (METR 30.4%; Anthropic arXiv:2511.18397 36–75% "edits tests not code"; self-preference bias arXiv:2404.13076).
+- **Route only substantial tasks.** Handoff overhead ~2.2× tokens, 53.9% comms (arXiv:2601.14470), up to 41.1% quality loss from naive multi-agent (arXiv:2602.01011); structured spec ≫ context dump (arXiv:2307.03172).
 
 ## Consequences
 
-**Positive**: coding runs on a separate budget that was already paid for and underused. The cross-vendor review is a free adversarial check: Claude evaluating a Codex diff cannot self-prefer, which catches the test-gaming failure mode that same-model self-review misses. Worktree isolation makes autonomy safe — a bad Codex run is a discarded branch, not a corrupted working tree.
+**Positive:** fits Max 5x (saves ~£80/mo / ~£960/yr); coding runs on the cheaper-per-token, coding-specialised Codex bucket; cross-vendor review is a free adversarial check; worktree isolation makes autonomy safe (bad run = discarded worktree).
+**Negative / risks:** handoff overhead means trivial tasks should NOT be routed (mitigated: nudge fires only on substantial work); **v1 gate catches test *deletion* but not semantic *weakening*** (mitigated by cross-vendor review; v2 = shadow-test + mutation-score gate); Codex has its own weekly cap (guarded by VW-761; watch `rate_limits.secondary`).
 
-**Accepted costs**: the handoff overhead — spec writing, worktree setup, gate execution, review — makes this the wrong path for trivial edits; the routing heuristic must correctly classify task size to avoid applying the full ceremony to one-liners. The integrity gate catches test deletion but not semantic weakening of assertions; the cross-vendor review is the second line of defence against that. Codex has its own rolling quota windows; the budget routing must watch both agents' state, not just one.
+## Alternatives considered
+
+- **Stay on Max 20x** — rejected: ~£80/mo for capacity Codex already provides.
+- **Model-mix to Sonnet on Claude** — rejected: 0.6× multiplier, not 0×; Codex offload removes the work from the cap entirely.
+- **Manual handoff (no nudge/skill)** — rejected: relies on remembering; the discipline is load-bearing for the cap.
+- **Same-vendor multi-agent (Claude sub-agents only)** — rejected: arXiv:2601.12307 shows no gain over single-agent for homogeneous models.
+
+## References
+
+- Impl report: `06-Archive/Implementation-Reports/2026/Architecture/2026-06-15-VW-841-codex-handoff-build.md`
+- Plan: `02-Active-Work/Plans/2026-06-15-VW-841-codex-handoff-implementation-plan.md`
+- Budget governance: [ADR-074-AI-Agent-Subscription-Budget-Governance-Claude-Codex](/adrs/074-agent-budget-governance/); VW-829 report addendum.
+- Components: `~/.claude/skills/codex-handoff/`, `~/.claude/hooks/ai_work_router.py`,
+  compatibility nudge `~/.claude/hooks/codex_route_nudge.py`.

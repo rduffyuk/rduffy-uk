@@ -3,9 +3,10 @@ export interface JourneyNode {
   label: string;
   group: string;
   color: string;
-  /** Decommissioned / superseded component — rendered as a dark husk, not lit.
-   * Liveness, not timeline: only things still running in the cluster glow. */
+  /** Dated lifecycle evidence; absence means unknown, not currently running. */
   retired?: boolean;
+  retiredBy?: string;
+  note?: string;
 }
 
 export interface JourneyEdge {
@@ -14,6 +15,16 @@ export interface JourneyEdge {
 }
 
 export interface Milestone {
+  stableId?: string;
+  recordKind?: "adr" | "historical-note" | "legacy-record";
+  decisionStatus?: string;
+  dateLabel?: string;
+  journalEpisode?: string;
+  journalLabel?: string;
+  editorialNote?: string;
+  kind?: 'story' | 'decision' | 'checkpoint';
+  evidenceLabel?: string;
+  relatedLinks?: { href: string; label: string }[];
   date: string;
   title: string;
   description: string;
@@ -27,6 +38,9 @@ export interface Milestone {
 }
 
 export interface JourneyData {
+  reviewedAt?: string;
+  journalCutoff?: string;
+  journalEpisodes?: number;
   milestones: Milestone[];
 }
 
