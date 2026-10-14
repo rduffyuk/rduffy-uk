@@ -1,0 +1,17 @@
+
+.s4e10-flow .icon-flow{display:block;width:100%;height:auto}
+.s4e10-flow .flow-narrow{display:none}
+.s4e10-flow .icon-flow [data-flow-edge]{stroke-dasharray:3 7;stroke-linecap:round;animation:episode-flow-dots 1.4s linear infinite}
+@keyframes episode-flow-dots{from{stroke-dashoffset:0}to{stroke-dashoffset:-20}}
+.flow-paused .s4e10-flow .icon-flow [data-flow-edge]{animation-play-state:paused}
+@media(prefers-reduced-motion:reduce){.s4e10-flow .icon-flow [data-flow-edge]{animation:none}}
+.s4e10-flow .flow-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:8px 0 14px;font-size:12px;color:var(--color-text-muted)}
+.s4e10-flow button,#diagram-dialog button{border:1px solid var(--color-border);background:var(--color-card);color:var(--color-text);border-radius:6px;padding:5px 10px;font:inherit;font-size:12px;cursor:pointer}
+.s4e10-flow button:disabled{opacity:.65;cursor:default}
+.s4e10-flow figcaption{font-size:12px;color:var(--color-text-muted);margin-top:12px}
+#diagram-dialog{width:min(1150px,94vw);max-height:92vh;padding:18px;border:1px solid var(--color-border);border-radius:8px;background:var(--color-bg);color:var(--color-text)}
+#diagram-dialog::backdrop{background:#0009}
+#diagram-dialog .dialog-head{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:12px}
+#diagram-dialog .diagram-scroll{overflow:auto;max-height:72vh}
+#diagram-dialog .icon-flow{min-width:700px}
+@media(max-width:600px){.s4e10-flow .flow-wide{display:none}.s4e10-flow .flow-narrow{display:block}}
