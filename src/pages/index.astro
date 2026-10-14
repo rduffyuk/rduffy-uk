@@ -1,149 +1,184 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
-import ProofStrip from "@components/ProofStrip.astro";
 import ShippingLog from "@components/ShippingLog.astro";
-
 import { getCollection } from "astro:content";
-import { seasonOf } from "@/utils/writing";
+import { seasonOf, episodeChip } from "@/utils/writing";
 import archive from "@data/adr-archive.json";
-const published = await getCollection("writing", ({ data }) => !data.draft);
-const episodes = published.filter(p => seasonOf(p.id) !== null);
-const seasonCount = new Set(episodes.map(p => seasonOf(p.id))).size;
-const articleCount = published.length - episodes.length;
-const kvRows = [
-  { k: "Day job", v: "SRE Specialist · BT Global Fabric — NaaS across 140 PoPs, 40 countries" },
-  { k: "Night job", v: "Rootweaver — self-hosted agent platform on K3s: memory, code-intel & signed provenance in one operator-owned stack", accent: true },
-  { k: "Decisions", v: `${archive.canonicalRecords} ADRs · ${archive.legacyRecords} legacy records · June archive` },
-  { k: "Writing", v: `${episodes.length} episodes · ${seasonCount} seasons · ${articleCount} articles` },
-];
+import "@/styles/home.css";
+const published = (
+  await getCollection("writing", ({ data }) => !data.draft)
+).sort(
+  (a, b) =>
+    (b.data.shippingDatetime ?? b.data.pubDatetime).getTime() -
+    (a.data.shippingDatetime ?? a.data.pubDatetime).getTime(),
+);
+const episodes = published.filter((p) => seasonOf(p.id) !== null);
+const seasonCount = new Set(episodes.map((p) => seasonOf(p.id))).size;
+const latest = published[0];
+const image = latest?.body?.match(/!\[([^\]]*)\]\((\/[^\s)]+)\)/);
+const latestDate =
+  latest && (latest.data.shippingDatetime ?? latest.data.pubDatetime);
+const fmt = (d: Date) =>
+  new Intl.DateTimeFormat("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(d);
+const days = Math.max(
+  0,
+  Math.floor((Date.now() - Date.parse("2025-09-11T00:00:00Z")) / 86400000),
+);
 ---
 
-<BaseLayout title="Home" description="Ryan Duffy — SRE who builds AI infrastructure. A global network by day, a self-hosted AI platform by night, every decision documented.">
-  <!-- Identity -->
-  <section class="mx-auto grid max-w-6xl gap-10 px-6 pt-14 md:grid-cols-[1.25fr_1fr] md:gap-12">
-    <div>
-      <h1 class="text-4xl font-semibold leading-tight tracking-tight md:text-[2.75rem]">
-        Ryan Duffy
-      </h1>
-      <p class="mt-3 max-w-xl text-lg leading-relaxed text-[--color-text-muted] md:text-xl">
-        Site reliability engineer who builds AI infrastructure. I keep a global
-        network honest by day, run a self-hosted AI platform by night — and
-        write down every decision.
-      </p>
-      <div class="mt-7 flex gap-3">
-        <a href="/writing" class="u-btn-primary">writing →</a>
-        <a href="/cv" class="u-btn-secondary">cv</a>
-      </div>
-    </div>
-    <div class="self-start">
-      {kvRows.map((row) => (
-        <div class="flex gap-4 border-b border-[--color-border] py-2.5">
-          <span class="u-label w-[7.5rem] flex-none pt-0.5">{row.k}</span>
-          <span class:list={["text-sm leading-relaxed", row.accent ? "font-semibold text-[--color-accent]" : "text-[--color-text]"]}>{row.v}</span>
+<BaseLayout
+  title="Home"
+  description="Ryan Duffy — site reliability engineer building AI infrastructure. Explore Rootweaver, the engineering journal and the decisions along the way."
+>
+  <div class="home-notebook">
+    <header class="home-intro">
+      <div>
+        <p class="home-kicker">Engineering in the open</p>
+        <h1>Ryan Duffy</h1>
+        <p class="home-lede">
+          Site reliability engineer who builds AI infrastructure. A global
+          network by day, a self-hosted AI platform by night — and the decisions
+          written down along the way.
+        </p>
+        <div class="home-actions">
+          <a class="u-btn-primary" href="/writing/">
+            Explore the writing
+          </a>
+          <a href="/cv/">View my CV</a>
         </div>
-      ))}
-    </div>
-  </section>
-
-  <!-- Proof strip -->
-  <section class="mx-auto max-w-6xl px-6 pt-10">
-    <ProofStrip />
-  </section>
-
-  <!-- Shipping log -->
-  <section class="mx-auto max-w-6xl px-6 pt-12">
-    <div class="mb-3 flex flex-wrap items-baseline justify-between gap-2">
-      <div class="flex items-baseline gap-4">
-        <h2 class="text-lg font-semibold">Shipping log</h2>
-        <span class="u-label hidden sm:inline">posts · ADRs · commits</span>
       </div>
-      <div id="log-filters" class="flex gap-1 font-mono text-[0.6875rem]">
-        {["all", "posts", "adrs", "commits"].map((f, i) => (
-          <button
-            data-filter={f}
-            class:list={[
-              "rounded-full border px-3 py-1 transition-colors",
-              i === 0 ? "border-[--color-rule] bg-[--color-chip] text-[--color-text]" : "border-transparent text-[--color-text-subtle] hover:text-[--color-text]",
-            ]}
-          >{f}</button>
-        ))}
+      <aside class="home-work">
+        <p class="home-kicker">What I’m working on</p>
+        <h2>
+          Reliable services.
+          <br /> Inspectable AI systems.
+        </h2>
+        <dl>
+          <div>
+            <dt>At BT</dt>
+            <dd>Site reliability on Global Fabric.</dd>
+          </div>
+          <div>
+            <dt>Independently</dt>
+            <dd>
+              Rootweaver: retrieval, memory, evaluation and agent controls.
+            </dd>
+          </div>
+        </dl>
+        <a href="/about/">More about me</a>
+      </aside>
+    </header>
+    <a
+      class="home-clock"
+      href="/journey/?at=2025-09-11-the-founding-conversation&view=3d"
+    >
+      <span>
+        <strong data-building-days>{days.toLocaleString("en-GB")}</strong> days
+        building Rootweaver
+      </span>
+      <span>
+        Since <time datetime="2025-09-11">11 September 2025</time>
+      </span>
+    </a>
+    <div class="home-columns">
+      {latest && (
+        <section class="home-latest" aria-labelledby="latest-title">
+          <h2 id="latest-title">Latest from the journal</h2>
+          {image && (
+            <a class="home-art" href={`/writing/${latest.id}/`}>
+              <img src={image[2]} alt={image[1]} width="1536" height="1024" />
+            </a>
+          )}
+          <p class="home-meta">
+            {episodeChip(latest.id).replace(
+              /S(\d+)·E0?(\d+)/,
+              "Season $1, Episode $2",
+            )}{" "}
+            <time datetime={latestDate!.toISOString().slice(0, 10)}>
+              {fmt(latestDate!)}
+            </time>
+          </p>
+          <h3>
+            <a href={`/writing/${latest.id}/`}>{latest.data.title}</a>
+          </h3>
+          <p>{latest.data.description}</p>
+          <a class="home-read" href={`/writing/${latest.id}/`}>
+            Read {seasonOf(latest.id) === null ? "the article" : "the episode"}{" "}
+            <span>{latest.data.reading_time}</span>
+          </a>
+        </section>
+      )}
+      <ShippingLog />
+    </div>
+    <div class="home-context">
+      <a href="/writing/">
+        {episodes.length} episodes across {seasonCount} seasons
+      </a>
+      <a href="/writing/">
+        {published.length - episodes.length} longer articles
+      </a>
+      <a href="/adrs/">
+        {archive.canonicalRecords} ADRs + {archive.legacyRecords} legacy records
+        in the June archive
+      </a>
+    </div>
+    <section class="home-project">
+      <div>
+        <p class="home-kicker">The project behind the writing</p>
+        <h2>Rootweaver</h2>
+        <p>
+          My independent AI engineering platform. Coding tools, persistent
+          memory, searchable knowledge and code relationships, connected with
+          signed provenance.
+        </p>
+        <p class="home-small">
+          I design and operate it with AI-assisted development.
+        </p>
       </div>
-    </div>
-    <ShippingLog limit={10} />
-    <p class="mt-2.5 font-mono text-[0.6875rem] text-[--color-text-subtle]">
-      commit digests are generated weekly at build time from curated repos — messages filtered, private repos excluded
-    </p>
-  </section>
-
-  <!-- Platform teaser -->
-  <section class="mx-auto grid max-w-6xl gap-10 px-6 pb-16 pt-12 md:grid-cols-[1fr_1.1fr]">
-    <div>
-      <div class="u-label mb-3.5">The platform</div>
-      <p class="text-[0.9375rem] leading-relaxed text-[--color-text-muted]">
-        <strong class="font-semibold text-[--color-text]">Rootweaver</strong> connects my coding tools to
-        persistent memory, searchable knowledge and code relationships, with signed provenance.
-        I design and operate it with AI-assisted development across K3s and a native Mac workspace.
-      </p>
-      <a href="/rootweaver" class="mt-4 inline-block font-mono text-xs text-[--color-accent] hover:underline">architecture deep-dive →</a>
-    </div>
-    <div class="u-panel relative min-h-[200px]">
-      <svg class="absolute inset-0 h-full w-full" viewBox="0 0 540 200" role="img" aria-label="Rootweaver architecture overview">
-        <g stroke="var(--color-rule)" stroke-width="1" fill="none">
-          <line x1="320" y1="52" x2="320" y2="90"></line>
-          <line x1="380" y1="104" x2="420" y2="104"></line>
-          <line x1="310" y1="118" x2="275" y2="156"></line>
-          <line x1="330" y1="118" x2="425" y2="156"></line>
-          <line x1="110" y1="52" x2="110" y2="156"></line>
-          <line x1="156" y1="170" x2="220" y2="170"></line>
-        </g>
-        <circle r="3" fill="var(--color-accent)"><animateMotion dur="2.2s" repeatCount="indefinite" path="M320,52 L320,90"></animateMotion></circle>
-        <circle r="3" fill="var(--color-accent)"><animateMotion dur="2.8s" repeatCount="indefinite" path="M110,52 L110,156" begin="0.4s"></animateMotion></circle>
-        <circle r="3" fill="var(--color-accent)"><animateMotion dur="2.6s" repeatCount="indefinite" path="M310,118 L275,156" begin="0.7s"></animateMotion></circle>
-        {[
-          { n: "Vault", x: 64, y: 24, w: 92 },
-          { n: "Coding tools", x: 260, y: 24, w: 120 },
-          { n: "RAG Gateway", x: 260, y: 90, w: 120 },
-          { n: "Model routes", x: 420, y: 90, w: 100 },
-          { n: "Kafka", x: 64, y: 156, w: 92 },
-          { n: "Qdrant", x: 220, y: 156, w: 100 },
-          { n: "PostgreSQL", x: 378, y: 156, w: 104 },
-        ].map((node) => (
-          <g>
-            <rect x={node.x} y={node.y} width={node.w} height="28" rx="4" fill="var(--color-node-bg)" stroke="var(--color-rule)" stroke-width="1"></rect>
-            <circle cx={node.x + 11} cy={node.y + 14} r="2.5" fill="var(--color-ok)"></circle>
-            <text x={node.x + 11 + (node.w - 11) / 2} y={node.y + 18} text-anchor="middle" fill="var(--color-text)" font-size="10.5" font-family="JetBrains Mono">{node.n}</text>
-          </g>
-        ))}
-      </svg>
-    </div>
-  </section>
+      <div class="home-routes">
+        <a href="/rootweaver/">
+          <span>
+            <strong>Explore the platform</strong>
+            <small>The architecture and how the pieces connect.</small>
+          </span>
+          <span aria-hidden="true">↗</span>
+        </a>
+        <a href="/journey/">
+          <span>
+            <strong>Follow the journey</strong>
+            <small>The history, experiments and decisions in 2D or 3D.</small>
+          </span>
+          <span aria-hidden="true">↗</span>
+        </a>
+        <a href="/adrs/">
+          <span>
+            <strong>Read the decisions</strong>
+            <small>The published archive through June 2026.</small>
+          </span>
+          <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </section>
+  </div>
 </BaseLayout>
-
 <script>
-  // Shipping-log filters
-  const filterMap: Record<string, string[]> = {
-    all: [],
-    posts: ["post", "article"],
-    adrs: ["adr"],
-    commits: ["commit"],
-  };
-  const buttons = document.querySelectorAll<HTMLButtonElement>("#log-filters button");
-  const rows = document.querySelectorAll<HTMLElement>("[data-kind]");
-  buttons.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const kinds = filterMap[btn.dataset.filter ?? "all"];
-      rows.forEach((row) => {
-        const show = kinds.length === 0 || kinds.includes(row.dataset.kind ?? "");
-        row.style.display = show ? "" : "none";
-      });
-      buttons.forEach((b) => {
-        const active = b === btn;
-        b.classList.toggle("bg-[--color-chip]", active);
-        b.classList.toggle("border-[--color-rule]", active);
-        b.classList.toggle("text-[--color-text]", active);
-        b.classList.toggle("border-transparent", !active);
-        b.classList.toggle("text-[--color-text-subtle]", !active);
-      });
-    });
+  function refreshBuildingDays() {
+    const days = Math.max(
+      0,
+      Math.floor((Date.now() - Date.parse("2025-09-11T00:00:00Z")) / 86400000),
+    );
+    document
+      .querySelectorAll("[data-building-days]")
+      .forEach((n) => (n.textContent = days.toLocaleString("en-GB")));
+  }
+  refreshBuildingDays();
+  addEventListener("pageshow", refreshBuildingDays);
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) refreshBuildingDays();
   });
 </script>
