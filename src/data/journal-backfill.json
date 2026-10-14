@@ -1,0 +1,673 @@
+{
+  "cutoff": "2026-06-14",
+  "reviewedAt": "2026-10-14",
+  "records": [
+    {
+      "date": "2025-09-11",
+      "dateLabel": "11 September 2025",
+      "kind": "story",
+      "title": "The Founding Conversation",
+      "blogEpisode": "/writing/season-1-episode-1-day-zero/",
+      "journalEpisode": "season-1-episode-1-day-zero",
+      "journalLabel": "S1 \u00b7 E01",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [],
+      "targetId": "2025-09-11-the-founding-conversation",
+      "description": "A conversation about lost context became the ConvoCanvas plan: preserve conversations, organise them in a vault and turn them into useful knowledge. The published episode describes planning here; implementation follows in the next chapter.",
+      "nodes": [],
+      "editorialNote": "Chronology correction: this was the planning conversation. Vault implementation and ChromaDB indexing appear in the following September chapters."
+    },
+    {
+      "date": "2025-09-15",
+      "dateLabel": "14\u201315 September 2025",
+      "kind": "story",
+      "title": "From the vault plan to a working MVP",
+      "blogEpisode": "/writing/season-1-episode-2-mvp/",
+      "journalEpisode": "season-1-episode-2-mvp",
+      "journalLabel": "S1 \u00b7 E02",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [],
+      "nodes": [
+        {
+          "id": "vault",
+          "label": "Obsidian Vault",
+          "group": "core",
+          "color": "#a855f7"
+        },
+        {
+          "id": "conversation-mvp",
+          "label": "Conversation MVP",
+          "group": "workflow",
+          "color": "#3b82f6"
+        }
+      ],
+      "edges": [],
+      "description": "The vault, LibreChat and a first FastAPI backend gave the idea a working path: upload a conversation, parse it and extract content ideas."
+    },
+    {
+      "date": "2025-09-19",
+      "dateLabel": "18\u201319 September 2025",
+      "kind": "story",
+      "title": "Local models and conversation ownership",
+      "blogEpisode": "/writing/season-1-episode-3-ai-awakening/",
+      "journalEpisode": "season-1-episode-3-ai-awakening",
+      "journalLabel": "S1 \u00b7 E03",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [],
+      "nodes": [
+        {
+          "id": "ollama",
+          "label": "Ollama",
+          "group": "gpu",
+          "color": "#ef4444"
+        }
+      ],
+      "edges": [],
+      "description": "Ollama and local models opened a second path for working with conversations. The episode explores control, model selection and the limits that remained."
+    },
+    {
+      "date": "2025-09-27",
+      "dateLabel": "20\u201327 September 2025",
+      "kind": "story",
+      "title": "The vault becomes searchable",
+      "blogEpisode": "/writing/season-1-episode-4-documentation-overload/",
+      "journalEpisode": "season-1-episode-4-documentation-overload",
+      "journalLabel": "S1 \u00b7 E04",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [],
+      "nodes": [
+        {
+          "id": "chromadb",
+          "label": "ChromaDB",
+          "group": "database",
+          "color": "#f97316"
+        }
+      ],
+      "edges": [],
+      "description": "ChromaDB integration turned a growing collection of Markdown into semantic search. The episode follows the implementation and scaling work across the week."
+    },
+    {
+      "date": "2025-09-30",
+      "dateLabel": "30 September 2025",
+      "kind": "story",
+      "title": "The migration question",
+      "blogEpisode": "/writing/season-1-episode-5-migration-question/",
+      "journalEpisode": "season-1-episode-5-migration-question",
+      "journalLabel": "S1 \u00b7 E05",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [
+        {
+          "href": "/adrs/019-k3s-over-managed/",
+          "label": "K3s \u00b7 design note"
+        }
+      ],
+      "nodes": [
+        {
+          "id": "k3s",
+          "label": "K3s Cluster",
+          "group": "infra",
+          "color": "#3b82f6"
+        }
+      ],
+      "edges": [],
+      "description": "Research into update speed and operational cost led to a hybrid deployment decision. Existing K3s workloads did not mean every service should move into the cluster."
+    },
+    {
+      "date": "2025-10-05",
+      "dateLabel": "5 October 2025",
+      "kind": "story",
+      "title": "Recovering the K3s cluster",
+      "blogEpisode": "/writing/season-1-episode-6-k3s-crash-resurrection/",
+      "journalEpisode": "season-1-episode-6-k3s-crash-resurrection",
+      "journalLabel": "S1 \u00b7 E06",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [
+        {
+          "href": "/adrs/019-k3s-over-managed/",
+          "label": "K3s \u00b7 design note"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "description": "A failing cluster exposed networking and recovery assumptions. The chapter follows diagnosis, recovery and the need for better operational visibility."
+    },
+    {
+      "date": "2025-10-07",
+      "dateLabel": "7 October 2025",
+      "kind": "story",
+      "title": "Teaching the platform to draw its architecture",
+      "blogEpisode": "/writing/season-1-episode-7-diagram-automation/",
+      "journalEpisode": "season-1-episode-7-diagram-automation",
+      "journalLabel": "S1 \u00b7 E07",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [],
+      "nodes": [
+        {
+          "id": "architecture-diagrams",
+          "label": "Architecture Diagrams",
+          "group": "workflow",
+          "color": "#3b82f6"
+        }
+      ],
+      "edges": [],
+      "description": "Generated architecture diagrams made the growing platform easier to inspect and reduced the work of maintaining a separate mental picture."
+    },
+    {
+      "date": "2025-10-08",
+      "dateLabel": "5\u20138 October 2025",
+      "kind": "story",
+      "title": "The platform starts telling its own story",
+      "blogEpisode": "/writing/season-1-episode-8-meta/",
+      "journalEpisode": "season-1-episode-8-meta",
+      "journalLabel": "S1 \u00b7 E08",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [],
+      "nodes": [],
+      "edges": [],
+      "description": "The same vault and search tooling helped reconstruct the first season. Publishing and episode navigation became part of the system being built."
+    },
+    {
+      "date": "2025-10-09",
+      "dateLabel": "9 October 2025",
+      "kind": "story",
+      "title": "Temporal Filtering",
+      "blogEpisode": "/writing/season-2-episode-1-validation-chronicles/",
+      "journalEpisode": "season-2-episode-1-validation-chronicles",
+      "journalLabel": "S2 \u00b7 E01",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [],
+      "targetId": "2025-10-09-temporal-filtering",
+      "description": "Reconstructing the early journal exposed a date problem: archive filenames could obscure when the work actually happened. Temporal search and metadata handling were corrected."
+    },
+    {
+      "date": "2025-10-11",
+      "dateLabel": "10\u201311 October 2025",
+      "kind": "story",
+      "title": "Validation becomes a development habit",
+      "blogEpisode": "/writing/season-2-episode-2-validation-to-velocity/",
+      "journalEpisode": "season-2-episode-2-validation-to-velocity",
+      "journalLabel": "S2 \u00b7 E02",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [],
+      "nodes": [],
+      "edges": [],
+      "description": "Code review, systematic checks and metadata debugging tested whether recent improvements behaved as expected. The story makes the verification work visible alongside implementation."
+    },
+    {
+      "date": "2025-10-12",
+      "dateLabel": "11\u201312 October 2025",
+      "kind": "story",
+      "title": "54 Minutes to Production",
+      "blogEpisode": "/writing/season-2-episode-3-54-minutes-six-systems/",
+      "journalEpisode": "season-2-episode-3-54-minutes-six-systems",
+      "journalLabel": "S2 \u00b7 E03",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [],
+      "targetId": "2025-10-12-54-minutes-to-production",
+      "description": "Capture cleanup, semantic chunking, architecture auditing and publishing tools advanced across several short sessions. The episode distinguishes active work from the elapsed overnight window."
+    },
+    {
+      "date": "2025-10-13",
+      "dateLabel": "11\u201313 October 2025",
+      "kind": "story",
+      "title": "Testing several systems together",
+      "blogEpisode": "/writing/season-2-episode-4-three-systems-parallel-testing/",
+      "journalEpisode": "season-2-episode-4-three-systems-parallel-testing",
+      "journalLabel": "S2 \u00b7 E04",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [],
+      "nodes": [],
+      "edges": [],
+      "description": "A vault reindex, Journal v3, hybrid search and developer commands met in one testing window. Feature flags and measured trade-offs mattered as much as getting services deployed."
+    },
+    {
+      "date": "2025-10-18",
+      "dateLabel": "12\u201318 October 2025",
+      "kind": "story",
+      "title": "Turning research into operating patterns",
+      "blogEpisode": "/writing/season-2-episode-5-anthropic-patterns/",
+      "journalEpisode": "season-2-episode-5-anthropic-patterns",
+      "journalLabel": "S2 \u00b7 E05",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [],
+      "nodes": [],
+      "edges": [],
+      "description": "Agent patterns, evaluation and resumable work were introduced alongside recovery and learning work. The episode also records the gap between agent-assisted execution and personal understanding."
+    },
+    {
+      "date": "2026-01-25",
+      "dateLabel": "19 October 2025 \u2013 25 January 2026",
+      "kind": "story",
+      "title": "From side project to platform",
+      "blogEpisode": "/writing/season-3-episode-1-from-side-project-to-platform/",
+      "journalEpisode": "season-3-episode-1-from-side-project-to-platform",
+      "journalLabel": "S3 \u00b7 E01",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [],
+      "nodes": [],
+      "edges": [],
+      "description": "A long engineering arc brought storage migration, a rebrand and a more structured platform. This is a retrospective covering several months, not a single-day deployment."
+    },
+    {
+      "date": "2026-02-09",
+      "dateLabel": "26 January \u2013 9 February 2026",
+      "kind": "story",
+      "title": "Rebuilding the journal pipeline",
+      "blogEpisode": "/writing/season-3-episode-2-streaming-journals/",
+      "journalEpisode": "season-3-episode-2-streaming-journals",
+      "journalLabel": "S3 \u00b7 E02",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [],
+      "nodes": [
+        {
+          "id": "kafka",
+          "label": "Kafka",
+          "group": "workflow",
+          "color": "#00d4ff"
+        },
+        {
+          "id": "journal-parser",
+          "label": "Session Parser",
+          "group": "workflow",
+          "color": "#ec4899"
+        }
+      ],
+      "edges": [],
+      "description": "Unreliable generated journals prompted a Kafka-based pipeline, fuller session context and quality checks. The published chapter records iterations and limits rather than treating generated prose as evidence by itself."
+    },
+    {
+      "date": "2026-02-07",
+      "dateLabel": "1\u201311 February 2026",
+      "kind": "story",
+      "title": "Sealed Secrets + Harbor",
+      "blogEpisode": "/writing/season-3-episode-3-the-day-everything-got-sealed/",
+      "journalEpisode": "season-3-episode-3-the-day-everything-got-sealed",
+      "journalLabel": "S3 \u00b7 E03",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [],
+      "targetId": "2026-02-07-sealed-secrets-harbor"
+    },
+    {
+      "date": "2026-02-28",
+      "dateLabel": "February 2026 \u00b7 day not specified",
+      "kind": "story",
+      "title": "The synthesis layer learns to refuse",
+      "blogEpisode": "/writing/season-3-episode-4-refusal-gate/",
+      "journalEpisode": "season-3-episode-4-refusal-gate",
+      "journalLabel": "S3 \u00b7 E04",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [
+        {
+          "href": "/adrs/044-refusal-gate/",
+          "label": "Refusal gate \u00b7 design note"
+        }
+      ],
+      "nodes": [
+        {
+          "id": "refusal-gate",
+          "label": "Refusal Gate",
+          "group": "core",
+          "color": "#a855f7"
+        }
+      ],
+      "edges": [],
+      "description": "The Matrix bot checked retrieval relevance before synthesis and refused when the evidence was too weak. The episode dates this engineering to February; the public ADR carries a later record date."
+    },
+    {
+      "date": "2026-03-10",
+      "dateLabel": "8\u201319 March 2026",
+      "kind": "story",
+      "title": "PDG Activation \u2014 Code Intelligence",
+      "blogEpisode": "/writing/season-3-episode-5-second-graph-online/",
+      "journalEpisode": "season-3-episode-5-second-graph-online",
+      "journalLabel": "S3 \u00b7 E05",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [
+        {
+          "href": "/adrs/020-codegraph-platform/",
+          "label": "ADR-020 \u00b7 decision context"
+        },
+        {
+          "href": "/adrs/040-ner-not-llm/",
+          "label": "ADR-040 \u00b7 decision context"
+        }
+      ],
+      "targetId": "2026-03-10-pdg-activation-code-intelligence"
+    },
+    {
+      "date": "2026-03-19",
+      "dateLabel": "18\u201319 March 2026",
+      "kind": "story",
+      "title": "The audit and the cascade",
+      "blogEpisode": "/writing/season-3-episode-6-wednesday-audit-thursday-cascade/",
+      "journalEpisode": "season-3-episode-6-wednesday-audit-thursday-cascade",
+      "journalLabel": "S3 \u00b7 E06",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [
+        {
+          "href": "/adrs/040-ner-not-llm/",
+          "label": "ADR-040 \u00b7 decision context"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "description": "A security investigation became a chain of dependency repairs, rollback, metadata cleanup and documentation work. The published event window is March, separately from the later SRE milestones."
+    },
+    {
+      "date": "2026-03-29",
+      "dateLabel": "28\u201329 March 2026",
+      "kind": "story",
+      "title": "The weekend search got measurably better",
+      "blogEpisode": "/writing/season-3-episode-7-the-long-weekend/",
+      "journalEpisode": "season-3-episode-7-the-long-weekend",
+      "journalLabel": "S3 \u00b7 E07",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [
+        {
+          "href": "/adrs/045-benchmark-suite/",
+          "label": "Search benchmark \u00b7 design note"
+        },
+        {
+          "href": "/adrs/046-mcp-transport/",
+          "label": "MCP transport \u00b7 design note"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "description": "Benchmark-led fixes exposed scoring defects and a costly search path. The MCP transport migration improved connection behaviour, while deeper retrieval bottlenecks remained."
+    },
+    {
+      "date": "2026-03-31",
+      "dateLabel": "30\u201331 March 2026",
+      "kind": "story",
+      "title": "Async search and the missing evidence",
+      "blogEpisode": "/writing/season-3-episode-8-the-defenses-you-havent-built-yet/",
+      "journalEpisode": "season-3-episode-8-the-defenses-you-havent-built-yet",
+      "journalLabel": "S3 \u00b7 E08",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [],
+      "nodes": [],
+      "edges": [],
+      "description": "An async retrieval refactor and a path-traversal fix improved different parts of the platform. The account also explains why retained journals had to stand in for missing raw transcripts."
+    },
+    {
+      "date": "2026-04-30",
+      "dateLabel": "April 2026 \u00b7 month-long arc",
+      "kind": "story",
+      "title": "The fleet, the connectors and the async ceiling",
+      "blogEpisode": "/writing/season-3-episode-9-scout-fleet-and-the-async-ceiling/",
+      "journalEpisode": "season-3-episode-9-scout-fleet-and-the-async-ceiling",
+      "journalLabel": "S3 \u00b7 E09",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [
+        {
+          "href": "/adrs/034-data-source-connectors/",
+          "label": "ADR-034 \u00b7 decision context"
+        },
+        {
+          "href": "/adrs/035-retrieval-evaluation-programme/",
+          "label": "ADR-035 \u00b7 decision context"
+        },
+        {
+          "href": "/adrs/036-vault-structured-index-postgres/",
+          "label": "ADR-036 \u00b7 decision context"
+        },
+        {
+          "href": "/adrs/029-keda-gpu-swap-controller/",
+          "label": "ADR-029 \u00b7 decision context"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "description": "Fast search gains did not solve deep-search latency. Graph freshness, incomplete consumers and connector design led to a more explicit retrieval and evaluation programme."
+    },
+    {
+      "date": "2026-06-08",
+      "dateLabel": "1 May \u2013 8 June 2026",
+      "kind": "story",
+      "title": "The great restructure and the measurement era",
+      "blogEpisode": "/writing/season-3-episode-10-the-great-restructure/",
+      "journalEpisode": "season-3-episode-10-the-great-restructure",
+      "journalLabel": "S3 \u00b7 E10",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [
+        {
+          "href": "/adrs/030-repository-workspace/",
+          "label": "ADR-030 \u00b7 decision context"
+        },
+        {
+          "href": "/adrs/054-dedicated-cpu-embedding/",
+          "label": "ADR-054 \u00b7 decision context"
+        },
+        {
+          "href": "/adrs/053-observability-data-routing/",
+          "label": "ADR-053 \u00b7 decision context"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "description": "The repository became a sixteen-package workspace while CI, memory evaluation and embedding contention were addressed. The chapter closes the season with clearer boundaries and a stronger decision trail."
+    },
+    {
+      "date": "2026-06-10",
+      "dateLabel": "9\u201310 June 2026",
+      "kind": "story",
+      "title": "The night the fleet audited everything",
+      "blogEpisode": "/writing/season-4-episode-01-the-night-the-fleet-audited-everything/",
+      "journalEpisode": "season-4-episode-01-the-night-the-fleet-audited-everything",
+      "journalLabel": "S4 \u00b7 E01",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [
+        {
+          "href": "/adrs/065-kafka-consumer-durability/",
+          "label": "ADR-065 \u00b7 decision context"
+        },
+        {
+          "href": "/adrs/066-feature-flag-fail-closed/",
+          "label": "ADR-066 \u00b7 decision context"
+        },
+        {
+          "href": "/adrs/070-config-keyed-clients/",
+          "label": "ADR-070 \u00b7 decision context"
+        },
+        {
+          "href": "/adrs/071-graph-lifecycle/",
+          "label": "ADR-071 \u00b7 decision context"
+        }
+      ],
+      "nodes": [
+        {
+          "id": "audit-workflow",
+          "label": "Audit Workflow",
+          "group": "workflow",
+          "color": "#3b82f6"
+        }
+      ],
+      "edges": [],
+      "description": "A structured audit found defects across client isolation, Kafka durability, feature flags and graph handling. The work paused and resumed; findings still needed remediation and verification."
+    },
+    {
+      "date": "2026-06-11",
+      "dateLabel": "10\u201311 June 2026 \u00b7 audit aftermath",
+      "kind": "story",
+      "title": "Proving the fixes were real",
+      "blogEpisode": "/writing/season-4-episode-02-the-morning-after-proving-the-fixes-were-real/",
+      "journalEpisode": "season-4-episode-02-the-morning-after-proving-the-fixes-were-real",
+      "journalLabel": "S4 \u00b7 E02",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [
+        {
+          "href": "/adrs/065-kafka-consumer-durability/",
+          "label": "ADR-065 \u00b7 decision context"
+        },
+        {
+          "href": "/adrs/070-config-keyed-clients/",
+          "label": "ADR-070 \u00b7 decision context"
+        },
+        {
+          "href": "/adrs/071-graph-lifecycle/",
+          "label": "ADR-071 \u00b7 decision context"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "description": "Live probes and benchmark reruns checked the audit fixes. Missing raw benchmark outputs and a misleading judge comparison exposed why a result needs replayable evidence."
+    },
+    {
+      "date": "2026-06-10",
+      "dateLabel": "9\u201310 June 2026 \u00b7 custody arc",
+      "kind": "story",
+      "title": "Git history for the agent\u2019s context",
+      "blogEpisode": "/writing/season-4-episode-03-git-history-for-the-agents-brain/",
+      "journalEpisode": "season-4-episode-03-git-history-for-the-agents-brain",
+      "journalLabel": "S4 \u00b7 E03",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [
+        {
+          "href": "/adrs/061-developer-agent-provenance/",
+          "label": "ADR-061 \u00b7 decision context"
+        }
+      ],
+      "nodes": [
+        {
+          "id": "context-custody",
+          "label": "Context Custody",
+          "group": "workflow",
+          "color": "#3b82f6"
+        }
+      ],
+      "edges": [],
+      "description": "Vault and harness configuration gained versioning, recovery checks and clearer provenance. This describes the June custody model; the October operating model is recorded separately."
+    },
+    {
+      "date": "2026-06-11",
+      "dateLabel": "11 June 2026 \u00b7 console beginnings",
+      "kind": "story",
+      "title": "Building the cockpit",
+      "blogEpisode": "/writing/season-4-episode-04-building-the-cockpit/",
+      "journalEpisode": "season-4-episode-04-building-the-cockpit",
+      "journalLabel": "S4 \u00b7 E04",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [],
+      "nodes": [
+        {
+          "id": "console",
+          "label": "Rootweaver Console",
+          "group": "workflow",
+          "color": "#3b82f6"
+        }
+      ],
+      "edges": [],
+      "description": "Operational noise, ingestion work and metadata repairs made a shared review surface necessary. The first Console combined a review tracker, canvas and visible provenance."
+    },
+    {
+      "date": "2026-06-13",
+      "dateLabel": "12\u201313 June 2026",
+      "kind": "story",
+      "title": "The cockpit becomes an instrument panel",
+      "blogEpisode": "/writing/season-4-episode-05-the-instrument-panel/",
+      "journalEpisode": "season-4-episode-05-the-instrument-panel",
+      "journalLabel": "S4 \u00b7 E05",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [
+        {
+          "href": "/adrs/072-console-session-runner/",
+          "label": "ADR-072 \u00b7 decision context"
+        },
+        {
+          "href": "/adrs/073-interactive-agent-sessions/",
+          "label": "ADR-073 \u00b7 decision context"
+        }
+      ],
+      "nodes": [
+        {
+          "id": "interactive-runner",
+          "label": "Interactive Runner",
+          "group": "workflow",
+          "color": "#3b82f6"
+        }
+      ],
+      "edges": [],
+      "description": "Live vault views, voice capture, interactive sessions and explicit approvals joined into an idea-to-session-to-review loop. Terminal access in this period was read-only."
+    },
+    {
+      "date": "2026-06-12",
+      "dateLabel": "11\u201312 June 2026 \u00b7 opening of a longer arc",
+      "kind": "story",
+      "title": "Giving the Codex lane its own guardrails",
+      "blogEpisode": "/writing/season-4-episode-06-the-codex-lane/",
+      "journalEpisode": "season-4-episode-06-the-codex-lane",
+      "journalLabel": "S4 \u00b7 E06",
+      "evidenceLabel": "Backfilled through 14 June only. The linked episode also contains later work.",
+      "relatedLinks": [
+        {
+          "href": "/adrs/074-agent-budget-governance/",
+          "label": "ADR-074 \u00b7 decision context"
+        }
+      ],
+      "nodes": [
+        {
+          "id": "codex-lane",
+          "label": "Codex Lane",
+          "group": "workflow",
+          "color": "#3b82f6"
+        }
+      ],
+      "edges": [],
+      "description": "Separate configuration, valid hook responses and visible usage were the first steps. This milestone covers the opening work only; the published episode continues through 18 June, including the later handoff design."
+    },
+    {
+      "date": "2026-06-12",
+      "dateLabel": "12 June 2026 \u00b7 opening of the budget arc",
+      "kind": "story",
+      "title": "Choosing an authoritative usage meter",
+      "blogEpisode": "/writing/season-4-episode-07-the-proxy-that-ran-hot/",
+      "journalEpisode": "season-4-episode-07-the-proxy-that-ran-hot",
+      "journalLabel": "S4 \u00b7 E07",
+      "evidenceLabel": "Backfilled through 14 June only. The linked episode also contains later work.",
+      "relatedLinks": [
+        {
+          "href": "/adrs/074-agent-budget-governance/",
+          "label": "ADR-074 \u00b7 decision context"
+        }
+      ],
+      "nodes": [
+        {
+          "id": "usage-guard",
+          "label": "Usage Guard",
+          "group": "monitoring",
+          "color": "#ec4899"
+        }
+      ],
+      "edges": [],
+      "description": "Codex\u2019s guard read server-provided rate-limit windows, while the Claude guard still estimated usage from local transcripts. The later recalibration and deduplication work is beyond this 14 June backfill."
+    },
+    {
+      "date": "2026-06-14",
+      "dateLabel": "14 June 2026",
+      "kind": "story",
+      "title": "The machine had one memory budget",
+      "blogEpisode": "/writing/season-4-episode-09-the-night-the-mac-died/",
+      "journalEpisode": "season-4-episode-09-the-night-the-mac-died",
+      "journalLabel": "S4 \u00b7 E09",
+      "evidenceLabel": "Historical account from the published journal. Dates describe engineering, not publication.",
+      "relatedLinks": [],
+      "targetId": "2026-06-14-the-machine-had-one-memory-budget"
+    }
+  ],
+  "laterPublishedArcs": [
+    {
+      "episode": "season-4-episode-08-the-number-it-was-reading",
+      "label": "S4 \u00b7 E08",
+      "note": "The budget follow-up continues through 27 June; it is not backdated into this cutoff."
+    }
+  ],
+  "detachEpisodeFrom": [
+    "Multi-Agent Search",
+    "K3s Migration Begins",
+    "K3s Production \u2014 26 Commits in One Day",
+    "Jira + Confluence Integration",
+    "Gateway Memory Leak \u2014 7.5GB to 532MB",
+    "SRE Agent + Security ADRs"
+  ]
+}

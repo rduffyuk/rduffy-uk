@@ -1,0 +1,13 @@
+{
+  "reviewedAt": "2026-10-14",
+  "nodes": {
+    "falkordb": {
+      "retiredBy": "2026-10-14",
+      "note": "Retired from normal operation by the October architecture check."
+    },
+    "jira": {
+      "retiredBy": "2026-10-14",
+      "note": "Replaced as the platform tracker by the October architecture check."
+    }
+  }
+}

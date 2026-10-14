@@ -25,6 +25,7 @@ interface NodeMeshProps {
   lifeTarget?: number;
   labelPlacement?: LabelPlacement;
   dark?: boolean;
+  paused?: boolean;
   /** Solar-system orbit: when set, the node revolves around the centre each frame. */
   orbit?: { radius: number; baseAngle: number; z: number; speed: number };
 }
@@ -587,9 +588,11 @@ export function NodeMesh({
   },
   dark = true,
   orbit,
+  paused = false,
 }: NodeMeshProps) {
   const groupRef = useRef<THREE.Group>(null);
   const spinRef = useRef<THREE.Group>(null);
+  const orbitTime = useRef(0);
   const [hovered, setHovered] = useState(false);
   const scaleRef = useRef(0);
   // Appear/opacity is state-backed (not just the ref) so a node re-renders while
@@ -608,7 +611,8 @@ export function NodeMesh({
   const targetLife = hovered ? 1 : Math.max(DEAD_LIFE, lifeTarget);
   const iconSpec = getNodeIconSpec(node);
 
-  useFrame((state, delta) => {
+  useFrame((_state, delta) => {
+    if (!paused) orbitTime.current += delta;
     scaleRef.current = THREE.MathUtils.lerp(
       scaleRef.current,
       targetScale,
@@ -631,7 +635,7 @@ export function NodeMesh({
       // clock time (not delta-accumulated) so it never drifts. The group is only
       // translated, never rotated, so labels stay upright while the node orbits.
       if (orbit) {
-        const a = orbit.baseAngle + state.clock.elapsedTime * orbit.speed;
+        const a = orbit.baseAngle + orbitTime.current * orbit.speed;
         groupRef.current.position.set(
           Math.cos(a) * orbit.radius,
           Math.sin(a) * orbit.radius,
@@ -639,7 +643,7 @@ export function NodeMesh({
         );
       }
     }
-    if (spinRef.current && visible) {
+    if (spinRef.current && visible && !paused) {
       spinRef.current.rotation.y += delta * spinSeed.current;
       spinRef.current.rotation.x += delta * spinSeed.current * 0.4;
     }

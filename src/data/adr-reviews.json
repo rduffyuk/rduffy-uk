@@ -1,0 +1,601 @@
+{
+  "reviewedAt": "2026-10-14",
+  "scope": "Public-source identity, recorded status and selected current architecture context. Original decision bodies preserved.",
+  "entries": {
+    "019-k3s-over-managed": {
+      "category": "historical",
+      "title": "A historical design note, with its original link preserved",
+      "note": "The original website commit explicitly marked this as an example reconstructed from the journal. ADR-019 is the voice-agent architecture. This page is now labelled as a design note; it has no canonical ADR status or supersession relationship.",
+      "label": "Historical design note",
+      "reviewedAt": "2026-10-14"
+    },
+    "020-codegraph-platform": {
+      "category": "context",
+      "title": "The source graph has moved on",
+      "note": "The 14 October architecture check observed PostgreSQL-backed source-graph queries against the current code revisions. That is later implementation context for this proposal; it does not verify every capability in its original scope or change its proposed status.",
+      "reviewedAt": "2026-10-14",
+      "label": "Later context"
+    },
+    "029-keda-gpu-swap-controller": {
+      "category": "context",
+      "title": "A historical GPU scheduling design",
+      "note": "By the October check, retrieval was configured for external embeddings and local TEI and vLLM workloads were scaled to zero. This explains an earlier design, not the current embedding route. GPU availability was not qualified by this check. ADR-101, accepted in July, explicitly replaces the normal local embedding lanes in practice while retaining them for break-glass use. This is a scoped replacement of the embedding operating path, not a blanket rejection of local GPU scheduling.",
+      "reviewedAt": "2026-10-14",
+      "label": "Later context"
+    },
+    "036-vault-structured-index-postgres": {
+      "category": "reconciled",
+      "title": "Source identity reconciled",
+      "note": "The filename, canonical registry and decision subject identify this as ADR-036. Legacy metadata and headings have been aligned with that identity. The recorded decision status is preserved. This is not a new deployment verification.",
+      "label": "Identity reconciled",
+      "reviewedAt": "2026-10-14"
+    },
+    "040-ner-not-llm": {
+      "category": "reconciled",
+      "title": "Source identity reconciled",
+      "note": "The filename, canonical registry and decision subject identify this as ADR-040. Legacy metadata and headings have been aligned with that identity. The recorded decision status is preserved. Proposed 31 January 2026; the span-based decision was accepted on 19 March. Both dates are shown separately. This is not a new deployment verification.",
+      "label": "Identity reconciled",
+      "reviewedAt": "2026-10-14"
+    },
+    "044-refusal-gate": {
+      "category": "historical",
+      "title": "A historical design note, with its original link preserved",
+      "note": "The original website commit explicitly marked this as an example reconstructed from the journal. ADR-044 is memory-evaluation methodology v1. This page is now labelled as a design note; it has no canonical ADR status or supersession relationship.",
+      "label": "Historical design note",
+      "reviewedAt": "2026-10-14"
+    },
+    "045-benchmark-suite": {
+      "category": "historical",
+      "title": "A historical design note, with its original link preserved",
+      "note": "The original website commit explicitly marked this as an example reconstructed from the journal. ADR-045 is memory-evaluation methodology v2. This page is now labelled as a design note; it has no canonical ADR status or supersession relationship.",
+      "label": "Historical design note",
+      "reviewedAt": "2026-10-14"
+    },
+    "046-mcp-transport": {
+      "category": "historical",
+      "title": "A historical design note, with its original link preserved",
+      "note": "The original website commit explicitly marked this as an example reconstructed from the journal. ADR-046 is memory embedder architecture. This page is now labelled as a design note; it has no canonical ADR status or supersession relationship.",
+      "label": "Historical design note",
+      "reviewedAt": "2026-10-14"
+    },
+    "053-observability-data-routing": {
+      "category": "context",
+      "title": "The multi-backend picture still matters",
+      "note": "The October workload inventory included VictoriaMetrics and VictoriaLogs alongside Prometheus, Grafana, Loki, Tempo, Pyroscope and OpenTelemetry components. This supports a broader architecture picture, but it does not re-verify every routing, retention or delivery guarantee in this decision.",
+      "reviewedAt": "2026-10-14",
+      "label": "Later context"
+    },
+    "060-heterogeneous-multi-node-cluster": {
+      "category": "context",
+      "title": "The cluster has grown beyond this diagram",
+      "note": "This decision describes the three-node stage. The 14 October check observed four Ready K3s nodes, with workloads placed across the expanded cluster. The original diagram remains part of the history; backup restoration and the original networking assumptions were not requalified.",
+      "reviewedAt": "2026-10-14",
+      "label": "Later context"
+    },
+    "061-developer-agent-provenance": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "063-dreaming-loop": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "065-kafka-consumer-durability": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "066-feature-flag-fail-closed": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "074-agent-budget-governance": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "077-inter-hop-compaction": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "079-claude-drives-codex": {
+      "category": "context",
+      "title": "The operating model has changed",
+      "note": "Current operating instructions use native coding sessions with explicit ownership and authorization. This earlier always-on Claude-to-Codex routing design is historical context, not the current default. A formal supersession relationship has not been established here.",
+      "reviewedAt": "2026-10-14",
+      "label": "Later context"
+    },
+    "081-eval-harness-governance": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "082-lane-aware-retrieval": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "088-self-healing-sre-autonomy-ladder": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "030-repository-workspace": {
+      "category": "reconciled",
+      "title": "Source identity reconciled",
+      "note": "The filename, canonical registry and decision subject identify this as ADR-030. Legacy metadata and headings have been aligned with that identity. The recorded decision status is preserved. The source retains an earlier signature that failed verification; the signed identity correction does not authenticate that earlier record. This is not a new deployment verification.",
+      "label": "Identity reconciled",
+      "reviewedAt": "2026-10-14"
+    },
+    "034-data-source-connectors": {
+      "category": "reconciled",
+      "title": "Source identity reconciled",
+      "note": "The filename, canonical registry and decision subject identify this as ADR-034. Legacy metadata and headings have been aligned with that identity. The recorded decision status is preserved. This is not a new deployment verification.",
+      "label": "Identity reconciled",
+      "reviewedAt": "2026-10-14"
+    },
+    "035-retrieval-evaluation-programme": {
+      "category": "reconciled",
+      "title": "Source identity reconciled",
+      "note": "The filename, canonical registry and decision subject identify this as ADR-035. Legacy metadata and headings have been aligned with that identity. The recorded decision status is preserved. This is not a new deployment verification.",
+      "label": "Identity reconciled",
+      "reviewedAt": "2026-10-14"
+    },
+    "054-dedicated-cpu-embedding": {
+      "category": "context",
+      "title": "Historical decision added from the journal",
+      "note": "The May–June chapter records a dedicated CPU embedding worker. The 14 October architecture check instead observed configured external embeddings and scaled-down local TEI. Both belong in the timeline at their own dates. ADR-101, accepted in July, explicitly replaces the normal local embedding lanes in practice while retaining them for break-glass use. This is a scoped replacement of the embedding operating path, not a blanket rejection of local GPU scheduling.",
+      "reviewedAt": "2026-10-14",
+      "label": "Later context"
+    },
+    "070-config-keyed-clients": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "071-graph-lifecycle": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "072-console-session-runner": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "073-interactive-agent-sessions": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "010-streaming-journal-system": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "011-journal-consolidator-generation-tuning": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "001-linkedin-content-automation-pipeline": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "012-journal-pipeline-quality-overhaul": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "013-llm-observability-migration": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "016-modular-architecture-documentation": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "017-sre-agent-architecture": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "019-claude-voice-agent-architecture": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "022-local-llm-hybrid-routing-for-claude-code": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "023-hld-aware-architecture-review-pipeline": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "024-gitlab-flow-branching-and-release-strategy": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "025-trading-intelligence-platform": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "026-agent-lifecycle-patterns-claude-code-leak": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "031-journal-llm-context-handling-for-large-sessions": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "032-journal-llm-context-handling-for-large-sessions": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "033-short-form-video-generation-pipeline": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "037-daily-journal-consolidator-external-api-dependency": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "038-daily-consolidator-jsonl-direct-and-streaming-synth-model-swap": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "039-anthropic-github-tools-integration": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "041-k3s-pods-dashboard": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "042-nl-to-cypher-backend-selection": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "043-memory-system-derived-data-gdpr-position": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "044-memory-eval-methodology-v1": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "045-memory-eval-methodology-v2": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "046-memory-system-embedder-architecture": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "047-llm-content-trust-boundary": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "048-egress-control-strategy": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "049-personal-industry-radar-pipeline": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "050-personal-industry-radar-native-implementation": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "051-radar-feed-acquisition-tiered-hierarchy": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "052-benchmark-agentic-metrics-and-statistical-improvements": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "055-data-store-backup-and-qdrant-snapshot-tradeoff": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "056-dynamic-test-impact-analysis": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "057-mcp-bridge-efficiency-composite-tools-over-code-execution": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "058-rootweaver-deployment-contracts-for-baked-images-and-tei-safe-embedding": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "059-memory-writer-asynchronous-embedding": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "062-deprecate-99-meta-as-live-retrieval-and-workflow-surface": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "064-vault-path-and-payload-contract": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "067-dual-audience-http-api-contract": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "068-memory-api-gateway-router-mcp-thin-proxy": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "069-llm-facing-diagnostics-api": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "075-workload-level-provenance": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "076-radar-mac-transcript-extraction-lane": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "078-writable-console-terminal-socket-bounded-ttyd": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "080-cluster-namespace-taxonomy-and-rootweaver-decomposition": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "083-sever-neural-vault-import-blind-spot": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "084-data-driven-cicd-engineering-measurement-pipeline-llm-contracts": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "085-self-host-spend-tracker-off-cloud": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "086-gpu-webgl-graph-lens-falkordb": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "087-severity-routed-discord-alerting": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "legacy-2026-01-31-adr-anthropic-github-tools-integration": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "legacy-2026-02-15-adr-015-graphiti-falkordb-knowledge-graph": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "legacy-2026-02-15-adr-015-matrix-accessibility-layer": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "legacy-2026-02-12-adr-014-mcp-bridge-authentication": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "legacy-2026-02-07-adr-013-secret-management-strategy": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "legacy-2026-01-18-adr-009-classification-system": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    },
+    "legacy-2026-01-18-adr-008-branch-strategy": {
+      "category": "matched",
+      "title": "Source record retained",
+      "note": "The source body is reproduced with marked disclosure edits and web-link formatting. Its recorded status is retained. Historical evidence and claims have not been independently requalified.",
+      "label": "Source record",
+      "reviewedAt": "2026-10-14"
+    }
+  }
+}

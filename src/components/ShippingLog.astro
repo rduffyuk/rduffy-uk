@@ -38,9 +38,9 @@ for (const adr of adrs) {
   entries.push({
     date: adr.data.date,
     kind: "adr",
-    tag: `ADR-${String(adr.data.id).padStart(3, "0")}`,
+    tag: adr.data.sourceKind === "historical-note" ? "Design note" : adr.data.sourceKind === "legacy-record" ? "Legacy ADR" : `ADR-${String(adr.data.id).padStart(3, "0")}`,
     title: adr.data.title,
-    meta: adr.data.status,
+    meta: adr.data.recordedStatus ?? adr.data.status,
     href: `/adrs/${adr.id}/`,
   });
 }

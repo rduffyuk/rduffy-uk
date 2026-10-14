@@ -1,51 +1,33 @@
 ---
 id: 46
-title: "MCP transport: migrate SSE → streamable HTTP"
-status: accepted
-date: 2026-05-28
-tags: [mcp, transport, keda]
-supersedes: "ADR-029 (SSE transport)"
+title: "MCP transport: moving from SSE to Streamable HTTP"
+sourceKind: historical-note
+status: historical
+date: 2026-03-29
+dateLabel: "29 March 2026 · documented migration"
+journeyId: "2026-05-28-adr-046-mcp-transport-migrate-sse-streamable-http"
+noteLabel: "MCP transport"
+tags: [historical-note, journal]
 episode: season-3-episode-7-the-long-weekend
 public: true
 ---
 
 ## Context
 
-The MCP bridge exposes 29 tools to Claude Code and was served over **SSE** (Server-Sent Events). Two problems compounded each other:
+The March journal and platform specifications record the primary MCP bridge's migration from SSE to Streamable HTTP on 29 March 2026 (VW-177). The earlier website date and ADR number were part of an example record, not a canonical decision allocation.
 
-1. **Cold starts.** The bridge is a KEDA-scaled workload that scales to zero when idle. The first tool call of a session had to wait for a pod to start — up to **40 seconds**. Every new working session paid that tax up front, which is brutal for an interactive tool.
-2. **Connection-per-session.** SSE holds a long-lived connection open for each client session. That statefulness fights scale-to-zero (you cannot drop a pod that is holding open connections) and complicates load balancing — the transport itself was pinning the bridge to "always at least one warm replica."
+## Design rationale
 
-The MCP specification's 2025-03 revision introduced a **streamable HTTP** transport designed for exactly this shape of deployment.
+The bridge uses a stateless HTTP application for tool requests. Current source explicitly selects `stateless_http=True` for its HTTP path. Streamable HTTP can also be stateful; the transport name alone does not establish session affinity, cold-start time or safe scale-to-zero behaviour.
 
-## Decision
+## Current context
 
-Migrate the bridge to **streamable HTTP**: stateless request/response with optional streaming for long-running tool calls, and session continuity carried in an `Mcp-Session-Id` header rather than a held-open socket.
+On 14 October, the primary bridge deployment declared `MCP_TRANSPORT=http` and had one desired and one ready replica. The source still includes a legacy SSE branch. This check does not remeasure the historical 40-second-to-1.6-second latency claim, prove SSE retirement, or demonstrate scale-to-zero.
 
-```mermaid
-flowchart TB
-  subgraph OLD["Before · SSE"]
-    C1["Client"] ==>|"persistent connection<br/>per session"| B1["Bridge<br/>≥1 warm replica · 40s cold start"]
-  end
-  subgraph NEW["After · streamable HTTP"]
-    C2["Client"] -->|"stateless request<br/>Mcp-Session-Id header"| B2["Bridge<br/>KEDA 0→N · 1.6s cold start"]
-  end
-  classDef old fill:#fffefb,stroke:#c5383f,color:#21262e;
-  classDef new fill:#fffefb,stroke:#1f7a4d,color:#21262e;
-  class C1,B1 old;
-  class C2,B2 new;
-```
+## Record correction
 
-Because requests are now independent, the bridge can scale to zero and back without orphaning a connection, and any replica can serve any request.
+The previous claim that this superseded ADR-029 has been removed: canonical ADR-029 concerns GPU scheduling. Canonical ADR-046 concerns memory embedding. Neither is the predecessor decision for this transport note.
 
-## Alternatives considered
+## Source and record history
 
-- **Keep SSE with a warm minimum replica** — rejected: removes the cold-start pain only by paying an idle-node tax 24/7, which defeats the point of a scale-to-zero workload.
-- **WebSocket transport** — rejected: not part of the MCP spec, so client support is nonstandard and fragile; adopting it would mean betting on a bespoke transport for a protocol whose whole value is interoperability.
-- **Tune SSE cold start without changing transport** (smaller image, faster boot) — rejected: shaves seconds but cannot fix the structural connection-per-session statefulness; the transport, not the image, was the constraint.
-
-## Consequences
-
-**Positive**: cold starts dropped **~96% (40 s → 1.6 s)**, so the first tool call of a session is effectively instant. KEDA can now scale the bridge safely to zero, reclaiming resources when no session is active. The stateless model also makes horizontal scaling trivial.
-
-**Accepted costs**: clients pinned to older MCP SDK versions needed an upgrade path, so SSE and streamable HTTP were both served for one release cycle before SSE was retired. This ADR supersedes ADR-029, which chose SSE under the prior spec.
+[Read the published episode](/writing/season-3-episode-7-the-long-weekend/). Website Git history shows this page began as an explicitly labelled example reconstructed from the journal. Its original URL is retained, but the number in that URL is not a canonical ADR identity. Reconciled on 14 October 2026.

@@ -19,6 +19,7 @@ interface GraphSceneProps {
   currentIndex: number;
   onNodeClick: (node: PositionedNode) => void;
   dark?: boolean;
+  paused?: boolean;
 }
 
 interface GraphLayout {
@@ -165,7 +166,7 @@ function Sun() {
   );
 }
 
-export function GraphScene({ data, currentIndex, onNodeClick, dark = true }: GraphSceneProps) {
+export function GraphScene({ data, currentIndex, onNodeClick, dark = true, paused = false }: GraphSceneProps) {
   const { nodeMap, labelPlacements } = useMemo(
     () => (GRAPH_LAYOUT === "solar" ? layoutSolar(data) : layoutNodes(data)),
     [data],
@@ -206,9 +207,8 @@ export function GraphScene({ data, currentIndex, onNodeClick, dark = true }: Gra
     return ids;
   }, [data, currentIndex]);
 
-  // Liveness, not timeline: a node glows if it's still running in the cluster,
-  // and goes dark if it's been retired/superseded (e.g. ChromaDB → Qdrant). This
-  // is a property of the component, independent of where you are in the scroll.
+  // A later observation must not dim the component earlier in the story.
+  const atDate = data.milestones[currentIndex].date;
 
   const visibleEdges = useMemo(() => {
     const edges: JourneyEdge[] = [];
@@ -238,13 +238,14 @@ export function GraphScene({ data, currentIndex, onNodeClick, dark = true }: Gra
         {Array.from(nodeMap.values()).map((node) => (
           <NodeMesh
             key={node.id}
-            node={node}
+            node={{ ...node, retired: !!node.retiredBy && atDate >= node.retiredBy }}
             onClick={onNodeClick}
             visible={visibleNodeIds.has(node.id)}
-            lifeTarget={node.retired ? 0 : 1}
+            lifeTarget={node.retiredBy && atDate >= node.retiredBy ? 0 : 1}
             labelPlacement={labelPlacements.get(node.id)}
             dark={dark}
             orbit={orbits?.get(node.id)}
+            paused={paused}
           />
         ))}
       </group>
@@ -263,11 +264,11 @@ export function GraphScene({ data, currentIndex, onNodeClick, dark = true }: Gra
         enablePan
         enableZoom
         enableRotate
-        autoRotate={GRAPH_LAYOUT !== "solar"}
+        autoRotate={!paused && GRAPH_LAYOUT !== "solar"}
         autoRotateSpeed={0.6}
         enableDamping
         dampingFactor={0.05}
-        maxDistance={20}
+        maxDistance={32}
         minDistance={5}
       />
     </>

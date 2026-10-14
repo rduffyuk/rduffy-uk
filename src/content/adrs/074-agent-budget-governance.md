@@ -1,63 +1,214 @@
 ---
 id: 74
-title: "Treating AI-agent spend as a metered resource"
+title: "AI Agent Subscription Budget Governance (Claude + Codex)"
 status: accepted
+recordedStatus: "Accepted"
 date: 2026-06-12
-tags: [budget, observability, agent-ops, governance, cost]
+tags: ["agent-ops", "observability", "budget", "claude-code", "codex"]
+sourceKind: source-record
 public: true
+journeyId: "2026-06-12-adr-074-treating-ai-agent-spend-as-a-metered-resource"
 ---
+# ADR-074: AI Agent Subscription Budget Governance (Claude + Codex)
+
+**Status**: Accepted 2026-06-12
 
 ## Context
 
-Running two AI coding agents on flat-rate subscriptions sounds simple until you try to pace them. Neither vendor provides proactive in-session usage signals. Both agents can exhaust their quota in a single bursty evening session, and the failure mode — a hard stop mid-task — is the worst possible time to discover the problem.
+Ryan runs two AI coding agents on flat-rate subscriptions:
 
-The two agents have structurally different data exposure:
+- **Claude Code** (Anthropic) — billed per subscription cycle; usage is tracked in per-session JSONL files under `~/.claude/projects/`.
+- **Codex CLI** (OpenAI, plan "prolite") — subject to two rate-limit windows: a 5-hour rolling window and a 7-day rolling window. Usage snapshots are embedded as `token_count` events in per-session rollout JSONL files under `~/.codex/sessions/`.
 
-**Claude** exposes raw per-message token counts in local session logs, but no server-side quota readout. The guard must estimate spend against a self-configured weekly budget by parsing those logs.
+Neither vendor provides proactive in-session pacing signals. Both agents can exhaust quota in bursty sessions. Observed Codex usage in the 7 days to 2026-06-12: 41 sessions across 5 active days, 1.16B input tokens (95.6% cache-hit), 3.35M output tokens. The 5-hour window moved from 63% to 71% used in a single evening — burst risk sits in the short window, not the weekly one.
 
-**Codex** exposes server-truth quota percentages (a 5-hour rolling window and a 7-day rolling window) in its own session logs, but no cumulative token counters. The guard reads the vendor's own numbers directly.
-
-This asymmetry is permanent — a property of what each vendor publishes, not an implementation gap. The two guards share advisory surface and tier labels but draw on opposite data sources. A second wrinkle: the local Claude session logs are written by multiple processes (session resume, compaction, sidechain replay), which introduced roughly 58% duplicate entries. Treating those duplicates as additive overcounted spend by around 2.4×, which was only caught by cross-checking against the retrospective stats tool.
-
-A third wrinkle emerged later: Claude usage from browser, mobile, and other surfaces shares the same subscription limit but never appears in the local session logs. Local parsing alone understates total consumption.
+The absence of in-session feedback creates two failure modes: quota exhaustion mid-task (hard stop, work lost) and unnoticed overspend against a hand-set budget target.
 
 ## Decision
 
-```mermaid
-flowchart TB
-  PROMPT["Every agent prompt"] --> L1["Layer 1 — In-session advisory guard<br/>fires on UserPromptSubmit<br/>fail-open · advisory only"]
-  L1 --> PACE{"Pace check"}
-  PACE -->|"ahead of pace"| WARN["Inject pacing advisory<br/>into agent context"]
-  PACE -->|"nominal"| PASS["Pass through"]
-  WARN --> LEDGER
-  PASS --> LEDGER
-  LEDGER["Layer 2 — Durable ledger<br/>append jsonline per prompt"]
-  LEDGER --> RETRO["Layer 3 — Retrospective stats<br/>daily + monthly token tables<br/>(validator, not primary source)"]
-  classDef good fill:#fffefb,stroke:#1f7a4d,color:#21262e;
-  classDef neutral fill:#f1eee6,stroke:#a36207,color:#21262e;
-  class L1,LEDGER good;
-  class PACE,WARN neutral;
-  class RETRO good;
+Adopt a common **three-layer governance pattern** per agent, implemented via VW-755 (Claude) and VW-761 (Codex).
+
+### Layer 1 — In-session advisory guard (UserPromptSubmit hook)
+
+Each guard is a `UserPromptSubmit` hook: it fires before every prompt, reads current usage, and injects a pacing advisory into the agent context if warranted. Design constraints: fail-open (any error silently passes through), env kill switch, no hard blocking.
+
+**Claude guard** (`~/.claude/hooks/weekly_budget_guard.py`, VW-755):
+
+- Parses `~/.claude/projects/*/*.jsonl` usage records and computes a weighted token spend against a hand-configured weekly budget.
+- Pace tiers: `>=1.6` "WAY ahead of pace", `>=1.3` "well ahead", `>=1.0` "ahead"; near-limit warning at 90% of budget. *(Superseded 2026-06-15 — pace-ratio tiers replaced by forward-projection, the 90% hard clamp lifted to 95%; see [Subsequent Enhancements](#subsequent-enhancements--claude-guard-2026-06-15).)*
+- Kill switch: `CLAUDE_BUDGET_GUARD=off`.
+- Companion hooks in the same suite: `context_compact_guard.py` (tightens compact ceiling — default 600k, ~150k only at near-lockout, nudges `/handover` and `/clear` at breakpoints), `bash_output_filter.py` and `lean_jira_guard.py` (output-volume reducers).
+
+**Codex guard** (`~/.codex/hooks/codex_budget_guard.py`, VW-761):
+
+- Reads the newest rollout JSONL under `~/.codex/sessions/`, takes the last `token_count` event's server-truth `rate_limits` block (primary 5-hour window and secondary 7-day window: `used_percent` and `resets_at`).
+- Computes a weekly pace estimate via elapsed-window fraction.
+- Same tier labels as the Claude guard; adds a dedicated throttle warning when the 5-hour window reaches 80% or above, with UK-local reset time appended.
+- Staleness suffix injected when the snapshot is older than 6 hours.
+- Kill switch: `CODEX_BUDGET_GUARD=off`.
+- Injects advisory via `{"additionalContext": ...}` in the hook return payload.
+
+### Layer 2 — Durable ledger (VictoriaLogs)
+
+Every guard and audit hook POSTs a jsonline to VictoriaLogs:
+
+```
+POST http://REDACTED_PRIVATE_IP:30428/insert/jsonline?_stream_fields=source
+Content-Type: application/stream+json
 ```
 
-A common **three-layer governance pattern** applied to each agent:
+Omitting `Content-Type: application/stream+json` silently drops the record — this was the VW-677 lesson that hardened the implementation. Active streams:
 
-**Layer 1 — In-session advisory guard.** A hook fires before every prompt, reads current usage state, and injects a pacing advisory into the agent context if the pace warrants it. The Claude guard parses local session logs with deduplication by message ID (fixing the 2.4× overcounting bug) and projects a forward trajectory over the remaining week — replacing a naive cumulative percentage with a rate-aware forecast that relaxes the nag automatically on frugal days. The Codex guard reads the vendor's own quota percentages directly from the most recent session snapshot, adds a staleness warning if the snapshot is old, and appends the local-time window reset. Both guards fail open on any error and can be disabled via environment variable. Neither blocks; both inject advisory context.
+- `source:model-usage-audit` — per-message Claude token and cost records (VW-677, `model_usage_audit.py`).
+- `source:codex-budget-guard` — Codex snapshot fields: `agent`, `plan_type`, `weekly_used_percent`, `weekly_pace`, `fivehour_used_percent`, `snapshot_age_seconds`.
 
-An account-aware arbitration layer sits above the local parsers. A structured checkpoint can record account-observed usage (including browser, mobile, and other surfaces that never appear in local logs). When active, the account checkpoint is the headline source; local parsing is a secondary validator. The deduplication logic also collapses multiple host corpora that share the same logical session transcript into one count, preventing double-counting across machines.
+Records are queryable via `/select/logsql/query`. A unified Claude + Codex Grafana panel is a planned follow-on.
 
-**Layer 2 — Durable ledger.** Every guard posts a structured record to a log store on each prompt. This provides a persistent usage timeline, enables cross-agent aggregated views in a single dashboard, and separates the concern of record-keeping from the concern of in-session pacing.
+### Layer 3 — Retrospective stats (ccusage)
 
-**Layer 3 — Retrospective stats.** A command-line tool reads both vendors' local session logs and produces daily and monthly token tables. This is a validator and trend input, not a primary source. Its dollar figures are API list-price equivalents — they measure token volume, not flat-rate subscription pressure, and must not be cited as subscription cost.
+`npx ccusage` (no install, uses npx) reads both vendors' local session logs and produces daily and monthly token-and-cost tables. Codex variant: `npx ccusage@latest codex daily` (verified at v20.0.11).
 
-## Alternatives considered
+**Caveat**: ccusage dollar figures are API list-price equivalents (e.g. $718.90 for the observed Codex week), not subscription cost. They measure token volume against public per-token rates, not against the flat-rate quota windows the guards read. These are complementary measures, not the same metric. Ad-hoc deep analysis uses direct JSONL parsing of `token_count` / usage records for either agent.
 
-- **Use Langfuse for subscription tracking** — rejected: Langfuse models cost as tokens-times-unit-price and has no concept of rolling quota windows. It would measure API-equivalent spend, not the quota pressure that determines whether a session will hit a hard stop.
-- **Hard-blocking guards** — rejected: budget pressure is advisory. A hard block mid-task loses in-progress work and makes the agents unusable when telemetry breaks. Fail-open is the correct behaviour for a pacing signal.
-- **Vendor dashboards only** — rejected: dashboards provide no in-session signal, require context-switching out of the agent mid-task, and offer no cross-agent aggregated view spanning both subscriptions simultaneously.
+## Architectural Asymmetry
+
+The two guards share advisory surface and tier labels but draw on opposite data sources:
+
+| Dimension | Claude guard | Codex guard |
+|---|---|---|
+| Usage signal | Raw per-message token counts in local JSONL | Server-reported `used_percent` from `rate_limits` in rollout JSONL |
+| Budget reference | Hand-configured weekly budget (env var) | Vendor-provided quota windows (5h, 7d) |
+| Estimation approach | Must estimate spend against a self-set target | Reads server-truth quota directly |
+| Staleness risk | JSONL updated every prompt | Snapshot age tracked; guard warns if older than 6 hours |
+
+This asymmetry is a permanent property of the two vendors' data exposure, not an implementation gap. Anthropic exposes raw per-message token usage but no server quota readout; OpenAI exposes server-truth quota `used_percent` but no cumulative token counters. Same advisory surface, opposite data sources.
+
+## Subsequent Enhancements — Claude guard (2026-06-15)
+
+The original decision stands; the Claude Layer-1 guard was refined through four follow-on
+tickets. The core three-layer pattern and the Claude/Codex asymmetry are unchanged. Full
+narrative + verification: `06-Archive/Implementation-Reports/2026/Architecture/2026-06-15-budget-guard-projection-tier-lever.md`.
+
+- **VW-774 — model-aware weighting.** Each message's weighted-token sum is scaled by a
+  per-model multiplier (`model_weights` in `budget.json`: fable 2.0, opus 1.0, sonnet 0.6,
+  haiku 0.2 = API list-price ratios vs Opus) so weighted spend tracks cap consumption across
+  the model mix, not raw token volume. Changing a weight requires a `CACHE_VERSION` bump to
+  force re-parse of the pre-aggregated per-file sums.
+- **VW-829 — subscription-tier lever.** `budget.json` gains `active_tier` + a `tiers` map
+  (`max20x`/`max5x`); `~/.claude/scripts/set-max-tier.sh &lt;tier&gt;` flips the active budget in one
+  command. Honest to the use-it-or-lose-it weekly cap — switches plan ceiling, no cross-week
+  rollover. Invoice history confirms Ryan switches tiers ~5×/year, so this is a recurring action.
+- **VW-838 — forward-projection throttle.** Replaces the static `spent_frac >= 0.90` clamp
+  (which ignored pace, so a recovered burn rate stayed invisible behind a monotonic cumulative
+  %) with a trajectory check: `projected_end = spent + recent_6h_rate × time_to_reset`. Warn
+  tiers key on `projected_frac`; only a genuine near-lockout (`spent_frac >= 0.95`) hard-clamps.
+  A frugal/idle day now relaxes the nag automatically.
+- **VW-840 — JSONL dedup (correctness bug).** The Layer-1 "raw per-message token counts" data
+  source (see Architectural Asymmetry) had **no deduplication**, while Claude Code JSONL repeats
+  usage entries on session resume/compaction/sidechain replay (~58% duplicates measured). The
+  guard over-counted ~2.4×. **Caught by cross-checking ccusage** (Layer 3 promoted from
+  retrospective-only to an adversarial correctness check): same files, 706M un-deduped vs 290M
+  deduped. Fix: dedup by `(message.id, requestId)` via a persisted per-cycle seen-set + exclude
+  non-Anthropic models (`gpt-*` from Codex sessions logged in the same dir). Budget then
+  recalibrated (the prior VW-839 1430M was compensating for this bug → corrected to 580M; deduped
+  290M = 50% real `/usage`). `CACHE_VERSION` 2→3.
+
+**Asymmetry note (extends the table above):** the Claude guard's reliance on *raw local token
+counts* is precisely what exposed it to the dedup bug — the Codex guard, reading server-truth
+`used_percent`, is structurally immune. The vendor data-source asymmetry has a correctness
+dimension, not just a staleness one.
+
+## Subsequent Enhancements — Account-Aware Arbiter and Workflow Ledger (2026-06-18)
+
+The original three-layer pattern is retained, but VW-886 and VW-887 add an account-aware
+arbitration layer because local Claude Code JSONL cannot represent every quota-consuming
+surface.
+
+### Problem
+
+Claude Max20x reached account-level exhaustion while the local Claude Code-derived guard
+reported ~82% of the weekly cap. The missing spend was not a parser bug by itself:
+Claude browser, mobile, Claude.ai, and Claude Desktop usage share the same subscription
+limit but do not appear in `~/.claude/projects` JSONL.
+
+The MacBook and desktop also share/sync the 2TB workspace, and both `~/.claude/projects`
+trees can contain the same logical transcript corpus. Treating Mac + desktop local parses
+as independent spend sources would double count or create false confidence.
+
+### Decision
+
+Add a fourth, account-aware source arbitration layer above the local parsers:
+
+1. **Account checkpoint beats local estimate.** A structured checkpoint under
+   `REDACTED_WORKSPACE/.ai-budget-digest/account_checkpoints.json` or
+   `REDACTED_WORKSPACE/.ai-budget-digest/account_checkpoints.json` can record account-observed Claude
+   usage such as Claude.ai/browser/mobile showing 100%. While active, this is the Claude
+   headline source.
+2. **Local Claude corpus is deduped by logical corpus.** The digest fingerprints the
+   Claude JSONL path list under `~/.claude/projects` and collapses matching MacBook +
+   desktop corpora into one logical corpus. Multiple hosts are validation views, not
+   additive totals.
+3. **`ccusage` is pinned and validator-scoped.** The digest uses pinned `ccusage@20.0.14`
+   from `~/ai-budget-digest/node_modules/.bin/ccusage`, scoped to the current Claude cycle,
+   as a local validator. Hooks must not run `ccusage` on every prompt.
+4. **Codex server rate-limit data remains primary.** Codex headline quota still comes from
+   Codex `rate_limits` JSONL events. `ccusage codex` is a validator/trend input only.
+5. **Prompt hooks get cached account context.** A shared prompt hook
+   (`ai_budget_prompt_context.py`) is wired into Claude and Mac Codex `UserPromptSubmit`.
+   It reads only cached/account state and emits fail-open, low-latency context such as
+   `Claude account: 100% ... local Claude logs: 82% ... +18pp external delta`.
+6. **Workflow events get their own ledger.** `/compact`, `/clear`, and `/handover` prompt
+   events, plus actual `PreCompact` firings, append structured rows to
+   `usage_events.jsonl` in the shared 2TB state directory. The digest renders current-cycle
+   counts so compaction and reset behavior is visible alongside budget pressure.
+
+### Current Trust Order
+
+| Provider | Headline source order | Validator / secondary |
+|---|---|---|
+| Claude | account checkpoint -> local deduped guard state -> stale/missing degraded | pinned `ccusage`, duplicate-corpus notes |
+| Codex | Codex `rate_limits` snapshot -> stale/missing degraded | pinned `ccusage`, digest dry render |
+
+### Consequences
+
+- Browser/mobile Claude usage is no longer invisible to the digest or prompt-time advisory
+  once a checkpoint is recorded.
+- The digest must never sum Mac + desktop Claude usage unless event-level IDs prove they
+  are distinct corpora. Matching corpus fingerprints are counted once.
+- `/compact`, `/clear`, and `/handover` are measured as workflow events, not as separate
+  token-cost categories. Their token spend remains part of normal Claude/Codex usage.
+- Prompt hooks stay lightweight: they read checkpoint/guard/rate-limit state only.
+- Desktop currently has Claude hook integration and digest collection. Desktop Codex hook
+  integration is not applicable until a desktop `~/.codex/hooks.json` exists.
+
+## Alternatives Considered
+
+**Langfuse for subscription tracking** — rejected. Langfuse models cost as tokens-times-unit-price. It has no concept of rolling quota windows. It would measure API-equivalent spend, not flat-rate subscription pressure, making it unsuitable as a quota-window guard.
+
+**Hard-blocking guards** — rejected. Budget pressure is advisory; a spending rate above pace is not a hard error. Fail-open keeps agents usable when telemetry breaks, and avoids disrupting a session mid-task where a hard stop would lose in-progress work.
+
+**Vendor dashboards only** — rejected. Dashboards provide no in-session signal, require context-switching out of the agent, and offer no cross-agent aggregated view. The VictoriaLogs ledger provides the unified view the individual dashboards cannot.
 
 ## Consequences
 
-**Positive**: per-prompt pacing is visible in both agents without manual dashboard checks. Cross-agent usage sits in a single persistent log stream that can be queried and visualised uniformly. The account-aware arbitration layer surfaces browser and mobile consumption that was previously invisible to local estimates. The deduplication fix and forward-projection throttle made the Claude guard's output honest — it now correctly relaxes when pace is fine and warns only when trajectory is genuinely problematic.
+- Per-prompt pacing is visible in both agents without manual dashboard checks during sessions.
+- Unified VictoriaLogs ledger enables a single Grafana panel spanning Claude and Codex usage.
+- Guards are advisory only — they inject context, they do not block. A runaway agent or long session can exhaust quota despite warnings.
+- The Codex guard depends on the rollout JSONL `token_count` event schema and `rate_limits` field. This schema is undocumented but stable across observed versions. Schema drift would silently degrade the guard to no-op (fail-open by design).
+- Each `hooks.json` change for Codex triggers a one-time CLI trust prompt per the hook bridge architecture (VW-759).
+- ccusage dollar figures must not be cited as subscription cost in any report or blog post — they are API list-price equivalents and will mislead comparisons against flat-rate plan value.
+- Account checkpoints are manually observed truth until a stable browser-readable Claude
+  account usage source exists. They expire at the configured Claude reset and should not be
+  treated as permanent history.
 
-**Accepted costs**: the guards are advisory only. A long session or a runaway autonomous task can exhaust quota despite warnings — the system informs, it does not enforce. The Codex guard depends on an undocumented but stable field in the vendor's session log schema; schema drift would silently degrade the guard to a no-op. Account checkpoints for the Claude cross-surface delta are manually observed truth until a stable machine-readable account usage source exists from the vendor.
+## References
+
+- VW-755: Claude weekly budget guard suite (Done)
+- VW-761: Codex budget guard (Done, 2026-06-12); impl report at `02-Active-Work/Implementation-Reports/2026-Q2/2026-06-12-VW-761-codex-budget-guard.md`
+- VW-677: Model-tier enforcement and VictoriaLogs ledger; Content-Type lesson for jsonline ingestion
+- VW-762: This ADR (tracking ticket)
+- VW-774: Model-aware weighting (Done); VW-829: tier lever (Done); VW-838: forward-projection throttle (Done); VW-839: recalibration, corrected by VW-840 (Done); VW-840: JSONL dedup bug + fix (Done)
+- VW-886: Usage arbiter with pinned ccusage and account checkpoints (Done); impl report at `02-Active-Work/Implementation-Reports/2026-Q2/2026-06-18-VW-886-ai-budget-usage-arbiter.md`
+- VW-887: Prompt context hook and usage-event ledger (Done); impl report at `02-Active-Work/Implementation-Reports/2026-Q2/2026-06-18-VW-887-ai-budget-hook-context-ledger.md`
+- Impl report (2026-06-15 enhancements): `06-Archive/Implementation-Reports/2026/Architecture/2026-06-15-budget-guard-projection-tier-lever.md`
+- ADR-061: Developer-agent provenance and cryptographic attribution

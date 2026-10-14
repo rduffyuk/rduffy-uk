@@ -1,54 +1,43 @@
 ---
 id: 66
-title: "Feature flags fail closed: safe-by-default for LLM experiments"
+title: "Feature-Flag Fail-Closed Policy"
 status: accepted
+recordedStatus: "Accepted"
 date: 2026-06-10
-tags: [feature-flags, reliability, fail-closed, unleash]
+tags: ["feature-flags", "unleash", "fail-closed"]
+sourceKind: source-record
 public: true
+journeyId: "2026-06-10-adr-066-feature-flags-fail-closed-safe-by-default-for-llm-experiments"
 ---
+# ADR-066 — Feature-Flag Fail-Closed Policy
+
+## Status
+
+Accepted — 2026-06-10. Implemented under VW-685 (theme 4 of the VW-673 audit); the singleton/global-state interactions land with VW-682.
 
 ## Context
 
-The feature-flag client controlled which capabilities were active in the pipeline — multi-hop reasoning, experimental rerankers, cost-intensive synthesis steps. When the flag service was reachable, flags behaved correctly. An audit of the client confirmed two ways it failed open when the service was not:
+The Unleash-backed feature-flag client (`rootweaver_capabilities.feature_flags`) failed OPEN in two ways the VW-673 audit confirmed:
 
-**Transient refresh failures discarded live snapshots.** Any exception in the background refresh task — a service restart, a single timed-out request — set a fallback flag that directed all subsequent checks to an empty in-memory client. The empty client returns the caller's supplied default. The capability pipeline passes `default=True` for its flags. The failure chain: service becomes briefly unreachable → the client discards a valid flag snapshot → every capability turns on.
+1. **One transient refresh failure discarded a valid snapshot.** Any exception in `_refresh_flags()` (Unleash pod restart, a single timed-out `/client/features` call) set `_use_fallback = True` even though `self._flags` still held the last good flag set. Every check then routed to an empty `LocalFeatureFlagClient`, which returns the caller's default — and the capability pipeline passes `default=True`. Deliberately disabled, resource-intensive capabilities (`multi_hop`, `contradiction_detector`) and any kill-switched feature silently turned ON for up to a full refresh interval during every Unleash blip.
+2. **Unknown activation strategies evaluated to enabled.** An unrecognized strategy name fell through to `return True`, so a flag gated by a newer/custom strategy this client can't evaluate behaved as unconditionally on.
 
-**Unknown activation strategies evaluated to enabled.** When the client encountered a strategy name it didn't recognise — from a newer service version or a custom strategy — the unrecognised case fell through to `return True`. A flag gated by any unknown strategy behaved as unconditionally enabled.
-
-Both bugs share the same failure shape: the system lacked enough information to evaluate a flag, so it guessed "on." For most applications that is a defensible default. For LLM capability flags it is not. Deliberately disabled features are often disabled because they are expensive, experimental, or being kill-switched during an incident. A kill switch that re-enables itself during the outage that most needs it is worse than no kill switch. Operators reason about flags as though OFF means off; this implementation was violating that contract silently.
+A kill switch that re-enables itself during the outage that most needs it is worse than no kill switch — operators reason about flags as if OFF means off.
 
 ## Decision
 
-```mermaid
-flowchart TB
-  CHECK["is_enabled(flag)"] --> SNAP{"Has live or<br/>stale snapshot?"}
-  SNAP -->|Yes| EVAL{"Strategy<br/>recognised?"}
-  SNAP -->|"No — cold start"| FALLBACK["Return caller default<br/>(log: no snapshot)"]
-  EVAL -->|Yes| RESULT["Evaluate + return"]
-  EVAL -->|No| DENY["Deny — return false<br/>(log: unknown strategy)"]
-  classDef good fill:#fffefb,stroke:#1f7a4d,color:#21262e;
-  classDef bad fill:#fffefb,stroke:#c5383f,color:#21262e;
-  classDef neutral fill:#f1eee6,stroke:#a36207,color:#21262e;
-  class RESULT good;
-  class DENY bad;
-  class FALLBACK neutral;
-```
-
-Two rules, applied consistently across all flag evaluations:
-
-1. **Refresh failure retains the last-good snapshot.** The client falls back to the empty in-memory client only when it has never successfully fetched flags — cold start with no prior state. Any subsequent refresh failure, however many in a row, preserves the last known flag set. A stale-but-real snapshot always beats an empty one. Staleness is logged with the snapshot size so it is visible in monitoring.
-
-2. **Unknown strategy denies.** If the client cannot prove a flag should be on, it is off. The denial is logged with the strategy name so new strategy types surface the first time they appear in production.
-
-A third point to be explicit about: per-flag caller defaults (`is_enabled(flag, default=True)`) continue to apply for flags the service has never registered. That is configuration absence — the flag does not exist — which is distinct from infrastructure failure. The fail-closed rules govern failure, not absence.
-
-## Alternatives considered
-
-- **Set all capability defaults to False** — rejected: `default=True` for unregistered capabilities is a deliberate product stance, not a bug. A new capability should be on until explicitly disabled, not dark until explicitly lit. The problem was the client conflating "flag registered but service unreachable" with "flag not registered." Changing all defaults would fix the symptom in a way that obscures the real distinction.
-- **Longer timeout before discarding the snapshot** — rejected: a longer timeout still eventually discards a valid snapshot on sustained failure; the correct fix is never discarding it on transient failure.
+1. **Refresh failure retains the last-good snapshot.** The client only falls back when it has NO snapshot at all (cold start before the first successful refresh). A stale-but-real flag set always beats an empty one; staleness is logged with the snapshot size.
+2. **Unknown strategy denies.** If the client cannot prove a flag should be on, it is off. The denial is logged with the strategy name so new strategy types surface fast.
+3. **Per-flag defaults stay explicit at the call site.** `is_enabled(flag, default=…)` keeps the caller-supplied default for flags Unleash has never heard of — that is configuration absence, not infrastructure failure, and the capability pipeline's `default=True` for unregistered capabilities remains a deliberate product stance. The fail-closed rules above govern *failure*, not *absence*.
+4. **Flag-state transitions must be observable.** Falling back, recovering, and unknown-strategy denials log at WARNING with enough context to alert on.
 
 ## Consequences
 
-**Positive**: kill switches hold during service outages. Disabled capabilities — particularly expensive or experimental ones — stay disabled regardless of infrastructure blips. A/B variants stop flapping to their defaults on refresh failures, which was silently corrupting experiment cohort assignment.
+**Positive**: kill switches hold during Unleash outages; disabled capabilities stay disabled; A/B variants stop flapping to defaults on refresh blips.
 
-**Accepted costs**: a flag flipped in the service during an outage is not visible to the platform until the next successful refresh. The stale snapshot continues serving the pre-outage value. This is strictly better than serving an empty set, but it means flag changes do not take effect instantaneously under degraded conditions. Flags using genuinely new strategy types stay off until the client is updated to recognise them — the correct default, but it means new strategies require a coordinated client update before they can be used.
+**Negative / accepted**: a flag flipped in Unleash DURING an outage is not picked up until refresh succeeds (stale snapshot serves the old value — strictly better than serving the empty set); flags using genuinely new strategy types stay off until the client learns them (loud in logs).
+
+## Enforcement
+
+- Capability tests cover: refresh-failure-with-snapshot retains values; cold-start failure falls back; unknown strategy denies.
+- Audit trail: VW-673 master report; impl report under `02-Active-Work/Implementation-Reports/2026-Q2/`.

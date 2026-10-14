@@ -1,0 +1,106 @@
+{
+  "reviewedAt": "2026-10-14",
+  "milestones": [
+    {
+      "date": "2026-06-14",
+      "kind": "story",
+      "title": "The machine had one memory budget",
+      "description": "Several agent-assisted jobs overwhelmed the MacBook. The incident led to a resource guard and a clearer warning when another job would exceed the machine’s capacity. This is the June engineering event told in Season 4, Episode 9; the episode shipped in October.",
+      "nodes": [
+        {
+          "id": "resource-guard",
+          "label": "Resource Guard",
+          "group": "workflow",
+          "color": "#3b82f6"
+        }
+      ],
+      "edges": [],
+      "blogEpisode": "/writing/season-4-episode-09-the-night-the-mac-died/",
+      "evidenceLabel": "Engineering: 14 June · episode shipped: 13 October"
+    },
+    {
+      "date": "2026-10-14",
+      "kind": "checkpoint",
+      "title": "Where the platform stands",
+      "description": "A dated check of code, declared configuration and running workloads: source-graph queries now use PostgreSQL; retrieval uses configured external embeddings; the cluster spans four nodes. Native coding tools, scoped memory and research tools sit around those paths. This checkpoint records what was observed—it is not the date every component shipped.",
+      "nodes": [
+        {
+          "id": "source-graph-postgres",
+          "label": "PostgreSQL Source Graph",
+          "group": "database",
+          "color": "#22c55e"
+        },
+        {
+          "id": "external-embeddings",
+          "label": "External Embeddings",
+          "group": "core",
+          "color": "#a855f7"
+        },
+        {
+          "id": "litellm",
+          "label": "LiteLLM",
+          "group": "core",
+          "color": "#a855f7"
+        },
+        {
+          "id": "vikunja",
+          "label": "Vikunja",
+          "group": "workflow",
+          "color": "#3b82f6"
+        },
+        {
+          "id": "jupyterlab",
+          "label": "JupyterLab",
+          "group": "workflow",
+          "color": "#3b82f6"
+        },
+        {
+          "id": "mlflow",
+          "label": "MLflow",
+          "group": "workflow",
+          "color": "#3b82f6"
+        },
+        {
+          "id": "langfuse",
+          "label": "Langfuse",
+          "group": "monitoring",
+          "color": "#ec4899"
+        }
+      ],
+      "edges": [
+        {
+          "from": "pdg",
+          "to": "source-graph-postgres"
+        },
+        {
+          "from": "retriever",
+          "to": "external-embeddings"
+        },
+        {
+          "from": "rag-gateway",
+          "to": "litellm"
+        }
+      ],
+      "blogEpisode": null,
+      "link": {
+        "href": "/rootweaver/",
+        "label": "Explore the current architecture"
+      },
+      "relatedLinks": [
+        {
+          "href": "/adrs/020-codegraph-platform/",
+          "label": "Source graph · decision and later context"
+        },
+        {
+          "href": "/adrs/029-keda-gpu-swap-controller/",
+          "label": "GPU scheduling · what changed"
+        },
+        {
+          "href": "/adrs/060-heterogeneous-multi-node-cluster/",
+          "label": "Cluster growth · decision and later context"
+        }
+      ],
+      "evidenceLabel": "Architecture checked 14 October · selected paths, not a full health check"
+    }
+  ]
+}

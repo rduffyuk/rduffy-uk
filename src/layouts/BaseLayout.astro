@@ -1,4 +1,5 @@
 ---
+import JourneyReturn from "@components/JourneyReturn.astro";
 import Nav from "@components/Nav.astro";
 import Footer from "@components/Footer.astro";
 import "@/styles/global.css";
@@ -41,6 +42,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   <body class="notebook-site min-h-screen flex flex-col">
     <Nav />
     <main id="main-content" class="notebook-page flex-1" data-page={Astro.url.pathname.split("/")[1] || "home"}>
+      <JourneyReturn />
       <slot />
     </main>
     <Footer />
