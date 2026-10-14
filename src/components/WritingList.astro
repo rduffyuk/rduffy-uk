@@ -1,0 +1,44 @@
+---
+import type { CollectionEntry } from "astro:content";
+interface Props {
+  posts: CollectionEntry<"writing">[];
+}
+const { posts } = Astro.props;
+const publicationDate = (post: CollectionEntry<"writing">) =>
+  post.data.shippingDatetime ?? post.data.pubDatetime;
+const fmt = new Intl.DateTimeFormat("en-GB", {
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+  timeZone: "UTC",
+});
+const episode = (id: string) => id.match(/season-\d+-episode-(\d+)/)?.[1];
+---
+
+<ul class="writing-list">
+  {posts.map((post) => (
+    <li>
+      <a class="writing-row" href={`/writing/${post.id}/`}>
+        <span class="writing-title">{post.data.title}</span>
+        <span class="writing-meta">
+          {episode(post.id) && (
+            <>
+              Episode {Number(episode(post.id))}{" "}
+              <span aria-hidden="true">·</span>{" "}
+            </>
+          )}
+          Published{" "}
+          <time datetime={publicationDate(post).toISOString().slice(0, 10)}>
+            {fmt.format(publicationDate(post))}
+          </time>
+          {post.data.reading_time && (
+            <>
+              {" "}
+              <span aria-hidden="true">·</span> {post.data.reading_time}
+            </>
+          )}
+        </span>
+      </a>
+    </li>
+  ))}
+</ul>

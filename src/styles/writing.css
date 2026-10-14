@@ -1,0 +1,251 @@
+.writing-index {
+  max-width: 1160px;
+  padding: 0 28px 40px;
+  margin: auto;
+  font: 16px/1.65 var(--font-sans);
+  color: var(--color-text);
+}
+.writing-index h1,
+.writing-index h2 {
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+}
+.writing-index h1 {
+  font-weight: 500;
+}
+.writing-index a {
+  text-underline-offset: 5px;
+}
+.writing-index .title-line > a,
+.writing-index .writing-jumps a {
+  text-decoration: underline;
+}
+.writing-index a:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+}
+.writing-index .writing-intro {
+  padding: 53px 0 34px;
+  border-bottom: 1px solid var(--color-rule);
+  margin-bottom: 34px;
+}
+.writing-index .title-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 24px;
+  margin-bottom: 20px;
+}
+.writing-index .title-line h1 {
+  font-size: 46px;
+  margin: 0;
+}
+.writing-index .title-line > a {
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+.writing-index .writing-intro > p {
+  font-size: 18px;
+  line-height: 1.65;
+  max-width: 700px;
+  color: var(--color-text-muted);
+  margin-bottom: 17px;
+}
+.writing-index .writing-intro .writing-counts {
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+.writing-index .writing-counts > span {
+  margin: 0 8px;
+}
+.writing-index .writing-jumps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 25px;
+  font-size: 13px;
+}
+.writing-index .writing-jumps a {
+  color: var(--color-text);
+}
+.writing-index > section {
+  margin-bottom: 42px;
+  scroll-margin-top: 24px;
+}
+.writing-index .archive-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px 24px;
+  margin-bottom: 15px;
+}
+.writing-index .archive-heading h2 {
+  font-size: 21px;
+  line-height: 1.4;
+  margin: 0;
+  font-weight: 500;
+}
+.writing-index .archive-heading p {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+.writing-index .writing-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.writing-index .writing-list li {
+  border-bottom: 1px solid var(--color-rule);
+}
+.writing-index .writing-row {
+  display: block;
+  text-decoration: none;
+  padding: 14px 0;
+}
+.writing-index .writing-row:hover .writing-title {
+  color: var(--color-accent);
+}
+.writing-index .writing-title {
+  display: block;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.45;
+  max-width: 900px;
+}
+.writing-index .writing-meta {
+  display: block;
+  margin-top: 5px;
+  font-size: 12px;
+  color: var(--color-text-muted);
+  line-height: 1.65;
+}
+.writing-index .writing-meta > span {
+  margin: 0 6px;
+}
+.writing-index .writing-meta time {
+  font-variant-numeric: tabular-nums;
+}
+.writing-index .season {
+  border-bottom: 1px solid var(--color-rule);
+}
+.writing-index .season > summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 18px 0;
+  cursor: pointer;
+  list-style: none;
+}
+.writing-index .season > summary::-webkit-details-marker {
+  display: none;
+}
+.writing-index .season summary strong {
+  display: block;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+.writing-index .season summary small {
+  display: block;
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-top: 4px;
+}
+.writing-index .season-toggle {
+  color: var(--color-text-muted);
+  font-size: 20px;
+  flex: none;
+}
+.writing-index .season-toggle:before {
+  content: "+";
+}
+.writing-index .season[open] .season-toggle:before {
+  content: "−";
+}
+.writing-index .season[open] .writing-list {
+  border-left: 1px solid var(--color-rule);
+  padding-left: 20px;
+  margin-bottom: 20px;
+}
+.writing-index .season[open] .writing-list li:last-child {
+  border-bottom: 0;
+}
+.writing-index .season > summary:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+}
+.writing-index .date-note {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin: 8px 0 0;
+  max-width: 700px;
+}
+@media (max-width: 800px) {
+  .writing-index .archive-heading {
+    display: block;
+  }
+  .writing-index .archive-heading p {
+    margin-top: 7px;
+  }
+}
+@media (max-width: 680px) {
+  .writing-index .writing-intro {
+    padding: 34px 0 27px;
+    margin-bottom: 28px;
+  }
+  .writing-index .title-line {
+    gap: 15px;
+    margin-bottom: 18px;
+  }
+  .writing-index .title-line h1 {
+    font-size: 38px;
+  }
+  .writing-index .title-line > a {
+    font-size: 11px;
+  }
+  .writing-index .writing-intro > p {
+    font-size: 17px;
+  }
+  .writing-index .writing-intro .writing-counts {
+    font-size: 12px;
+  }
+  .writing-index .writing-jumps {
+    gap: 12px 20px;
+    font-size: 12px;
+  }
+  .writing-index .writing-title {
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .writing-index .writing-meta {
+    font-size: 11px;
+  }
+  .writing-index .writing-meta > span {
+    margin: 0 4px;
+  }
+  .writing-index .writing-row {
+    padding: 13px 0;
+  }
+  .writing-index .archive-heading h2 {
+    font-size: 20px;
+  }
+  .writing-index > section {
+    margin-bottom: 34px;
+  }
+  .writing-index .season summary strong {
+    font-size: 15px;
+  }
+  .writing-index .season[open] .writing-list {
+    padding-left: 14px;
+  }
+  .writing-index {
+    padding-bottom: 30px;
+  }
+}
+@media (max-width: 680px) {
+  .writing-index {
+    padding-left: 22px;
+    padding-right: 22px;
+  }
+}
