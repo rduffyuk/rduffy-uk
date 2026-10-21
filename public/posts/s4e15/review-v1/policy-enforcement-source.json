@@ -1,0 +1,22 @@
+{
+  "revision": "policy-flow-v1",
+  "historical_source_commit": "930e54df90ac996aef76eb221fc63a7ab436631e",
+  "files": [
+    "policy/build_input.py",
+    "policy/provenance.rego",
+    "policy/batch_size.rego",
+    "policy/ci_integrity.rego",
+    "policy/risk_routing.rego",
+    ".gitlab-ci.yml"
+  ],
+  "semantics": {
+    "modes": "per-contract",
+    "default": "warn",
+    "off": "silent for the four contracts",
+    "warn": "warning",
+    "enforce": "denial for violations; soft batch threshold remains warning",
+    "ci_wrapper": "allow_failure:true; policy denial does not itself establish pipeline blocking",
+    "mr_feedback": "artifact retained; comment attempted conditionally"
+  },
+  "artwork_approval": "NOT_APPLICABLE_DETERMINISTIC_EXPLANATION; placement pending human review"
+}
