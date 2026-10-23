@@ -1,0 +1,38 @@
+{
+  "nodes": [
+    {
+      "title": "Capture",
+      "label": "Claim + context marker"
+    },
+    {
+      "title": "Assess support",
+      "label": "Source text + NLI / judge"
+    },
+    {
+      "title": "Combine",
+      "label": "Support \u00d7 reliance"
+    },
+    {
+      "title": "Gate 1",
+      "label": "Classified claim spans"
+    },
+    {
+      "title": "Render",
+      "label": "Text + exact span map"
+    },
+    {
+      "title": "Gate 2",
+      "label": "The final rendered text"
+    }
+  ],
+  "historical_commit": "546d3cc66ae6e1626948b3499cb82cbfe1fd1bea",
+  "purpose": "Explain library data/decision flow, not production deployment",
+  "source_files": [
+    "rootweaver_audit_capture/capture.py",
+    "rootweaver_audit_grounding/service.py",
+    "rootweaver_audit_grounding/engine.py",
+    "rootweaver_audit_gate/gate.py",
+    "rootweaver_audit_voice/pipeline.py"
+  ],
+  "output": "editable SVG + this JSON; no generated technical labels"
+}
