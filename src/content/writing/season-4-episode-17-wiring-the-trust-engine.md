@@ -226,7 +226,7 @@ I would also pull the workload-level cost evidence earlier. The gateway work sti
 
 The engine had become more concrete: real components, an executable integration path, metrics, a model-bearing image design and a quality-scoring loop. The records also exposed the limits of each result. That is a more useful account of progress than treating a successful job as proof of everything downstream.
 
-Next in the verified sequence is Episode 18, **The Uncomfortable Question — Is This a Product?** The retained outline turns toward whether this work could become something useful beyond my own setup. It is still June's story; the season's closing operational chapters remain later in the month.
+Next: Episode 18, **The Ops Day**. The story returns to Rootweaver's operational foundations: getting alerts to the right place, making the first human actions easier, and checking the access and delivery paths those signals depend on. Those foundations set up the season's closing question: how much autonomy should the platform earn?
 
 ## Terms and references
 
