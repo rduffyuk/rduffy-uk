@@ -1,0 +1,40 @@
+{
+  "revision": "diagram-v2",
+  "nodes": [
+    [
+      "Claims",
+      "Curated corpus",
+      "paper"
+    ],
+    [
+      "Gate one",
+      "Before wording",
+      "shield"
+    ],
+    [
+      "Voice",
+      "Deterministic",
+      "pen"
+    ],
+    [
+      "Gate two",
+      "When eligible",
+      "shield"
+    ],
+    [
+      "Decision",
+      "Clear or blocked",
+      "receipt"
+    ],
+    [
+      "Metrics",
+      "Record result",
+      "chart"
+    ]
+  ],
+  "desktop": "Three columns, two rows; row wrap after voice",
+  "mobile": "Icon column with labels to the right",
+  "meaning": "Inspected library/emitter path. Gate two conditional; no website enforcement link established.",
+  "source": "emitter.py at 51667774",
+  "arrows": "Direction only, not live activity"
+}
