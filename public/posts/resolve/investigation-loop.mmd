@@ -1,0 +1,14 @@
+flowchart TD
+  model["Nemotron Ultra — Nebius Token Factory"]
+  host["Trusted host — Scope and execution authority"]
+  tools["Debugging tools — Read-only checks / bounded capture"]
+  record["Retained evidence — Complete captured output"]
+  input["Model-facing evidence — A disclosed, bounded projection"]
+  human["Human SRE — Interpretation and operational judgment"]
+  model -->|"check ID"| host
+  host -->|"fixed call"| tools
+  tools -->|"complete captured output"| record
+  record -->|"bounded projection"| input
+  input -->|"reassess"| model
+  model -->|"public assessment"| human
+  record -->|"inspect sources"| human
