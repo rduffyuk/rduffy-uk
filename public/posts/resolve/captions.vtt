@@ -1,0 +1,135 @@
+WEBVTT
+
+00:00:00.170 --> 00:00:02.620
+I'm Ryan, an SRE.
+
+00:00:02.760 --> 00:00:07.140
+When an agent suggests a fix during an
+incident, I want to know how it got
+
+00:00:07.140 --> 00:00:11.780
+there, what did it check, what came back
+and what it's still
+
+00:00:12.070 --> 00:00:16.630
+guessing. That's why I built Rootweaver
+Resolve.
+
+00:00:16.660 --> 00:00:22.220
+It connects NVIDIA's Nemotron Ultra,
+running through Nebius Token Factory to
+
+00:00:22.330 --> 00:00:25.420
+a small set of controlled debugging
+checks.
+
+00:00:25.660 --> 00:00:30.150
+This demo replays a real investigation
+from the disposable lab.
+
+00:00:30.170 --> 00:00:32.920
+The client is timing out, even though
+readiness is green.
+
+00:00:33.180 --> 00:00:37.360
+Ultra starts with client logs, then
+checks the service and its endpoints.
+
+00:00:37.360 --> 00:00:40.440
+The selected address and port match.
+
+00:00:40.470 --> 00:00:43.040
+That makes a wrong target less likely.
+
+00:00:43.190 --> 00:00:44.560
+But it doesn't explain the delay.
+
+00:00:44.560 --> 00:00:46.720
+Next, Ultra selects a packet capture.
+
+00:00:46.720 --> 00:00:50.320
+Rootweaver Observe collects it with
+fixed limits.
+
+00:00:50.550 --> 00:00:52.940
+And TShark decodes the packets.
+
+00:00:52.970 --> 00:00:54.680
+The model chooses an approved check.
+
+00:00:54.680 --> 00:00:57.200
+The controller supplies the target with
+arguments.
+
+00:00:57.420 --> 00:01:01.200
+Here you can inspect the command and
+what it returned.
+
+00:01:01.200 --> 00:01:02.710
+Now we have something useful.
+
+00:01:02.710 --> 00:01:07.100
+In four complete timings, the client
+starts closing the connection after
+
+00:01:07.100 --> 00:01:11.820
+about 800 milliseconds. Server data
+arrives around 2
+
+00:01:12.460 --> 00:01:16.680
+seconds. These packets were captured
+after the log window, so we can't match
+
+00:01:16.710 --> 00:01:18.380
+them to individual log entries.
+
+00:01:18.700 --> 00:01:22.770
+That narrows the investigation, but the
+cause is still open.
+
+00:01:22.830 --> 00:01:25.890
+We haven't traced what the server is
+waiting for or established the right
+
+00:01:25.890 --> 00:01:28.450
+timeout. Ultra also makes mistakes.
+
+00:01:28.520 --> 00:01:33.080
+It counts five complete timings instead
+of four, and calls the timeout too
+
+00:01:33.100 --> 00:01:37.680
+aggressive. These claims stay visible
+beside the evidence.
+
+00:01:37.900 --> 00:01:40.640
+After checking the pod status, Ultra
+hands over.
+
+00:01:40.680 --> 00:01:45.160
+You can inspect the model input, its
+answer, and the complete captured
+
+00:01:45.450 --> 00:01:49.040
+output. The model took no corrective
+actions.
+
+00:01:49.040 --> 00:01:53.200
+The next deeper check is a suggestion
+for the operator.
+
+00:01:53.420 --> 00:01:58.630
+The separate HTTP console can request a
+fresh Ultra analysis through Nebius
+
+00:01:58.630 --> 00:02:04.220
+with explicit opt-in. Here we're using
+the retained
+
+00:02:04.220 --> 00:02:09.790
+run. For me, the value is seeing what
+the agent checked, why
+
+00:02:09.920 --> 00:02:14.800
+its assessment changed, and where I
+should investigate next.

@@ -1,0 +1,21 @@
+
+.notebook-article .prose {min-width:0}
+.notebook-article .prose img,.notebook-article video {display:block;width:100%;height:auto;border-radius:10px}
+.notebook-article video {background:#111;border:1px solid var(--color-border)}
+.notebook-article figcaption,.notebook-article .caption,.notebook-article .code-source {font-size:.8rem;line-height:1.65;color:var(--color-text-muted)}
+.notebook-article .caption {margin-top:12px;margin-bottom:30px}
+.notebook-article details {border:1px solid var(--color-border);border-radius:8px;padding:0 16px;margin:24px 0;background:var(--color-card)}
+.notebook-article summary {cursor:pointer;padding:14px 0;font-weight:600}
+.notebook-article details.walkthrough ol {padding-bottom:14px}
+.notebook-article table {display:block;max-width:100%;overflow-x:auto}
+.notebook-article pre {max-width:100%;overflow-x:auto}
+.notebook-article .diagram-tools {display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin:10px 0}
+.notebook-article .diagram-scroll {overflow:auto;max-width:100%;margin-bottom:16px}
+.notebook-article .diagram-scroll img {width:100%;min-width:720px;background:#fbfaf7}
+.notebook-article .diagram-tools button,.notebook-article #glossary-clear {font:inherit;background:var(--color-bg);color:var(--color-text);border:1px solid var(--color-border);padding:8px 12px;border-radius:6px;cursor:pointer}
+.notebook-article .glossary dl>div {padding:12px 0;border-bottom:1px solid var(--color-border)}
+.notebook-article .glossary [hidden] {display:none}
+.notebook-article .glossary dt {font-weight:650}
+.notebook-article .glossary dd {margin:5px 0 10px;color:var(--color-text-muted)}
+.notebook-article #glossary-search {display:block;width:100%;font:inherit;color:var(--color-text);background:var(--color-bg);border:1px solid var(--color-border);padding:10px;border-radius:6px;margin:8px 0}
+@media(max-width:600px){.notebook-article details{padding:0 12px}.notebook-article #glossary-search{font-size:16px}}

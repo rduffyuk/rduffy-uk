@@ -29,7 +29,7 @@ const prev = idx > 0 ? posts[idx - 1] : null;
 const next = idx < posts.length - 1 ? posts[idx + 1] : null;
 ---
 
-<BaseLayout title={post.data.title} description={post.data.description ?? ""}>
+<BaseLayout title={post.data.title} description={post.data.description ?? ""} image={post.data.image} imageAlt={post.data.imageAlt}>
   <!-- reading progress -->
   <div class="sticky top-[3.3125rem] z-40 h-0.5 bg-[--color-border]">
     <div id="progress-bar" class="h-0.5 w-0 bg-[--color-accent]"></div>

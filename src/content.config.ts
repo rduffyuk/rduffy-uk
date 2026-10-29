@@ -29,6 +29,8 @@ const writing = defineCollection({
       title: z.string(),
       description: z.string().optional(),
       pubDatetime: z.coerce.date(),
+      image: z.string().optional(),
+      imageAlt: z.string().optional(),
       // Optional actual release date for the homepage shipping log.
       // Preserve original article dates for historical writing.
       shippingDatetime: z.coerce.date().optional(),
