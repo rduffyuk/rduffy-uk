@@ -1,0 +1,58 @@
+{
+  "nodes": [
+    [
+      "Model response",
+      "Supplied JSON",
+      "paper"
+    ],
+    [
+      "Decode strings",
+      "Recover supplied data",
+      "key"
+    ],
+    [
+      "Filter shape",
+      "Keep required keys",
+      "filter"
+    ],
+    [
+      "Validate",
+      "Types and constraints",
+      "check"
+    ],
+    [
+      "Graph processing",
+      "Then inspect usefulness",
+      "graph"
+    ],
+    [
+      "Reject + warn",
+      "No invented entities",
+      "stop"
+    ]
+  ],
+  "edges": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      2
+    ],
+    [
+      2,
+      3
+    ],
+    [
+      3,
+      4
+    ],
+    [
+      2,
+      5
+    ]
+  ],
+  "scope": "Simplified intended repaired boundary, not complete architecture or historical traffic",
+  "motion": "direction only"
+}
