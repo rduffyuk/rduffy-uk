@@ -1,0 +1,121 @@
+{
+  "observed_utc": "2026-11-08",
+  "profile_kind": "locally configured and patched Strata; not an unmodified upstream baseline",
+  "engine_version_label": "0.1.54-sessionmem; sm89; CUDA13.0",
+  "upstream_source_revision_recorded": "870aedd9e1ebe1c91f94da93b59af17729f6c5c0",
+  "engine_binary_sha256": "e5761f48c6ee42ed2a747765219275e8823c10b2f187e23d412f3c2665f0f3af",
+  "model_files": [
+    "Qwen3.8-Flash-Next-GSQ-RCO-IQ2_XS-00001-of-00002.gguf",
+    "Qwen3.8-Flash-Next-GSQ-RCO-IQ2_XS-00002-of-00002.gguf"
+  ],
+  "gpu": "RTX4080 16GiB;200Wcap",
+  "cpu": "13th Gen Intel(R) Core(TM) i9-13900KF",
+  "host_memtotal_kib": 65595840,
+  "native_args": {
+    "--expert-cache": "auto",
+    "--resident-budget-gib": "8",
+    "--prefill": "auto",
+    "--spec": "2",
+    "--suffix-draft": "0",
+    "--lookup-chain": "0",
+    "--kv": "int8",
+    "--max-context": "262144",
+    "--pool-workers": "6",
+    "--vram-reserve-mib": "1536",
+    "--memory-limit-mib": "0",
+    "--prompt-cache": "1",
+    "--conversation-cache-mib": "0",
+    "--adapt-swaps": "0",
+    "--stats": true,
+    "--kv-resident": "32768",
+    "--prompt-cache-every": "0",
+    "--prompt-cache-root": "0",
+    "--session-save-reclaim": true
+  },
+  "expert_profile": "selected expert-profile.bin",
+  "engine_environment": {
+    "STRATA_PREFILL_LAYER_MAJOR": "1",
+    "STRATA_PREFILL_LM_TOKENS": "24576",
+    "STRATA_PREFILL_LM_MARGIN_MIB": "512",
+    "STRATA_RESIDENT_HEADROOM_GIB": "10",
+    "STRATA_TRACE": "1",
+    "STRATA_RSS_TRACE": "1",
+    "STRATA_STARTUP_PHASE_TRACE": "1",
+    "STRATA_POSTTOUCH": "0",
+    "STRATA_ADVISORY_PLAN": "0",
+    "STRATA_REQUEST_LINES": "1"
+  },
+  "api_config": {
+    "model_name": "flash-next-strata-iq2xs",
+    "mtp": false,
+    "max_queue": 0,
+    "idle_unload_s": 0,
+    "fit_max_tokens": false
+  },
+  "memory_envelope_gib": {
+    "cgroup_high": 34,
+    "independent_stop": 36,
+    "cgroup_max": 38,
+    "swap": 0,
+    "host_reserve_floor": 12
+  },
+  "local_native_changes": [
+    "Earlier no-MTP SAVE/RESTORE fix retained",
+    "VW-2330 bounded mapped-model-file cache advice before SAVE/RESTORE memory admission; same admission floor resampled; localhost native code rebuild; CUDA objects unchanged"
+  ],
+  "wrapper_and_guard_changes": [
+    "Local engine-tap line/timestamp instrumentation",
+    "Local session save retry/control wrapper",
+    "External fail-closed cgroup/service/pressure/OOM-evidence watchdog; approved below-limit recovery rule; other hard checks and thresholds retained"
+  ],
+  "request_settings": {
+    "temperature": 0,
+    "top_p": 1,
+    "thinking": false,
+    "stream": true,
+    "output_cap": 1024,
+    "internal_reserve": 8
+  },
+  "stock_baseline_comparison": "NOT_PERFORMED; per-option difference from every upstream default is not established",
+  "model_training_or_weights_changes_during_v5": "None performed by the study; selected quantized model is part of the profile",
+  "model_source": {
+    "repo": "ISTA-DASLab/Qwen3.8-Flash-Next-GSQ-RCO-GGUF",
+    "revision": "ed59f92082b1e93c0e96d60a8b11aab089b52f09",
+    "files": [
+      {
+        "name": "Qwen3.8-Flash-Next-GSQ-RCO-IQ2_XS-00001-of-00002.gguf",
+        "bytes": 39225954592,
+        "sha256": "92cee27ae5bbadcd732416a0f7a7f0acc092399dbbe8f5a5efa707c2ec0a49d7",
+        "url": "https://huggingface.co/ISTA-DASLab/Qwen3.8-Flash-Next-GSQ-RCO-GGUF/resolve/ed59f92082b1e93c0e96d60a8b11aab089b52f09/IQ2_XS/Qwen3.8-Flash-Next-GSQ-RCO-IQ2_XS-00001-of-00002.gguf"
+      },
+      {
+        "name": "Qwen3.8-Flash-Next-GSQ-RCO-IQ2_XS-00002-of-00002.gguf",
+        "bytes": 28800138432,
+        "sha256": "316b46f3a2dbd68c900f43136ab9449f9dcc3725dfd8c794847c204bc161e113",
+        "url": "https://huggingface.co/ISTA-DASLab/Qwen3.8-Flash-Next-GSQ-RCO-GGUF/resolve/ed59f92082b1e93c0e96d60a8b11aab089b52f09/IQ2_XS/Qwen3.8-Flash-Next-GSQ-RCO-IQ2_XS-00002-of-00002.gguf"
+      }
+    ]
+  },
+  "driver": "615.71.09",
+  "kernel": "7.0.0-34-generic",
+  "vbios": "95.03.2B.00.65",
+  "power_cap_w": 200,
+  "chat_template_sha256": "12827f24b742ea4e80cdc12dbcf9622227056b9f797252a3149263d4f9aaadce",
+  "gpu_unlock": {
+    "historical_trial": "Successful selector readback on a different 30 October boot; no practical speed gain established",
+    "study_boot": "Stock entry, gpu_unlock blacklisted and module absent",
+    "current_silicon_rate_state": "UNKNOWN - not measured in these studies",
+    "comparison": "No matched unlock comparison in V7 or stronger-prompt follow-up",
+    "code_firmware_included": false
+  },
+  "reconstruction_limitations": [
+    "Exact generation additionally depends on tokenizer/template, generated model pack and selected expert-profile bytes, wrapper/native instrumentation and matched controls. No serving turnkey runner is supplied.",
+    "Patch application verified against seven archived modified-source hashes. No fresh compilation or bit-identical binary build qualification in this release-preparation slice.",
+    "Model file hashes are retained source-pin evidence, not a fresh 68GB weight reread in this slice."
+  ],
+  "tokenizer_sha256": {
+    "vocab.json": "4ba64f0332abcfb0b600b7df1537d1e836e68009d5fb7cdb77339738dc6365c4",
+    "merges.txt": "4ba698529766c7a2f5052083ea10cdf2485577f5237a332ee291054eb11e3332",
+    "token_type.json": "5088c8c298fc06af8382ddb3b76c888703ac2634e82263b97eedcc2ad202738b"
+  }
+}

@@ -1,0 +1,124 @@
+{
+  "schema": "strata-memory-explainer/v4",
+  "model": {
+    "label": "Qwen3.8-Flash-Next \u00b7 GSQ-RCO \u00b7 IQ2_XS",
+    "publisher": "ISTA-DASLab",
+    "revision": "ed59f92082b1e93c0e96d60a8b11aab089b52f09",
+    "url": "https://huggingface.co/ISTA-DASLab/Qwen3.8-Flash-Next-GSQ-RCO-GGUF/tree/ed59f92082b1e93c0e96d60a8b11aab089b52f09",
+    "files_bytes": [
+      39225954592,
+      28800138432
+    ],
+    "file_total_gb": 68.026093024,
+    "file_total_gib": 63.35423609614372,
+    "expert_weights_gib_startup_rounded": 33.0
+  },
+  "snapshot": {
+    "label": "Study-start allocation, 8 November 2026; not peak or current live use",
+    "engine_binary_sha256": "e5761f48c6ee42ed2a747765219275e8823c10b2f187e23d412f3c2665f0f3af",
+    "context_capacity_tokens": 262144,
+    "gpu_kv_resident_cells_per_qsa_layer": 32768,
+    "kv_format": "int8",
+    "capacity_preallocated": true,
+    "adapt_swaps": 0
+  },
+  "gpu": {
+    "name": "RTX 4080",
+    "capacity_gib_reported": 15.9921875,
+    "expert_cache_gib_reported": 9.33,
+    "kv_payload_gib_estimate": 0.38625,
+    "kv_estimate_formula": "3.09 \u00d732768/262144=0.38625GiB; sameformat payload ratio, not observed fullKVdeviceallocation",
+    "other_occupied_gib_residual_estimate": 4.7612890624999995,
+    "free_gib_startup_reported": 1.5146484375,
+    "components_note": "Rounded expert log and CUDA-free checkpoint; residual includes dense weights, buffers, maps, recurrent state and possibly other device occupancy; not component attribution",
+    "configured_reserve_gib": 1.5,
+    "reserve_note": "The physical free checkpoint includes the configured1.50GiBreserve; not an additional freeKVbudget.",
+    "occupied_gib_startup_derived": 14.4775390625
+  },
+  "ram": {
+    "capacity_gib_os_reported": 62.55706787109375,
+    "expert_copy_gib_reported": 8.0,
+    "full_kv_copy_gib_reported": 3.09,
+    "unattributed_remainder_gib": 51.46706787109375,
+    "remainder_note": "Other processes, runtime, page cache and available RAM not separated; NOT all free",
+    "observations": {
+      "schema": "strata-ram-observations/v1",
+      "campaign": "VW-2353-strata-n50-256k-v7",
+      "source_archive": "session-4/native-snapshot.tar",
+      "source_archive_bytes": 481751040,
+      "files": {
+        "resources": 1375,
+        "samples": 1375
+      },
+      "observations": 50857,
+      "in_call_samples": 48107,
+      "boundary_observations": 2750,
+      "definition": "cgroup memory.current, including charged file cache; not process RSS or free host memory",
+      "min_bytes": 32706170880,
+      "median_bytes": 36504666112,
+      "max_bytes": 36512399360,
+      "min_gib": 30.45999526977539,
+      "median_gib": 33.99761962890625,
+      "max_gib": 34.00482177734375,
+      "median_gb": 36.504666112,
+      "max_gb": 36.51239936,
+      "peak_observation": {
+        "request": "s3-l8192-p08-cold",
+        "kind": "sample",
+        "index": 7,
+        "memory_current_bytes": 36512399360,
+        "anon_bytes": 2890448896,
+        "file_bytes": 33402941440,
+        "kernel_bytes": 218214400,
+        "shmem_subset_file_bytes": 13711949824
+      },
+      "configured_memory_max_gib": 38,
+      "configured_memory_high_gib": 34,
+      "independent_stop_gib": 36,
+      "caveats": [
+        "Maximum of retained observations, not a continuous kernel memory.peak measurement.",
+        "Before/after boundaries and sampled rows are not independent benchmark repeats.",
+        "memory.stat counters are read separately from memory.current; shmem is a subset of file, not additional."
+      ],
+      "data_sha256": "f7565ed455422522806978e2c46d9002d76b7b620bdcda13dca4c3c3adbf6c60",
+      "source_archive_sha256": "97b4daf8dc1527b2563c2d2297dc15fe80a32e3444ae11b2993eb10b211cc746"
+    },
+    "outside_engine_cgroup_gib_at_sample_max": 28.55224609375,
+    "outside_note": "Outside this cgroup charge; other host workloads and available memory are not separated. Not all free."
+  },
+  "ssd": {
+    "gguf_backing_gib": 63.35423609614372,
+    "shards_gib": [
+      36.53201702237129,
+      26.82221907377243
+    ],
+    "capacity_gib": null,
+    "live_kv_streaming_to_ssd": false,
+    "additional_storage_note": "Generated pack and saved session files are extra; not quantified here. Live KV streaming is RAM\u2194VRAM, not SSD."
+  },
+  "illustrative_gpu_only": {
+    "capacity_gib": 16,
+    "runtime_gib": 2,
+    "weights_gib_choices": [
+      8,
+      12
+    ],
+    "kv_room_gib_choices": [
+      6,
+      2
+    ],
+    "max_context_tokens": null,
+    "note": "Illustrative smaller GPU-fitting models, not measured Strata cases. Selected model expertweights alone exceed16GiB; no strictallGPUfit. No tokenlimit inferred."
+  },
+  "bar_scale_gib": 64,
+  "source_links": {
+    "strata_memory_modes": "https://github.com/Niko1221/Strata/blob/870aedd9e1ebe1c91f94da93b59af17729f6c5c0/docs/DETAILS.md#memory-modes",
+    "kv_layout": "https://github.com/Niko1221/Strata/blob/870aedd9e1ebe1c91f94da93b59af17729f6c5c0/src/core/layer.cpp",
+    "ollama_split": "https://docs.ollama.com/faq#how-can-i-tell-if-my-model-was-loaded-onto-the-gpu",
+    "sglang_offloading": "https://docs.sglang.io/docs/advanced_features/server_arguments#offloading",
+    "cgroup_memory": "https://docs.kernel.org/admin-guide/cgroup-v2.html#memory-interface-files"
+  },
+  "safety_changes": false,
+  "new_inference_calls": 0,
+  "publication_approved": false
+}

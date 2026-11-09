@@ -1,0 +1,79 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+
+export function getStaticPaths() {
+  return [{ params: { slug: undefined } }, { params: { slug: "strata" } }];
+}
+
+const index = !Astro.params.slug;
+const rows = [
+  ["2,048", "3.731", "91.0", "3.751", "111.0", "43.4", "44.5"],
+  ["8,192", "7.329", "96.0", "7.363", "118.9", "42.0", "44.0"],
+  ["24,576", "12.677", "91.0", "12.718", "118.5", "43.8", "45.1"],
+  ["32,768", "19.608", "95.0", "19.655", "125.6", "43.7", "45.0"],
+  ["65,536", "33.561", "93.5", "33.623", "132.2", "45.2", "46.8"],
+  ["131,072", "65.948", "94.5", "66.054", "155.0", "45.1", "45.8"],
+  ["196,608", "95.784", "96.5", "95.930", "169.3", "44.1", "44.7"],
+  ["261,112", "131.039", "96.0", "131.247", "176.7", "44.3", "46.3"],
+];
+---
+<BaseLayout title={index ? "Benchmarks" : "Strata at 256K"} description="A benchmark characterising a configured local Strata deployment.">
+  <article class="benchmark">
+    {index ? <>
+      <p class="eyebrow">Research / benchmarks</p>
+      <h1>Benchmarks</h1>
+      <p class="lede">Measurements of configured systems, with the workload and limits visible alongside the results.</p>
+      <a class="study" href="/benchmarks/strata/"><span class="eyebrow">Local inference · 256K context</span><h2>Strata on a 16 GiB RTX 4080 <span aria-hidden="true">→</span></h2><p>Prefill, prefix reuse, decode and exact retrieval on one configured machine.</p></a>
+    </> : <>
+      <p class="eyebrow"><a href="/research/benchmarking/">Research / Benchmarking</a> · Configured local deployment</p>
+      <h1>Strata on a 16 GiB RTX 4080, through a 256K window</h1>
+      <p class="eyebrow">Published 9 November 2026</p>
+      <p class="lede">How does a memory-constrained local configuration behave as input grows, and what changes when the prefix is reused?</p>
+      <div class="cards">
+        <div><strong>131.039 s</strong><span>Cold prefill at 261,112 input tokens</span></div>
+        <div><strong>96 ms</strong><span>Prefix-cached prefill at the same length</span></div>
+        <div><strong>160 / 160</strong><span>Raw exact JSON in a separate stronger-prompt pass</span></div>
+      </div>
+      <section><h2>How the system works</h2><p>The standalone research article <a href="/research/benchmarking/strata-memory-pools/">How Strata uses GPU, RAM and SSD</a> explains expert routing, weight placement and KV cache, with a sourced mechanism comparison to vLLM.</p></section>
+      <section><h2>The setup</h2><p>One configured RTX 4080 (16 GiB, 200 W cap), i9-13900KF and approximately 64 GB RAM. The system ran NVIDIA driver 615.71.09 and Linux 7.0.0-34-generic. The model was two GGUF shards of <a href="#ref-model">Qwen3.8-Flash-Next-GSQ-RCO-IQ2_XS</a>; weights are not redistributed here. CPU/RAM and NVMe offload with expert caching allow the model to run beyond the GPU’s 16 GiB of VRAM.</p><p>Strata 0.1.54-sessionmem was a local CUDA 13 / sm89 build based on upstream revision <a href="#ref-strata"><code>870aedd9</code></a>, with no-MTP save/restore and model-file-cache-advice changes. This measures the whole configuration, not stock Strata. <a href="/benchmarks/strata/source-disclosure.md">Runtime and source disclosure</a>.</p></section>
+      <section><h2>Method</h2><p>The context task placed three authoritative key/value records among synthetic filler; exact retrieval required copying each value as a string into KEY_0, KEY_1 and KEY_2. This is a narrow retrieval test, not a test of broad 256K reasoning. V7 used ten prompts repeated across five consecutive sessions: 50 observations per context and cache condition, not 50 independent prompts. Eight input lengths ran from 2,048 to 261,112 tokens. The frontier budget was 261,112 input + 1,024 reserved output + 8 internal tokens = 262,144.</p><p>Across 6 h 41 min 22 s, 1,375 calls completed: 850 measurements, 85 warmups and 440 resets, with no unresolved calls or inference retry. Cold means zero KV reuse, not a global OS cache flush; cached calls reused all but seven input tokens. The sessions do not establish across-day reliability.</p></section>
+      <section><h2>Results</h2><figure><img src="/benchmarks/strata/v7-prefill.svg" alt="Cold and cached prefill medians across eight input lengths, with observed ranges." /><figcaption>V7 native prefill: medians and observed minimum–maximum ranges, 50 observations per condition. Cold is in seconds; cached is in milliseconds.</figcaption></figure>
+      <figure><img src="/benchmarks/strata/v7-decode.svg" alt="Cold and cached decode medians and observed ranges across eight input lengths." /><figcaption>V7 decode rates for short context-test answers of 72–83 tokens, 50 observations per condition. Ranges are observed minima and maxima, not confidence intervals.</figcaption></figure>
+      <h3>Exact V7 timing medians</h3><p>TTFT is dispatch to the first generated response delta; native prefill is the engine’s prompt-read phase. Each cell summarises 50 observations.</p><div class="table-wrap"><table><thead><tr><th scope="col">Input tokens</th><th scope="col">Cold prefill s</th><th scope="col">Cached prefill ms</th><th scope="col">Cold TTFT s</th><th scope="col">Cached TTFT ms</th><th scope="col">Cold decode tok/s</th><th scope="col">Cached decode tok/s</th></tr></thead><tbody>{rows.map(row => <tr>{row.map((cell, i) => i === 0 ? <th scope="row">{cell}</th> : <td>{cell}</td>)}</tr>)}</tbody></table></div>
+      <p>A separate sustained test used 50 input tokens and exactly 1,024 output tokens in each of 50 samples: median 41.614 tok/s, observed range 35.297–44.747. It was not a long-output test at 256K.</p></section>
+      <section><h2>When exact JSON mattered</h2><p>In V7, 0/800 context responses passed the original strict JSON-only check because they included Markdown fences. After <em>posthoc fence-only removal</em>, 800/800 matched the three expected values. The original score remains unchanged.</p><p>A separate 2K prompt intervention compared original, instruction-at-beginning and instruction-at-end arms. Exact values passed 0/10, 9/10 and 10/10; bare JSON syntax passed 0/10, 10/10 and 10/10 respectively.</p><p>A subsequent stronger-prompt run tested ten prompts per context/cache condition in one pass. All 160/160 raw responses passed exact JSON and complete-stop checks across the eight lengths in 1 h 03 min 51 s. This is not a new n=50 study.</p><figure><img src="/benchmarks/strata/strong-json-context.svg" alt="Ten of ten cold and ten of ten cached responses passed exact JSON at each of eight input lengths." /><figcaption>Stronger-prompt follow-up: 10 cold and 10 cached observations per input length.</figcaption></figure><p>The tested directive was:</p><blockquote>Return exactly one JSON object with exactly these three case-sensitive keys: KEY_0, KEY_1, KEY_2. For each key, copy the corresponding AUTHORITATIVE record's value exactly as a JSON string. AUTHORITATIVE is a source label and must not appear in the output key names. Do not add other fields, Markdown fences, headings or commentary.</blockquote></section>
+      <section><h2>Interpretation</h2><p>These results describe inference and exact retrieval on the tested fixtures. They do not establish arbitrary-schema reliability, a quantization cause, or continuous autonomous agent and tool-use reliability. There was no matched stock-engine or alternative-precision baseline.</p><p>The current stock boot blacklists <code>gpu_unlock</code> and the module is absent; the current silicon rate is unknown. An experimental unlock succeeded on a different historical boot, but no practical speed benefit has been established.</p></section>
+      <section><h2>Reproduce and inspect</h2><p>The reproduction archive replays V7 timings and scoring, the 2K prompt intervention and the stronger-prompt follow-up offline. Exact generation replication additionally requires the recorded model, tokenizer, patched engine and operating profile. See the disclosure before interpreting a rerun.</p><div class="links"><a href="https://github.com/rduffyuk/strata-context-benchmark">Benchmark repository →</a><a href="/benchmarks/strata/reproduction.zip">Reproduction archive ↓</a><a href="/benchmarks/strata/results.csv">V7 results CSV ↓</a><a href="/benchmarks/strata/environment.json">Environment JSON ↓</a><a href="/benchmarks/strata/source-disclosure.md">Source disclosure →</a><a href="/benchmarks/strata/licence-review.md">Licence review →</a></div><p>The pinned engine source is MIT licensed. The quantization card’s Apache tag conflicts with its body’s inheritance of the base Qwen Community 1.0 licence. This report makes no blanket Apache claim for the weights or commercial-service clearance.</p></section>
+      <section id="references"><h2>References and software credits</h2>
+        <p>These sources credit the software, model and methods used. The measurements here are our own configured-deployment observations; citations do not imply upstream endorsement or transfer upstream benchmark scores to this setup.</p>
+        <ol class="references">
+          <li id="ref-strata"><a href="https://github.com/Niko1221/Strata/tree/870aedd9e1ebe1c91f94da93b59af17729f6c5c0">Niko1221 and the Strata contributors. Strata, revision <code>870aedd9e1ebe1c91f94da93b59af17729f6c5c0</code></a>. We measured a local 0.1.54-sessionmem build with the two disclosed patches; the <a href="https://github.com/Niko1221/Strata/blob/870aedd9e1ebe1c91f94da93b59af17729f6c5c0/LICENSE">upstream MIT notice</a> is retained in the reproduction package.</li>
+          <li id="ref-model"><a href="https://huggingface.co/ISTA-DASLab/Qwen3.8-Flash-Next-GSQ-RCO-GGUF/tree/ed59f92082b1e93c0e96d60a8b11aab089b52f09">ISTA-DASLab. Qwen3.8-Flash-Next-GSQ-RCO-GGUF, revision <code>ed59f92082b1e93c0e96d60a8b11aab089b52f09</code></a>, IQ2_XS, two shards. Base model: <a href="https://huggingface.co/Qwen/Qwen3.8-Flash-Next">Qwen, Qwen3.8-Flash-Next</a>. The quantizer does not pin a base revision. Model licence inheritance and metadata disagreement are documented separately.</li>
+          <li id="ref-gsq">Dadgarnia et al. (2026). <a href="https://arxiv.org/abs/2604.18556v2">GSQ: Highly-Accurate Low-Precision Scalar Quantization for LLMs via Gumbel-Softmax Sampling</a>. arXiv:2604.18556v2, preprint.</li>
+          <li id="ref-rco">Helcig and Alistarh (2026). <a href="https://arxiv.org/abs/2605.00649v3">Model Compression with Exact Budget Constraints via Riemannian Manifolds</a>. arXiv:2605.00649v3, preprint.</li>
+          <li id="ref-cuda">NVIDIA. <a href="https://docs.nvidia.com/cuda/archive/13.0.0/cuda-toolkit-release-notes/index.html">CUDA Toolkit 13.0 release notes</a>. This documents the build-toolchain family, not a performance comparison. The observed driver version is recorded in the environment disclosure.</li>
+          <li id="ref-plots">Hunter (2007). <a href="https://doi.org/10.1109/MCSE.2007.55">Matplotlib: A 2D Graphics Environment</a>. Figures used Matplotlib 3.11.2; <a href="https://matplotlib.org/stable/project/citing.html">official citation guidance</a>. Font notices remain in the package.</li>
+          <li id="ref-unlock"><a href="https://github.com/Zagitta/gpu-unlock">gpu-unlock project</a>, background reference only. Our historical experimental fork/revision is disclosed in the source note. The present study does not attribute a speedup to an unlock.</li>
+        </ol>
+      </section>
+      <section><h2>Licences</h2><p>Ryan approved MIT for original code and CC BY 4.0 for the authored report, original fixtures, measurements and figures. Third-party licences and generated-output rights remain separate.</p></section>
+      <section><h2>Credits</h2><p>Ryan Duffy led research design, configuration, acceptance and operational verification. Codex provided agent-assisted implementation, testing and analysis.</p></section>
+    </>}
+  </article>
+</BaseLayout>
+<style>
+  .benchmark { max-width: 68rem; margin: 0 auto; padding: 2rem 1.5rem 6rem; line-height: 1.7; }
+  .eyebrow { color: var(--color-text-muted); font: 600 .72rem var(--font-mono); letter-spacing: .1em; text-transform: uppercase; }
+  h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 700; letter-spacing: -.035em; line-height: 1.12; margin: 1rem 0; max-width: 20ch; }
+  .lede { font-size: 1.2rem; color: var(--color-text-muted); max-width: 46rem; }
+  section { margin-top: 4rem; max-width: 64rem; } h2 { font-size: 1.65rem; line-height: 1.25; font-weight: 650; letter-spacing: -.02em; } h3 { font-size: 1.1rem; font-weight: 600; margin-top: 2rem; }
+  section p { margin-top: 1rem; max-width: 52rem; } a:not(.study) { color: var(--color-accent); text-decoration: underline; text-underline-offset: 3px; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr)); gap: 1rem; margin-top: 2.5rem; }
+  .cards div, .study { background: var(--color-card); border: 1px solid var(--color-border); border-radius: 8px; padding: 1.25rem; }
+  .cards strong { display: block; font: 700 1.6rem var(--font-mono); } .cards span { display: block; color: var(--color-text-muted); font-size: .9rem; margin-top: .4rem; }
+  figure { margin-top: 2rem; } figure img { max-width: 100%; height: auto; background: #fff; border: 1px solid var(--color-border); border-radius: 8px; } figcaption { color: var(--color-text-muted); font-size: .875rem; margin-top: .5rem; }
+  .table-wrap { overflow-x: auto; margin-top: 1rem; } table { border-collapse: collapse; min-width: 54rem; font-size: .83rem; font-variant-numeric: tabular-nums; } th, td { border-bottom: 1px solid var(--color-border); text-align: right; padding: .65rem; } th:first-child { text-align: left; } thead th { color: var(--color-text-muted); }
+  blockquote { border-left: 3px solid var(--color-rule); padding-left: 1rem; margin-top: 1rem; max-width: 52rem; color: var(--color-text-muted); } code { font-family: var(--font-mono); font-size: .9em; overflow-wrap: anywhere; } .links { display: flex; flex-wrap: wrap; gap: .7rem 1.5rem; margin-top: 1rem; }
+  .references { padding-left: 1.5rem; max-width: 54rem; } .references li { margin-top: .9rem; }
+  .study { display: block; max-width: 45rem; margin-top: 3rem; color: inherit; } .study h2 { margin: .6rem 0; } .study p { color: var(--color-text-muted); } .study:hover { border-color: var(--color-accent); }
+</style>
