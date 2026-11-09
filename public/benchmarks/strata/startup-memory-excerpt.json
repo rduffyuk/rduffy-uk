@@ -1,0 +1,14 @@
+{
+  "study_start_date": "2026-11-08",
+  "retrieved_date": "2026-11-09",
+  "method": "read retained study startup log; no inference or runtime mutation",
+  "lines": [
+    "strata generate: KV streaming: 32768 of 262144 cells per QSA layer in VRAM, the K/V in 3.09 GiB of pinned RAM",
+    "strata generate: expert cache 6965 slots, 9.33 GiB of VRAM; policy is",
+    "FileExpertSource: allocating 8.00 GiB page-locked cache complement",
+    "FileExpertSource: mapped pinned cache complement ready: resident 8.00 GiB, pinned 8.00 GiB in 8 s; page-locked and mapped",
+    "strata generate: resident RAM mode: 8.00 GiB of experts in RAM (page-locked), 6965 in the GPU cache; adaptive swaps off",
+    "strata: prefill plan inputs: 33.0 GiB experts, 9.3 GiB in the GPU caches, 8.0 GiB RAM copy (0 lend slots kept), file tier 15.7 GiB; 20.1 GiB available for the page cache; PCIe 19.3 GB/s; drive 2.50 GB/s (nvme1n1 is NVMe); a 32768-token prompt",
+    "strata serve: 1551 MiB of VRAM free with everything loaded"
+  ]
+}

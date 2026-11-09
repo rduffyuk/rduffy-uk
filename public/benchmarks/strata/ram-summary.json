@@ -1,0 +1,42 @@
+{
+  "schema": "strata-ram-observations/v1",
+  "campaign": "VW-2353-strata-n50-256k-v7",
+  "source_archive": "session-4/native-snapshot.tar",
+  "source_archive_bytes": 481751040,
+  "files": {
+    "resources": 1375,
+    "samples": 1375
+  },
+  "observations": 50857,
+  "in_call_samples": 48107,
+  "boundary_observations": 2750,
+  "definition": "cgroup memory.current, including charged file cache; not process RSS or free host memory",
+  "min_bytes": 32706170880,
+  "median_bytes": 36504666112,
+  "max_bytes": 36512399360,
+  "min_gib": 30.45999526977539,
+  "median_gib": 33.99761962890625,
+  "max_gib": 34.00482177734375,
+  "median_gb": 36.504666112,
+  "max_gb": 36.51239936,
+  "peak_observation": {
+    "request": "s3-l8192-p08-cold",
+    "kind": "sample",
+    "index": 7,
+    "memory_current_bytes": 36512399360,
+    "anon_bytes": 2890448896,
+    "file_bytes": 33402941440,
+    "kernel_bytes": 218214400,
+    "shmem_subset_file_bytes": 13711949824
+  },
+  "configured_memory_max_gib": 38,
+  "configured_memory_high_gib": 34,
+  "independent_stop_gib": 36,
+  "caveats": [
+    "Maximum of retained observations, not a continuous kernel memory.peak measurement.",
+    "Before/after boundaries and sampled rows are not independent benchmark repeats.",
+    "memory.stat counters are read separately from memory.current; shmem is a subset of file, not additional."
+  ],
+  "data_sha256": "f7565ed455422522806978e2c46d9002d76b7b620bdcda13dca4c3c3adbf6c60",
+  "source_archive_sha256": "97b4daf8dc1527b2563c2d2297dc15fe80a32e3444ae11b2993eb10b211cc746"
+}

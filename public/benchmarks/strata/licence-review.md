@@ -1,0 +1,17 @@
+# Licence review and approved own-work licences
+
+Checked9November2026. This is a source/notice review of the included artifacts and declared dependencies, not blanket clearance for every future deployment. Ryan approved MIT for original code and CC BY 4.0 for authored report/data on 9 November 2026. Ryan separately authorized website and GitHub publication on 9 November 2026.
+
+| Component | Evidence | Treatment in this release |
+|---|---|---|
+| Strata source and two local patches | [MIT licence at the exact engine revision](https://github.com/Niko1221/Strata/blob/870aedd9e1ebe1c91f94da93b59af17729f6c5c0/LICENSE) | Two relative-path patches supplied; upstream copyright/permission notice retained in `source/licences/strata-MIT.txt`. No engine binary or bundled dependencies. |
+| Original replay code | Newly authored package code, with agent assistance disclosed | Owner-approved MIT licence in `LICENSE-CODE.txt`. Does not relicense model weights or third-party source. |
+| Authored report, synthetic fixtures, measurements and figures | Original research artifacts; no external benchmark corpus copied | Owner-approved CC BY 4.0 in `LICENSE-CONTENT.md`, with Ryan attribution. No new ownership rights asserted over third-party model software or generated responses. |
+| Quantized weights | [Pinned quantization card](https://huggingface.co/ISTA-DASLab/Qwen3.8-Flash-Next-GSQ-RCO-GGUF/blob/ed59f92082b1e93c0e96d60a8b11aab089b52f09/README.md) has Apache-2.0 metadata but its licence body says weights inherit the base model licence | No weights distributed; no blanket Apache claim. The explicit inheritance statement is disclosed alongside the conflicting tag. |
+| Base Qwen model | [Qwen Community Licence1.0 observed at812d96e10a0dd82b69d749e68693698cf6c36daa](https://huggingface.co/Qwen/Qwen3.8-Flash-Next/blob/812d96e10a0dd82b69d749e68693698cf6c36daa/LICENSE) | Reference notice retained. Quantization card does not pin a base revision, so this current pinned licence observation is not a reconstructed historical base lineage. Commercial Model-as-a-Service/AI Work Assistant terms require separate assessment; this artifact makes no service-clearance claim. |
+| Matplotlib/DejaVu figure glyphs | Existing Lab renderer; SVG embeds DejaVu outlines; [font notice](https://github.com/dejavu-fonts/dejavu-fonts/blob/master/LICENSE) | Font copyright/permission notice retained; no plotting package or font binary bundled. |
+| NVIDIA driver/CUDA, GPU unlock and firmware | Version/history disclosure only | No binaries, firmware, install scripts, licence grants or operational activation included. |
+
+The pinned Strata licence permits source modification and redistribution subject to retaining its notice. The model card's Apache metadata must not be used to remove the base model's stated terms. We did not download or relicense model weights, redistribute a native runtime or publish a commercial serving endpoint. The licence text snapshots and URL/content hashes are retained in `source/upstream-sources.json` and `source/licences/`.
+
+The final release includes its manifest and SHA256 checksum. The code/content licence choices and publication are owner-approved. Resolve any desired broader model/derivative or commercial-use interpretation separately; this report does not imply that the metadata mismatch has been corrected by either upstream publisher. No upstream author contact or issue filing is implied by publication.

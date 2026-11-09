@@ -70,4 +70,14 @@ const adrs = defineCollection({
   }),
 });
 
-export const collections = { projects, pages, writing, adrs };
+const research = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/research" }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    category: z.string(),
+    pubDate: z.coerce.date(),
+  }),
+});
+
+export const collections = { projects, pages, writing, adrs, research };

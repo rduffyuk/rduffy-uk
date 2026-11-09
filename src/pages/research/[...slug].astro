@@ -1,0 +1,100 @@
+---
+import { getEntry, render, type CollectionEntry } from "astro:content";
+import BaseLayout from "@layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+  const post = await getEntry("research", "benchmarking/strata-memory-pools");
+  if (!post) throw new Error("Missing research article");
+  return [
+    { params: { slug: undefined }, props: { post: null } },
+    { params: { slug: "benchmarking" }, props: { post: null } },
+    { params: { slug: "benchmarking/strata-memory-pools" }, props: { post } },
+  ];
+}
+interface Props { post: CollectionEntry<"research"> | null }
+const { post } = Astro.props;
+const rendered = post ? await render(post) : null;
+const Content = rendered?.Content;
+const title = post?.data.title ?? (Astro.params.slug ? "Benchmarking" : "Research");
+---
+<BaseLayout title={title} description={post?.data.description ?? "Configured systems, inspectable evidence and reproducible measurements."} image={post ? "/benchmarks/strata/strata-workstation-hero-v2.png" : undefined} imageAlt={post ? "An engineer examining a local workstation with GPU, RAM and SSD" : undefined}>
+  <article class="research-article">
+    <nav aria-label="Breadcrumb"><a href="/research/">Research</a> / <a href="/research/benchmarking/">Benchmarking</a>{post && " / Strata"}</nav>
+    <h1>{title}</h1>
+    {post && Content ? <>
+      <p class="lede">{post.data.description}</p>
+      <p class="meta">Ryan Duffy · 9 November 2026 · research article</p>
+      <aside class="reading-map"><strong>Two ways into the study</strong><p>This article explains the mechanism. The <a href="/benchmarks/strata/">benchmark report</a> contains measured results, methods and downloadable evidence.</p></aside>
+      <div class="research-prose"><Content /></div>
+    </> : <>
+      <p class="lede">Measurements and explanations of configured systems, with methods and limits visible alongside the findings.</p>
+      <a class="research-card" href="/research/benchmarking/strata-memory-pools/"><span class="meta">Research article · local inference</span><h2>How Strata uses GPU, RAM and SSD →</h2><p>Expert routing, three memory pools and KV cache, explained visually.</p></a>
+      <a class="research-card" href="/benchmarks/strata/"><span class="meta">Benchmark report · results and reproduction</span><h2>Strata through a 256K window →</h2><p>The configured RTX 4080 study: prefill, prefix reuse, decode and exact retrieval.</p></a>
+    </>}
+  </article>
+
+</BaseLayout>
+<style is:global>
+  .research-article { max-width: 52rem; margin: 0 auto; padding: 2rem 1.5rem 6rem; color: var(--color-text); font-size: 15px; line-height: 1.75; }
+  .research-article nav, .research-article .meta { font: .75rem var(--font-mono); color: var(--color-text-muted); line-height: 1.6; }
+  .research-article h1 { font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1.12; font-weight: 650; letter-spacing: -.035em; margin: 1.25rem 0; }
+  .research-article .lede { font-size: 1.15rem; color: var(--color-text-muted); }
+  .research-article a { color: var(--color-accent); text-decoration: underline; text-underline-offset: 3px; }
+  .reading-map, .research-card { display: block; padding: 1.2rem; margin: 2rem 0; border: 1px solid var(--color-border); border-radius: 8px; background: var(--color-card); }
+  .research-card h2 { font-size: 1.35rem; font-weight: 600; margin: .6rem 0; }
+  .research-card p { color: var(--color-text-muted); }
+  .research-prose p { margin: 1.2rem 0; }
+  .research-prose h2 { font-size: 1.55rem; font-weight: 650; line-height: 1.25; letter-spacing: -.02em; margin: 3rem 0 1.1rem; }
+  .research-prose h3 { font-size: 1.1rem; font-weight: 600; }
+  .research-prose li { margin: .6rem 0; }
+  .research-prose ul, .research-prose ol { padding-left: 1.5rem; list-style: revert; }
+  .research-prose table { display: block; max-width: 100%; overflow-x: auto; font-size: .85rem; border-collapse: collapse; margin: 1.5rem 0; }
+  .research-prose th, .research-prose td { text-align: left; vertical-align: top; padding: .7rem; border: 1px solid var(--color-border); min-width: 9rem; }
+  .research-prose code { font-family: var(--font-mono); font-size: .87em; overflow-wrap: anywhere; }
+  .research-prose pre { max-width: 100%; overflow-x: auto; padding: 1rem; border: 1px solid var(--color-border); border-radius: 8px; font-size: .85rem; }
+  .research-prose .source-label { color: var(--color-text-muted); font-family: var(--font-mono); font-size: .75rem; margin-bottom: .5rem; }
+  .research-prose details { margin: 1.5rem 0; padding: 1rem; background: var(--color-card); border: 1px solid var(--color-border); border-radius: 8px; }
+  .research-prose summary { cursor: pointer; font-weight: 600; }
+  .research-prose dt { font-weight: 650; margin-top: 1rem; }
+  .research-prose dd { margin: .25rem 0 .8rem; }
+  .research-prose input { display: block; margin-top: .5rem; padding: .5rem; width: 100%; background: var(--color-bg); border: 1px solid var(--color-border); color: var(--color-text); }
+  .research-hero { margin: 1.5rem 0 2rem; }
+  .research-hero img, .moe-art img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  .research-hero figcaption, .moe-art figcaption { color: var(--color-text-muted); font-size: 14px; line-height: 1.6; margin-top: .6rem; }
+  .moe-art { float: right; width: 46%; margin: .3rem 0 1rem 1.5rem; }
+  .research-prose h2 { clear: both; }
+  @media(max-width:700px) { .moe-art { float: none; width: 100%; margin: 1.5rem 0; } }
+  .benchmark-result { margin: 2rem 0; }
+  .benchmark-result img { display: block; width: 100%; height: auto; border: 1px solid var(--color-border); border-radius: 8px; background: white; }
+  .benchmark-result figcaption { margin-top: .65rem; font-size: 14px; line-height: 1.6; color: var(--color-text-muted); }
+  .memory-story { margin: 2rem 0; scroll-margin-top: 5rem; }
+  .memory-story iframe { display: block; width: 100%; height: 750px; border: 1px solid var(--color-border); border-radius: 10px; background: #141414; }
+  .memory-story figcaption { color: var(--color-text-muted); font-size: .8rem; line-height: 1.6; margin-top: .65rem; }
+  @media(max-width:600px) { .memory-story iframe { height: 1050px; } }
+  @media(max-width:600px) {
+    .research-article { font-size: 14px; padding-inline: 1.1rem; }
+  }
+</style>
+<script>
+  // Same-origin widget: fit the current view without nested scrolling.
+  const frame = document.querySelector<HTMLIFrameElement>(".memory-story iframe");
+  let observer: ResizeObserver | undefined;
+  const fit = () => {
+    const widget = frame?.contentDocument?.querySelector<HTMLElement>(".widget");
+    if (!frame || !widget) return;
+    observer?.disconnect();
+    const resize = () => { frame.style.height = `${Math.ceil(widget.getBoundingClientRect().height) + 2}px`; };
+    observer = new ResizeObserver(resize);
+    observer.observe(widget);
+    resize();
+  };
+  frame?.addEventListener("load", fit);
+  if (frame?.contentDocument?.readyState === "complete") fit();
+  const search = document.querySelector<HTMLInputElement>("[data-glossary-search]");
+  search?.addEventListener("input", () => {
+    const term = search.value.trim().toLowerCase();
+    document.querySelectorAll<HTMLElement>("[data-glossary-terms] > div").forEach(entry => {
+      entry.hidden = !entry.textContent?.toLowerCase().includes(term);
+    });
+  });
+</script>
