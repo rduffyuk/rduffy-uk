@@ -1,0 +1,49 @@
+{
+  "scope": "Simplified conceptual mechanism, not complete architecture or live traffic",
+  "nodes": [
+    [
+      "Input",
+      "Supplied transcript",
+      "paper"
+    ],
+    [
+      "Select prompt",
+      "Skip injection flags",
+      "filter"
+    ],
+    [
+      "Inspect question",
+      "Is history relevant?",
+      "key"
+    ],
+    [
+      "Memory check",
+      "Prior call in turn?",
+      "graph"
+    ],
+    [
+      "Decision",
+      "Then record outcome",
+      "check"
+    ]
+  ],
+  "motion": "direction only",
+  "edges": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      2
+    ],
+    [
+      2,
+      3
+    ],
+    [
+      3,
+      4
+    ]
+  ]
+}
