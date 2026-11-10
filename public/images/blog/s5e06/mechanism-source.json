@@ -1,0 +1,49 @@
+{
+  "scope": "Simplified conceptual mechanism, not complete architecture or live traffic",
+  "nodes": [
+    [
+      "Port",
+      "Fit platform reality",
+      "paper"
+    ],
+    [
+      "Coherence",
+      "Check local contracts",
+      "check"
+    ],
+    [
+      "Grounding",
+      "Read primary sources",
+      "key"
+    ],
+    [
+      "Bounded trial",
+      "Same task, two arms",
+      "filter"
+    ],
+    [
+      "Judgment",
+      "Keep claims scoped",
+      "graph"
+    ]
+  ],
+  "motion": "direction only",
+  "edges": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      2
+    ],
+    [
+      2,
+      3
+    ],
+    [
+      3,
+      4
+    ]
+  ]
+}
