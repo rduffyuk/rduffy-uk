@@ -1,0 +1,58 @@
+{
+  "scope": "Simplified conceptual mechanism, not complete architecture or live traffic",
+  "nodes": [
+    [
+      "Markdown",
+      "Author supplied ledger",
+      "paper"
+    ],
+    [
+      "Header",
+      "Claim + source role",
+      "filter"
+    ],
+    [
+      "Separator",
+      "Confirm table shape",
+      "check"
+    ],
+    [
+      "Expand",
+      "Concrete claim tokens",
+      "key"
+    ],
+    [
+      "Review",
+      "Source support still needed",
+      "graph"
+    ],
+    [
+      "Unsupported",
+      "Claim header error",
+      "filter"
+    ]
+  ],
+  "motion": "direction only",
+  "edges": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      2
+    ],
+    [
+      2,
+      3
+    ],
+    [
+      3,
+      4
+    ],
+    [
+      1,
+      5
+    ]
+  ]
+}
