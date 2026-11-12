@@ -1,0 +1,49 @@
+{
+  "scope": "Simplified conceptual mechanism, not complete architecture or live traffic",
+  "nodes": [
+    [
+      "Client",
+      "Request schema mode",
+      "paper"
+    ],
+    [
+      "Gateway",
+      "Preserve parameters",
+      "filter"
+    ],
+    [
+      "Provider",
+      "Compatible endpoint",
+      "check"
+    ],
+    [
+      "Ingestion",
+      "Bound active writes",
+      "key"
+    ],
+    [
+      "Graph",
+      "Inspect progress + errors",
+      "graph"
+    ]
+  ],
+  "motion": "direction only",
+  "edges": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      2
+    ],
+    [
+      2,
+      3
+    ],
+    [
+      3,
+      4
+    ]
+  ]
+}
