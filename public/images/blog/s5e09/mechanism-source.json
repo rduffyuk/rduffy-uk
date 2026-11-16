@@ -1,0 +1,53 @@
+{
+  "scope": "Simplified conceptual mechanism, not complete architecture or live traffic",
+  "nodes": [
+    [
+      "Call",
+      "Either patched alias",
+      "paper"
+    ],
+    [
+      "Filter",
+      "Read edge_uuids",
+      "filter"
+    ],
+    [
+      "Empty []",
+      "Return []",
+      "check"
+    ],
+    [
+      "Other value",
+      "Original search",
+      "key"
+    ],
+    [
+      "Result",
+      "Check pipeline separately",
+      "graph"
+    ]
+  ],
+  "motion": "direction only",
+  "edges": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      2
+    ],
+    [
+      1,
+      3
+    ],
+    [
+      2,
+      4
+    ],
+    [
+      3,
+      4
+    ]
+  ]
+}
