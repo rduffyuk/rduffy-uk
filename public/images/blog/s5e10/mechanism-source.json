@@ -1,0 +1,25 @@
+{
+  "nodes": [
+    [
+      "Failures",
+      "Count failed records"
+    ],
+    [
+      "Trace work",
+      "Find the constraint"
+    ],
+    [
+      "Profile",
+      "Inspect access path"
+    ],
+    [
+      "Bound writes",
+      "Protect graph state"
+    ],
+    [
+      "Complete",
+      "Check marked records"
+    ]
+  ],
+  "meaning": "Editorial flow based on retained evidence, not a runtime trace"
+}
