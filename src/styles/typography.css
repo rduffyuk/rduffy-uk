@@ -1,0 +1,323 @@
+/* Shared notebook type roles. Screen-only so the CV keeps its print layout. */
+:root {
+  --type-page: 40px;
+  --type-section: 24px;
+  --type-subsection: 20px;
+  --type-body: 16px;
+  --type-lead: 20px;
+  --type-compact: 14px;
+  --type-meta: 12px;
+  --type-control: 13px;
+  --type-workspace: 28px;
+}
+@media screen {
+  :root #main-content[data-page] {
+    font-family: var(--font-sans);
+    font-size: var(--type-body);
+    line-height: 1.7;
+  }
+  :root #main-content[data-page] h1 {
+    font-size: var(--type-page);
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.035em;
+  }
+  :root #main-content[data-page] h2 {
+    font-size: var(--type-section);
+    font-weight: 500;
+    line-height: 1.35;
+    letter-spacing: -0.025em;
+  }
+  :root #main-content[data-page] h3 {
+    font-size: var(--type-subsection);
+    font-weight: 500;
+    line-height: 1.4;
+  }
+  :root
+    #main-content[data-page]
+    :is(.about-page, .home-notebook, .prose.prose-rd) {
+    font-size: var(--type-body);
+    line-height: 1.7;
+  }
+  :root
+    #main-content[data-page]
+    :is(
+      .editorial p,
+      .principles dd,
+      .prose.prose-rd > p,
+      .prose.prose-rd li,
+      .cv-list li,
+      .cv-desc,
+      .pf-side-copy > p,
+      .pf-foundation-grid p,
+      .pa-detail p
+    ) {
+    font-size: var(--type-body);
+    line-height: 1.7;
+  }
+  :root
+    #main-content[data-page]
+    :is(.lead, .home-lede, .writing-intro > p:first-of-type, .pf-intro > p) {
+    font-size: var(--type-lead);
+    line-height: 1.6;
+    max-width: 68ch;
+  }
+  :root
+    #main-content[data-page="cv"]
+    > article
+    > div:first-child
+    > p:first-of-type {
+    font-size: var(--type-lead);
+    line-height: 1.6;
+  }
+  :root #main-content[data-page="cv"] > article > section:first-of-type > p {
+    font-size: var(--type-body);
+    line-height: 1.7;
+  }
+  :root #main-content[data-page="cv"] .grid > div > p {
+    font-size: var(--type-body);
+    line-height: 1.7;
+  }
+  :root #main-content[data-page="adrs"] > section > p:first-of-type {
+    font-size: var(--type-lead);
+    line-height: 1.6;
+  }
+  :root
+    #main-content[data-page]
+    :is(
+      .writing-title,
+      .home-feed-row strong,
+      .season summary strong,
+      .adr-article .prose > h4
+    ) {
+    font-size: var(--type-body);
+    line-height: 1.45;
+    font-weight: 500;
+  }
+  :root
+    #main-content[data-page]
+    :is(
+      .writing-meta,
+      .writing-counts,
+      .archive-heading p,
+      .date-note,
+      .season summary small,
+      .home-meta,
+      .home-feed-row small,
+      .home-feed-row time,
+      .home-kicker,
+      .section-label,
+      .hero-note,
+      .cv-meta,
+      .cv-tech,
+      .u-label,
+      .u-chip,
+      .u-status-pill,
+      .adr-review-eyebrow,
+      .adr-review-badge,
+      .adr-original-label,
+      .pf-meta,
+      .pf-eyebrow,
+      .pf-sub,
+      .pf-diagram-caption,
+      .pa-map-caption,
+      .pa-legend,
+      .pa-level,
+      .pf-preview-footer
+    ) {
+    font-size: var(--type-meta);
+    line-height: 1.6;
+  }
+  :root
+    #main-content[data-page]
+    :is(
+      .title-line > a,
+      .writing-jumps,
+      .home-read,
+      .home-more,
+      .home-filters button,
+      .home-entry-copy a,
+      .pf-section-links,
+      .pa-view-tabs button
+    ) {
+    font-size: var(--type-control);
+    line-height: 1.5;
+  }
+  :root
+    #main-content[data-page]
+    :is(
+      .home-entry-copy p,
+      .home-work dl,
+      .home-project .home-small,
+      .home-context,
+      .about-page .route small,
+      .cv-badge,
+      .pf-inspector p,
+      .pf-atlas-map .pf-section-title p,
+      .pa-heading p,
+      .pf-foundation-head > p,
+      .adr-source-edition p,
+      .adr-current-context p,
+      .adr-journal-coverage p
+    ) {
+    font-size: var(--type-compact);
+    line-height: 1.65;
+  }
+  :root #main-content[data-page] .home-read span {
+    font-size: var(--type-meta);
+  }
+  :root #main-content[data-page] .about-page .route strong {
+    font-size: var(--type-subsection);
+  }
+  :root #main-content[data-page] .prose.prose-rd h1 {
+    font-size: var(--type-section);
+    font-weight: 500;
+    line-height: 1.35;
+  }
+  :root #main-content[data-page] .prose.prose-rd :is(pre, code, table) {
+    font-size: var(--type-compact);
+    line-height: 1.65;
+  }
+  :root
+    #main-content[data-page]
+    .prose.prose-rd
+    :is(.glossary-term dd, .glossary-body > p, details.walkthrough) {
+    font-size: var(--type-compact);
+  }
+  :root #main-content[data-page] .prose.prose-rd .caption {
+    font-size: var(--type-meta);
+    line-height: 1.6;
+  }
+  :root #main-content[data-page="adrs"] a[data-status] > span:nth-child(2) {
+    font-size: var(--type-body);
+    line-height: 1.45;
+  }
+  :root
+    #main-content[data-page="adrs"]
+    :is(
+      a[data-status] > span:nth-child(n + 4),
+      #adr-filters,
+      .adr-result-count,
+      .adr-context-links,
+      .adr-review-filter,
+      .adr-search-label,
+      .adr-archive-method summary
+    ) {
+    font-size: var(--type-meta);
+    line-height: 1.6;
+  }
+  :root #main-content[data-page="adrs"] .adr-article > h1 {
+    overflow-wrap: break-word;
+  }
+  :root #main-content[data-page] .u-label {
+    font-size: var(--type-meta) !important;
+  }
+  /* Compact workspace: readable labels with room for the interactive maps. */
+  :root #main-content[data-page] .j-heading h1 {
+    font-size: var(--type-workspace);
+  }
+  :root
+    #main-content[data-page]
+    :is(
+      .j-heading p,
+      .j-story p,
+      .j-guide p,
+      .j-node-detail p,
+      .j-now p,
+      .j-overview-intro p
+    ) {
+    font-size: var(--type-compact);
+    line-height: 1.6;
+  }
+  :root
+    #main-content[data-page]
+    :is(
+      .j-now h2,
+      .j-story h2,
+      .j-guide h2,
+      .j-node-detail h2,
+      .j-overview-intro h2
+    ) {
+    font-size: var(--type-subsection);
+    line-height: 1.35;
+  }
+  :root
+    #main-content[data-page]
+    :is(
+      .j-story-meta,
+      .j-meta,
+      .j-context-bar,
+      .j-story-filter,
+      .j-story-filter label span,
+      .j-tags span,
+      .j-timeline-controls label,
+      .j-timeline-controls > div,
+      .j-map-count,
+      .j-map-footer,
+      .j-group h3,
+      .j-group h3 span,
+      .j-node small
+    ) {
+    font-size: var(--type-meta);
+    line-height: 1.5;
+  }
+  :root
+    #main-content[data-page]
+    :is(
+      .j-modes button,
+      .j-map-tools,
+      .j-story-links a,
+      .j-timeline-controls select
+    ) {
+    font-size: var(--type-control);
+  }
+  :root #main-content[data-page] .j-node {
+    font-size: var(--type-meta) !important;
+  }
+  :root #main-content[data-page] .pa-component small {
+    font-size: 11px;
+  }
+  :root #main-content[data-page] .pa-component strong {
+    font-size: var(--type-compact);
+  }
+  :root
+    #main-content[data-page]
+    :is(
+      .pa-connections small,
+      .pa-results small,
+      .pf-component-list button small,
+      .pf-icon-label small
+    ) {
+    font-size: var(--type-meta);
+    line-height: 1.5;
+  }
+  :root #main-content[data-page] :is(.pf-search input, .adr-search) {
+    font-size: var(--type-body);
+  }
+}
+@media screen and (max-width: 700px) {
+  :root {
+    --type-page: 32px;
+    --type-section: 22px;
+    --type-workspace: 24px;
+  }
+  :root #main-content[data-page] .j-preview {
+    min-height: 740px;
+  }
+  :root #main-content[data-page] .j-map-column {
+    height: 36%;
+    min-height: 245px;
+  }
+  :root #main-content[data-page] .j-context-bar {
+    flex-wrap: wrap;
+  }
+  :root #main-content[data-page] .j-heading p {
+    max-width: 100%;
+  }
+  :root #main-content[data-page] .j-timeline-controls select {
+    font-size: var(--type-body);
+  }
+  :root #main-content[data-page] #adr-filters {
+    flex-wrap: wrap;
+  }
+}

@@ -35,7 +35,7 @@
   padding: 55px 0 48px;
 }
 .home-notebook .home-intro h1 {
-  font-size: 62px;
+  font-size: var(--type-page);
   font-weight: 500;
   letter-spacing: -0.045em;
   margin-bottom: 22px;
@@ -340,7 +340,7 @@
     padding: 35px 0;
   }
   .home-notebook .home-intro h1 {
-    font-size: 46px;
+    font-size: var(--type-page);
   }
   .home-lede {
     font-size: 19px;

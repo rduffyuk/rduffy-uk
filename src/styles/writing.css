@@ -37,7 +37,7 @@
   margin-bottom: 20px;
 }
 .writing-index .title-line h1 {
-  font-size: 46px;
+  font-size: var(--type-page);
   margin: 0;
 }
 .writing-index .title-line > a {
@@ -79,7 +79,7 @@
   margin-bottom: 15px;
 }
 .writing-index .archive-heading h2 {
-  font-size: 21px;
+  font-size: var(--type-section);
   line-height: 1.4;
   margin: 0;
   font-weight: 500;
@@ -154,7 +154,7 @@
 }
 .writing-index .season-toggle {
   color: var(--color-text-muted);
-  font-size: 20px;
+  font-size: var(--type-section);
   flex: none;
 }
 .writing-index .season-toggle:before {
@@ -199,7 +199,7 @@
     margin-bottom: 18px;
   }
   .writing-index .title-line h1 {
-    font-size: 38px;
+    font-size: var(--type-page);
   }
   .writing-index .title-line > a {
     font-size: 11px;
@@ -228,7 +228,7 @@
     padding: 13px 0;
   }
   .writing-index .archive-heading h2 {
-    font-size: 20px;
+    font-size: var(--type-section);
   }
   .writing-index > section {
     margin-bottom: 34px;
