@@ -1,0 +1,25 @@
+{
+  "nodes": [
+    [
+      "Request",
+      "Choose routed path"
+    ],
+    [
+      "Pipeline",
+      "Shared agent flow"
+    ],
+    [
+      "Filters",
+      "Reach each caller"
+    ],
+    [
+      "Experiment",
+      "Identify changed factors"
+    ],
+    [
+      "Decision",
+      "Apply rollout criterion"
+    ]
+  ],
+  "meaning": "Editorial flow based on retained evidence, not a runtime trace"
+}
