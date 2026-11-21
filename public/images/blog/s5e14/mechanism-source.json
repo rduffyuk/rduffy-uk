@@ -1,0 +1,58 @@
+{
+  "nodes": [
+    {
+      "id": "job",
+      "label": "Job completes",
+      "detail": "Application result"
+    },
+    {
+      "id": "owner",
+      "label": "Owner check",
+      "detail": "Controller reference?"
+    },
+    {
+      "id": "state",
+      "label": "CronJob status",
+      "detail": "Owned success recorded"
+    },
+    {
+      "id": "alert",
+      "label": "Alert reads status",
+      "detail": "Schedule minus success"
+    },
+    {
+      "id": "probe",
+      "label": "Manual probe",
+      "detail": "Parent stays unchanged"
+    }
+  ],
+  "edges": [
+    {
+      "from": "job",
+      "to": "owner"
+    },
+    {
+      "from": "owner",
+      "to": "state",
+      "condition": "controller-owned"
+    },
+    {
+      "from": "state",
+      "to": "alert"
+    },
+    {
+      "from": "owner",
+      "to": "probe",
+      "condition": "unowned, parent unchanged"
+    }
+  ],
+  "meaning": "Editorial ownership model, not historical runtime trace",
+  "desktop": [
+    740,
+    270
+  ],
+  "mobile": [
+    340,
+    520
+  ]
+}
