@@ -1,0 +1,25 @@
+{
+  "nodes": [
+    [
+      "Dependency",
+      "Observe failures"
+    ],
+    [
+      "Fallback",
+      "Keep useful results"
+    ],
+    [
+      "Pair queries",
+      "Comparable inputs"
+    ],
+    [
+      "Full set",
+      "Inspect trade-offs"
+    ],
+    [
+      "Decision",
+      "Keep scoped claims"
+    ]
+  ],
+  "meaning": "Editorial flow based on retained evidence, not a runtime trace"
+}
