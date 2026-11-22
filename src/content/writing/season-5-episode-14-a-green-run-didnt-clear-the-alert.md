@@ -2,6 +2,7 @@
 title: "A Green Run Didn't Clear the Alert"
 description: "A successful debug job did not establish recovery of the scheduled quality-scoring pipeline. The repair needed the right identity, a recovery window and controller-owned evidence."
 pubDatetime: 2026-07-16T18:00:00Z
+shippingDatetime: 2026-11-22T11:34:29Z
 draft: false
 author: Ryan Duffy
 episode: 14
