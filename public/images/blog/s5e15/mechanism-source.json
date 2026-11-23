@@ -1,0 +1,30 @@
+{
+  "nodes": [
+    [
+      "record",
+      "Pending record",
+      "Current version"
+    ],
+    [
+      "attempt",
+      "Process record",
+      "Extraction and search"
+    ],
+    [
+      "success",
+      "Success",
+      "Save content marker"
+    ],
+    [
+      "failure",
+      "Failure",
+      "Keep record pending"
+    ],
+    [
+      "exit",
+      "Job exit",
+      "Any failed record: exit 1"
+    ]
+  ],
+  "paths": "Pending record to processing, success or failure, then aggregate Job exit; not a literal fixed order of Graphiti internal calls."
+}
